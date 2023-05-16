@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, SetStateAction } from "react";
 import { ethers } from "ethers";
 
 function ClientSideComponent() {
@@ -38,6 +38,7 @@ function ClientSideComponent() {
 
   async function bet(candidate) {
     // Call the bet function on your contract
+    if (!contract) return;
     const tx = await contract.bet(candidate);
     await tx.wait();
   }
