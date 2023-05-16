@@ -1,4 +1,5 @@
 import Image from "next/image";
+import ClientSideComponent from "./ClientSideComponent";
 
 export default function Home() {
   return (
@@ -53,6 +54,7 @@ export default function Home() {
             </p>
           </div>
         </div>
+        <ClientSideComponent />
       </div>
     </main>
   );
