@@ -13,25 +13,28 @@ function ClientSideComponent() {
   const contractAddress = "";
 
   useEffect(() => {
-    async function loadBlockchainData() {
-      // Connect to Metamask
-      const provider = new ethers.getDefaultProvider(window.ethereum);
-      setProvider(provider);
-
-      const signer = provider.getSigner();
-      const account = await signer.getAddress();
-      setAccount(account);
-
-      const contract = new ethers.Contract(
-        contractAddress,
-        contractABI,
-        signer
-      );
-      setContract(contract);
+    if (typeof window.ethereum !== "undefined") {
+      console.log("MetaMask is installed!");
     }
-
-    loadBlockchainData();
   }, []);
+
+  async function loadBlockchainData() {
+    // Connect to Metamask
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    setProvider(provider);
+
+    const signer = provider.getSigner();
+    const account = await signer.getAddress();
+    setAccount(account);
+
+    const contract = new ethers.Contract(contractAddress, contractABI, signer);
+    setContract(contract);
+  }
+
+  async function requestAccount() {
+    await window.ethereum.request({ method: "eth_requestAccounts" });
+    loadBlockchainData();
+  }
 
   async function bet(candidate) {
     // Call the bet function on your contract
@@ -52,6 +55,7 @@ function ClientSideComponent() {
       {result && <p>Result: {result}</p>}
       <div>
         <h1>Welcome to ElectroVote Oracle</h1>
+        <button onClick={requestAccount}>Connect Wallet</button>
         <h2>Current account: {account}</h2>
         <button onClick={() => bet("candidate1")}>Bet on Candidate 1</button>
         <button onClick={() => bet("candidate2")}>Bet on Candidate 2</button>
