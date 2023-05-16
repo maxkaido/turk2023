@@ -1,5 +1,8 @@
+"use client";
 import Image from "next/image";
 import ClientSideComponent from "./ClientSideComponent";
+import { useEffect, useState } from "react";
+import { ethers } from "ethers";
 
 export default function Home() {
   return (

@@ -43,12 +43,6 @@ function ClientSideComponent() {
   }
   const [result, setResult] = useState(null);
 
-  useEffect(() => {
-    // Perform client-side calculations
-    const calculatedResult = 2 + 2;
-    setResult(calculatedResult);
-  }, []);
-
   return (
     <div>
       {/* Display the result */}
