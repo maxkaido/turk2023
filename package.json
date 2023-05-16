@@ -6,7 +6,6 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "export": "next export",
     "lint": "next lint",
     "deploy": "git push dokku@prod10:turk2023-front main:master --force"
   },
