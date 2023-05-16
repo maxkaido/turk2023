@@ -48,11 +48,15 @@ function ClientSideComponent() {
       {/* Display the result */}
       {result && <p>Result: {result}</p>}
       <div>
-        <h1>Welcome to ElectroVote Oracle</h1>
-        <button onClick={requestAccount}>Connect Wallet</button>
-        <h2>Current account: {account}</h2>
-        <button onClick={() => bet("candidate1")}>Bet on Candidate 1</button>
-        <button onClick={() => bet("candidate2")}>Bet on Candidate 2</button>
+        <button
+          onClick={requestAccount}
+          className="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          Connect Wallet
+        </button>
+        {account && (
+          <p className="ml-4 text-sm text-gray-400">Connected: {account}</p>
+        )}
       </div>
     </div>
   );

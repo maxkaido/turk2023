@@ -8,13 +8,17 @@ export default function Home() {
   return (
     <main className="bg-gray-800 text-white">
       <div className="container mx-auto py-10">
-        <h1 className="text-4xl text-center mb-10">TurkElectro Oracle</h1>
+        <h1 className="text-4xl text-center mb-10">Turk Election Bet</h1>
+        <h2 className="text-3xl text-center mb-10">
+          {" "}
+          Bet on the next Turkish president{" "}
+        </h2>
         <div className="grid grid-cols-2 gap-4">
           <div className="text-center">
             <Image
               src="/c1.jpg"
               alt="Erdogan"
-              className="mx-auto mb-2"
+              className="mx-auto mb-2 p-2"
               width={200}
               height={24}
               priority
@@ -37,7 +41,7 @@ export default function Home() {
             <Image
               src="/c2.jpg"
               alt="Erdogan"
-              className="mx-auto mb-2"
+              className="mx-auto mb-2 p-2"
               width={200}
               height={24}
               priority
