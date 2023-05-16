@@ -6,7 +6,7 @@ import { ethers } from "ethers";
 
 export default function Home() {
   return (
-    <main className="bg-gray-800 text-white">
+    <main className="bg-gray-800 text-white min-h-screen text-white">
       <div className="container mx-auto py-10">
         <h1 className="text-4xl text-center mb-10">Turk Election Bet</h1>
         <h2 className="text-3xl text-center mb-10">
