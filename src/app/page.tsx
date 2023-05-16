@@ -15,8 +15,9 @@ export default function Home() {
               height={24}
               priority
             />
+            <h1> Recep Tayyip Erdoğan </h1>
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2">
-              Bet on Recep Tayyip Erdoğan
+              Bet on Erdogan
             </button>
             <p>
               Current Bet: <span id="currentBet1">0</span> ETH
@@ -37,8 +38,9 @@ export default function Home() {
               height={24}
               priority
             />
+            <h1> Kemal Kılıçdaroğlu</h1>
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2">
-              Bet on Kemal Kılıçdaroğlu
+              Bet on Kemal
             </button>
             <p>
               Current Bet: <span id="currentBet1">0</span> ETH
