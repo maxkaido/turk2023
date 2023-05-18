@@ -37,18 +37,13 @@ export default function Home() {
     console.log("Contract object", contract);
     setContract(contract);
 
-    const filter = contract.filters.BetMade(account);
-    const logs = await contract.queryFilter(filter);
-
-    let userBets = logs.map((log) => {
-      const event = contract.interface.parseLog(log);
-      return {
-        amount: ethers.utils.formatEther(event.args.amount),
-        candidate: event.args.candidate,
-      };
-    });
-
-    setBets(userBets);
+    const pastEvents = await contract.queryFilter("BetMade");
+    const pastBets = pastEvents.map((event) => ({
+      bettor: event.args.bettor,
+      amount: ethers.utils.formatEther(event.args.amount),
+      candidate: event.args.candidate,
+    }));
+    setBets(pastBets);
   }
 
   async function requestAccount() {
@@ -71,15 +66,6 @@ export default function Home() {
   const targetDate = new Date("2023-05-28T00:00:00");
   return (
     <main className="bg-gray-800 text-white min-h-screen text-white">
-      <div>
-        <h1>Your Bets</h1>
-        {bets.map((bet, index) => (
-          <div key={index}>
-            <p>Bet Amount: {bet.amount} Ether</p>
-            <p>Candidate: {bet.candidate}</p>
-          </div>
-        ))}
-      </div>
       <nav className="bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
@@ -164,6 +150,21 @@ export default function Home() {
             </p>
           </div>
         </div>
+      </div>
+      <div className="p-4">
+        <h1 className="text-2xl font-bold mb-4">Bets</h1>
+        {bets.map((bet, index) => (
+          <div key={index} className="bg-gray-900 rounded shadow p-4 mb-4">
+            <p className="text-sm text-gray-200">
+              <span className="font-semibold">Bet Amount: </span>
+              {bet.amount} Ether
+            </p>
+            <p className="text-sm text-gray-400">
+              <span className="font-semibold">Candidate: </span>
+              {bet.candidate}
+            </p>
+          </div>
+        ))}
       </div>
     </main>
   );
