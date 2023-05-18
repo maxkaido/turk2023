@@ -1,16 +1,18 @@
 "use client";
 import Image from "next/image";
 import Navbar from "./Navbar";
+import CountdownTimer from "./CountdownTimer";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 
 export default function Home() {
-  const connetWallet = () => console.log("connect wallet");
+  const targetDate = new Date("2023-05-28T00:00:00");
   return (
     <main className="bg-gray-800 text-white min-h-screen text-white">
-      <Navbar walletAddress="" connectWallet="connectWallet" />
+      <Navbar />
       <div className="container mx-auto py-10">
         <h1 className="text-4xl text-center mb-10">Turk Election Bet</h1>
+        <CountdownTimer targetDate={targetDate} />
         <h2 className="text-3xl text-center mb-10">
           {" "}
           Bet on the next Turkish president{" "}
