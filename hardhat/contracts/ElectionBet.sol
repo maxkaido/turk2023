@@ -68,13 +68,33 @@ contract ElectionBet is ChainlinkClient {
         return sendChainlinkRequestTo(oracle, request, fee);
     }
 
+// Keep track of user winnings
+    mapping(address => uint256) public winnings;
+
     // Function to handle the election result
     function fulfill(bytes32 _requestId, string memory _winner) public recordChainlinkFulfillment(_requestId) {
         emit ElectionResultReceived(_winner);
 
-        // TODO: Distribute winnings based on the
+        uint256 totalPot = address(this).balance;
+        uint256 winnerTotalBets = totalBets[_winner];
+
+        for (uint i = 0; i < bets.length; i++) {
+            if (keccak256(bytes(bets[i].candidate)) == keccak256(bytes(_winner))) {
+                // Distribute winnings proportionally to the winning bettors
+                winnings[bets[i].bettor] += (bets[i].amount / winnerTotalBets) * totalPot;
+            }
+        }
     }
 
+    function payout() public {
+        require(winnings[msg.sender] > 0, "No winnings to payout");
+
+        uint256 amount = winnings[msg.sender];
+        winnings[msg.sender] = 0;
+
+        (bool success, ) = msg.sender.call{value: amount}("");
+        require(success, "Failed to send Ether");
+    }
 }
 
 
