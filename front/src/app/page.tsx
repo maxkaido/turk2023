@@ -1,12 +1,14 @@
 "use client";
 import Image from "next/image";
-import Provider from "./Provider";
+import Navbar from "./Navbar";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 
 export default function Home() {
+  const connetWallet = () => console.log("connect wallet");
   return (
     <main className="bg-gray-800 text-white min-h-screen text-white">
+      <Navbar walletAddress="" connectWallet="connectWallet" />
       <div className="container mx-auto py-10">
         <h1 className="text-4xl text-center mb-10">Turk Election Bet</h1>
         <h2 className="text-3xl text-center mb-10">
@@ -61,7 +63,6 @@ export default function Home() {
             </p>
           </div>
         </div>
-        <Provider />
       </div>
     </main>
   );

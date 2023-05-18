@@ -3,7 +3,7 @@
 import { useEffect, useState, SetStateAction } from "react";
 import { ethers } from "ethers";
 
-function ClientSideComponent() {
+function Provider() {
   const [account, setAccount] = useState(null);
   const [provider, setProvider] = useState(null);
   const [contract, setContract] = useState(null);
@@ -42,25 +42,21 @@ function ClientSideComponent() {
     const tx = await contract.bet(candidate);
     await tx.wait();
   }
-  const [result, setResult] = useState(null);
 
   return (
-    <div>
-      {/* Display the result */}
-      {result && <p>Result: {result}</p>}
-      <div>
+    <div className="flex">
+      {account ? (
+        <p className="text-white mr-4">{account}</p>
+      ) : (
         <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           onClick={requestAccount}
-          className="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
           Connect Wallet
         </button>
-        {account && (
-          <p className="ml-4 text-sm text-gray-400">Connected: {account}</p>
-        )}
-      </div>
+      )}
     </div>
   );
 }
 
-export default ClientSideComponent;
+export default Provider;
