@@ -159,6 +159,10 @@ export default function Home() {
               <span className="font-semibold">Bet Amount: </span>
               {bet.amount} Ether
             </p>
+            <p className="text-sm text-gray-200">
+              <span className="font-semibold">Bettor : </span>
+              {bet.bettor}
+            </p>
             <p className="text-sm text-gray-400">
               <span className="font-semibold">Candidate: </span>
               {bet.candidate}
