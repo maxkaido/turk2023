@@ -10,6 +10,7 @@ export default function Home() {
   const [account, setAccount]: any = useState(null);
   const [provider, setProvider]: any = useState(null);
   const [contract, setContract]: any = useState(null);
+  const [bets, setBets]: any = useState([]);
 
   const contractAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3";
 
@@ -35,6 +36,19 @@ export default function Home() {
     );
     console.log("Contract object", contract);
     setContract(contract);
+
+    const filter = contract.filters.BetMade(account);
+    const logs = await contract.queryFilter(filter);
+
+    let userBets = logs.map((log) => {
+      const event = contract.interface.parseLog(log);
+      return {
+        amount: ethers.utils.formatEther(event.args.amount),
+        candidate: event.args.candidate,
+      };
+    });
+
+    setBets(userBets);
   }
 
   async function requestAccount() {
@@ -57,6 +71,15 @@ export default function Home() {
   const targetDate = new Date("2023-05-28T00:00:00");
   return (
     <main className="bg-gray-800 text-white min-h-screen text-white">
+      <div>
+        <h1>Your Bets</h1>
+        {bets.map((bet, index) => (
+          <div key={index}>
+            <p>Bet Amount: {bet.amount} Ether</p>
+            <p>Candidate: {bet.candidate}</p>
+          </div>
+        ))}
+      </div>
       <nav className="bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
