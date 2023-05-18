@@ -7,12 +7,10 @@ import { ethers } from "ethers";
 
 export default function Home() {
   // load contract from state
-  const [account, setAccount] = useState(null);
-  const [provider, setProvider] = useState(null);
-  const [contract, setContract] = useState(null);
+  const [account, setAccount]: any = useState(null);
+  const [provider, setProvider]: any = useState(null);
+  const [contract, setContract]: any = useState(null);
 
-  // Replace with your contract's ABI and address
-  const contractABI = [];
   const contractAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3";
 
   useEffect(() => {
@@ -42,14 +40,6 @@ export default function Home() {
   async function requestAccount() {
     await window.ethereum.request({ method: "eth_requestAccounts" });
     loadBlockchainData();
-  }
-
-  async function makeBet() {
-    if (!contract) return;
-    const tx = await contract.makeBet(1, {
-      value: ethers.utils.parseEther("1"),
-    });
-    await tx.wait();
   }
 
   const trimmedAddress = account
@@ -134,7 +124,10 @@ export default function Home() {
               priority
             />
             <h1 className="text-2xl text-center mb-1">Kemal Kılıçdaroğlu</h1>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2">
+            <button
+              onClick={() => makeBet("kemal")}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2"
+            >
               Bet on Kemal
             </button>
             <p>
