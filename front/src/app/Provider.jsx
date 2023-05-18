@@ -43,10 +43,14 @@ function Provider() {
     await tx.wait();
   }
 
+  const trimmedAddress = account
+    ? `${account.slice(0, 6)}...${account.slice(-4)}`
+    : "";
+
   return (
     <div className="flex">
       {account ? (
-        <p className="text-white mr-4">{account}</p>
+        <p className="text-white mr-4">{trimmedAddress}</p>
       ) : (
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
