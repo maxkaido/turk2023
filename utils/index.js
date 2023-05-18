@@ -37,7 +37,7 @@ async function fetchWikiAndAskQuestion(url, question) {
     // Fetch the Wikipedia page
     let content = await wikiContent(url);
 
-    content = `I have read the following document: ${content}\n\nWhat are results of the election?`;
+    content = `I have read the following document: ${content}\n\n${question}}`;
     try {
       const response = await axios.post(
         "https://api.openai.com/v1/chat/completions",
@@ -66,7 +66,7 @@ async function fetchWikiAndAskQuestion(url, question) {
 // Usage
 fetchWikiAndAskQuestion(
   "https://en.m.wikipedia.org/wiki/2023_Turkish_presidential_election",
-  "Who are results of 1st and 2nd round?"
+  "What are results of the election? return 0 if erdogan won, return 1 if kemal won, return 2 if not sure/unknown"
 )
   .then((answer) => console.log(answer))
   .catch((error) => console.error(error));
