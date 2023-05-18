@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import ClientSideComponent from "./ClientSideComponent";
+import Provider from "./Provider";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 
@@ -61,7 +61,7 @@ export default function Home() {
             </p>
           </div>
         </div>
-        <ClientSideComponent />
+        <Provider />
       </div>
     </main>
   );

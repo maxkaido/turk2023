@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "deploy": "git push dokku@prod10:turk2023-front main:master --force"
+    "deploy": "rm -rf .git && git init && git add . && git commit -m 'deploy' && git push dokku@prod10:turk2023-front master:master --force && rm -rf .git"
   },
   "dependencies": {
     "@types/node": "20.1.5",
