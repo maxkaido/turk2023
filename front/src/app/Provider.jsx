@@ -10,7 +10,7 @@ function Provider() {
 
   // Replace with your contract's ABI and address
   const contractABI = [];
-  const contractAddress = "";
+  const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
   useEffect(() => {
     if (typeof window.ethereum !== "undefined") {
