@@ -35,6 +35,9 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 const config: HardhatUserConfig = {
   solidity: "0.8.19",
   networks: {
+    fin: {
+      url: "http://localhost:14561",
+    },
     goerli: {
       url: process.env.GOERLI_URL || "",
       accounts:
