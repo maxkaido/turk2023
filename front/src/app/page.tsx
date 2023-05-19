@@ -215,7 +215,7 @@ export default function Home() {
             />
             <button
               onClick={() => makeBet("Erdogan", betAmountErdogan)}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md my-2"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
             >
               Bet on Erdogan
             </button>
@@ -254,7 +254,7 @@ export default function Home() {
             />
             <button
               onClick={() => makeBet("Kemal", betAmountKemal)}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md my-2"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
             >
               Bet on Kemal
             </button>
