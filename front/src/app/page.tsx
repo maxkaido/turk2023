@@ -65,11 +65,12 @@ export default function Home() {
   const [betAmountErdogan, setBetAmountErdogan] = useState(0);
   const [betAmountKemal, setBetAmountKemal] = useState(0);
 
-  async function makeBet(candidate: string) {
+  async function makeBet(candidate: string, betAmount: number) {
     // Call the bet function on your contract
     if (!contract) return;
+    const value = ethers.utils.parseEther(betAmount.toString());
     const tx = await contract.makeBet(candidate, {
-      value: ethers.utils.parseEther("1"),
+      value,
     });
     await tx.wait();
   }
