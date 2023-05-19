@@ -12,7 +12,7 @@ export default function Home() {
   const [contract, setContract]: any = useState(null);
   const [bets, setBets]: any = useState([]);
 
-  const contractAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3";
+  const contractAddress = "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9";
 
   useEffect(() => {
     if (typeof window.ethereum !== "undefined") {
