@@ -12,13 +12,19 @@ export default function Home() {
   const [contract, setContract]: any = useState(null);
   const [bets, setBets]: any = useState([]);
 
-  const contractAddress = "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9";
+  const contractAddress = "0x8a791620dd6260079bf849dc5567adc3f2fdc318";
 
   useEffect(() => {
+    if (account) {
+      getUserBetErdogan();
+      getTotalBetErdogan();
+      getUserBetKemal();
+      getTotalBetKemal();
+    }
     if (typeof window.ethereum !== "undefined") {
       console.log("MetaMask is installed!");
     }
-  }, []);
+  }, [account]);
 
   async function loadBlockchainData() {
     // Connect to Metamask
@@ -63,9 +69,129 @@ export default function Home() {
     });
     await tx.wait();
   }
+  const [userTotalBetErdogan, setUserTotalBetErdogan] = useState(0);
+  const [possibleWinErdogan, setPossibleWinErdogan] = useState(0);
+  const [totalBetErdogan, setTotalBetErdogan] = useState(0);
+  const [userTotalBetKemal, setUserTotalBetKemal] = useState(0);
+  const [possibleWinKemal, setPossibleWinKemal] = useState(0);
+  const [totalBetKemal, setTotalBetKemal] = useState(0);
+
+  const getUserBetErdogan = async () => {
+    try {
+      const userBet = await contract.calculateUserBet(account, "Erdogan", {
+        from: account,
+      });
+      setUserTotalBetErdogan(Number(ethers.utils.formatEther(userBet)));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const calculatePossibleWinErdogan = async () => {
+    try {
+      const possibleWinAmount = await contract.calculatePossibleWin(
+        account,
+        "Erdogan",
+        { from: account }
+      );
+      setPossibleWinErdogan(
+        Number(ethers.utils.formatEther(possibleWinAmount))
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getTotalBetErdogan = async () => {
+    try {
+      const totalBetAmount = await contract.totalBets("Erdogan", {
+        from: account,
+      });
+      setTotalBetErdogan(Number(ethers.utils.formatEther(totalBetAmount)));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getUserBetKemal = async () => {
+    try {
+      const userBet = await contract.calculateUserBet(account, "Kemal", {
+        from: account,
+      });
+      setUserTotalBetKemal(Number(ethers.utils.formatEther(userBet)));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const calculatePossibleWinKemal = async () => {
+    try {
+      const possibleWinAmount = await contract.calculatePossibleWin(
+        account,
+        "Kemal",
+        { from: account }
+      );
+      setPossibleWinKemal(Number(ethers.utils.formatEther(possibleWinAmount)));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getTotalBetKemal = async () => {
+    try {
+      const totalBetAmount = await contract.totalBets("Kemal", {
+        from: account,
+      });
+      setTotalBetKemal(Number(ethers.utils.formatEther(totalBetAmount)));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    if (account) {
+      getUserBetErdogan();
+      getTotalBetErdogan();
+      getUserBetKemal();
+      getTotalBetKemal();
+    }
+  }, [account]);
   const targetDate = new Date("2023-05-28T00:00:00");
   return (
     <main className="bg-gray-800 text-white min-h-screen text-white">
+      <div>
+        {account ? (
+          <div>
+            <h2>Account: {account}</h2>
+            <div>
+              <h3>Erdogan</h3>
+              <button onClick={getUserBetErdogan}>Get User Bet</button>
+              <button onClick={calculatePossibleWinErdogan}>
+                Calculate Possible Win
+              </button>
+              <button onClick={getTotalBetErdogan}>Get Total Bet</button>
+              <br />
+              <p>User Total Bet: {userTotalBetErdogan} ETH</p>
+              <p>Possible Win: {possibleWinErdogan} ETH</p>
+              <p>Total Bet on Erdogan: {totalBetErdogan} ETH</p>
+            </div>
+            <div>
+              <h3>Kemal</h3>
+              <button onClick={getUserBetKemal}>Get User Bet</button>
+              <button onClick={calculatePossibleWinKemal}>
+                Calculate Possible Win
+              </button>
+              <button onClick={getTotalBetKemal}>Get Total Bet</button>
+              <br />
+              <p>User Total Bet: {userTotalBetKemal} ETH</p>
+              <p>Possible Win: {possibleWinKemal} ETH</p>
+              <p>Total Bet on Kemal: {totalBetKemal} ETH</p>
+            </div>
+          </div>
+        ) : (
+          <button onClick={requestAccount}>Connect Wallet</button>
+        )}
+      </div>
       <nav className="bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
@@ -108,19 +234,21 @@ export default function Home() {
             />
             <h1 className="text-2xl text-center mb-1">Recep Tayyip Erdoğan </h1>
             <button
-              onClick={() => makeBet("erdogan")}
+              onClick={() => makeBet("Erdogan")}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2"
             >
               Bet on Erdogan
             </button>
             <p>
-              Current Bet: <span id="currentBet1">0</span> ETH
+              Current Bet: <span id="currentBet1">{userTotalBetErdogan}</span>{" "}
+              ETH
             </p>
             <p>
-              Possible Win: <span id="possibleProfit1">0</span> ETH
+              Possible Win:{" "}
+              <span id="possibleProfit1">{possibleWinErdogan}</span> ETH
             </p>
             <p>
-              Total Bet: <span id="totalBet1">0</span> ETH
+              Total Bet: <span id="totalBet1">{totalBetErdogan}</span> ETH
             </p>
           </div>
           <div className="text-center">
@@ -134,19 +262,20 @@ export default function Home() {
             />
             <h1 className="text-2xl text-center mb-1">Kemal Kılıçdaroğlu</h1>
             <button
-              onClick={() => makeBet("kemal")}
+              onClick={() => makeBet("Kemal")}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2"
             >
               Bet on Kemal
             </button>
             <p>
-              Current Bet: <span id="currentBet1">0</span> ETH
+              Current Bet: <span id="currentBet1">{userTotalBetKemal}</span> ETH
             </p>
             <p>
-              Possible Win: <span id="possibleProfit1">0</span> ETH
+              Possible Win: <span id="possibleProfit1">{possibleWinKemal}</span>{" "}
+              ETH
             </p>
             <p>
-              Total Bet: <span id="totalBet1">0</span> ETH
+              Total Bet: <span id="totalBet1">{totalBetKemal}</span> ETH
             </p>
           </div>
         </div>
