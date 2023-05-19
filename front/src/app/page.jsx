@@ -279,7 +279,7 @@ export default function Home() {
 
       <div className="p-4">
         <h1 className="text-2xl font-bold mb-4">Bets</h1>
-        {bets.map((bet) => (
+        {bets.map((bet, index) => (
           <div
             key={index}
             className="bg-gray-900 rounded shadow p-4 mb-4 text-gray-200"
