@@ -12,7 +12,7 @@ async function main() {
   const FEE = hre.ethers.utils.parseEther("0.001");
   const SERVICE_FEE_PERCENTAGE = 1;
   const SERVICE_FEE_WALLET = deployerAddress;
-  const BETTING_END_TIME = 1620000000;
+  const BETTING_END_TIME = 1685221200;
 
   const electionBet = await ElectionBet.deploy(
     CHAINLINK_ORACLE_ADDRESS,

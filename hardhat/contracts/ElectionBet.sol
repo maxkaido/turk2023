@@ -116,22 +116,42 @@ contract ElectionBet is ChainlinkClient, Ownable {
         emit BetWithdrawn(msg.sender, totalWithdrawnAmount, "");
     }
 
-    // Function to calculate the possible win amount for a user
-    function calculatePossibleWin(uint256 betAmount, string memory candidate) public view returns (uint256) {
+    // Function to calculate the total bet amount of a user on a candidate
+    function calculateUserBet(address user, string memory candidate) public view returns (uint256) {
         require(
             keccak256(bytes(candidate)) == keccak256(bytes("Kemal")) || 
             keccak256(bytes(candidate)) == keccak256(bytes("Erdogan")),
             "Invalid candidate"
         );
 
+        uint256 userTotalBet = 0;
+
+        for (uint256 i = 0; i < bets.length; i++) {
+            if (bets[i].bettor == user && keccak256(bytes(bets[i].candidate)) == keccak256(bytes(candidate))) {
+                userTotalBet += bets[i].amount;
+            }
+        }
+
+        return userTotalBet;
+    }
+
+    // Function to calculate the possible win amount for a user
+    function calculatePossibleWin(address user, string memory candidate) public view returns (uint256) {
+        require(
+            keccak256(bytes(candidate)) == keccak256(bytes("Kemal")) || 
+            keccak256(bytes(candidate)) == keccak256(bytes("Erdogan")),
+            "Invalid candidate"
+        );
+
+        uint256 userTotalBet = calculateUserBet(user, candidate);
         uint256 totalBetAmount = totalBets[candidate];
-        if (totalBetAmount == 0) {
+        if (totalBetAmount == 0 || userTotalBet == 0) {
             return 0;
         }
 
         uint256 totalNetWinningAmount = winnings[candidate];
 
-        uint256 payoutAmount = (betAmount * totalNetWinningAmount) / totalBetAmount;
+        uint256 payoutAmount = (userTotalBet * totalNetWinningAmount) / totalBetAmount;
         uint256 feeAmount = (payoutAmount * serviceFeePercentage) / 100;
         uint256 netPayoutAmount = payoutAmount - feeAmount;
 
