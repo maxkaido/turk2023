@@ -159,7 +159,7 @@ export default function Home() {
   }, [account]);
   const targetDate = new Date("2023-05-28T00:00:00");
   return (
-    <main className="bg-gray-800 text-white min-h-screen text-white">
+    <main className="bg-gray-800 text-white min-h-screen">
       <div></div>
       <nav className="bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -188,23 +188,22 @@ export default function Home() {
         <h1 className="text-4xl text-center mb-10">Turk Election Bet</h1>
         <CountdownTimer targetDate={targetDate} />
         <h2 className="text-3xl text-center mb-10">
-          {" "}
-          Bet on the next Turkish president{" "}
+          Bet on the next Turkish president
         </h2>
         <div className="grid grid-cols-2 gap-4">
           <div className="text-center">
             <Image
               src="/c1.jpg"
               alt="Erdogan"
-              className="mx-auto mb-2 p-2"
+              className="mx-auto mb-2 p-2 object-cover h-64 w-48"
               width={200}
-              height={24}
+              height={200}
               priority
             />
-            <h1 className="text-2xl text-center mb-1">Recep Tayyip Erdoğan </h1>
+            <h1 className="text-2xl text-center mb-1">Recep Tayyip Erdoğan</h1>
             <button
               onClick={() => makeBet("Erdogan")}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-full my-4"
             >
               Bet on Erdogan
             </button>
@@ -224,15 +223,15 @@ export default function Home() {
             <Image
               src="/c2.jpg"
               alt="Erdogan"
-              className="mx-auto mb-2 p-2"
+              className="mx-auto mb-2 p-2 object-cover h-64 w-48"
               width={200}
-              height={24}
+              height={200}
               priority
             />
             <h1 className="text-2xl text-center mb-1">Kemal Kılıçdaroğlu</h1>
             <button
               onClick={() => makeBet("Kemal")}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-full my-4"
             >
               Bet on Kemal
             </button>
@@ -252,16 +251,19 @@ export default function Home() {
       <div className="p-4">
         <h1 className="text-2xl font-bold mb-4">Bets</h1>
         {bets.map((bet: any, index: any) => (
-          <div key={index} className="bg-gray-900 rounded shadow p-4 mb-4">
-            <p className="text-sm text-gray-200">
+          <div
+            key={index}
+            className="bg-gray-900 rounded shadow p-4 mb-4 text-gray-200"
+          >
+            <p className="text-sm">
               <span className="font-semibold">Bet Amount: </span>
               {bet.amount} Ether
             </p>
-            <p className="text-sm text-gray-200">
-              <span className="font-semibold">Bettor : </span>
+            <p className="text-sm">
+              <span className="font-semibold">Bettor: </span>
               {bet.bettor}
             </p>
-            <p className="text-sm text-gray-400">
+            <p className="text-sm">
               <span className="font-semibold">Candidate: </span>
               {bet.candidate}
             </p>
