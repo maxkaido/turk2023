@@ -32,17 +32,17 @@ const AboutElectionBetting = () => {
               To provide real-time and reliable data, we integrate with
               Chainlink, a leading decentralized oracle network. Chainlink nodes
               fetch election results from authoritative sources like Wikipedia.
-              We then utilize OpenAI's language processing model, GPT-4, to
+              We then utilize OpenAI`s language processing model, GPT-4, to
               interpret the data and determine the winner.
             </p>
             <p className="mt-4 text-xl text-gray-500">
               At ElectionBetting, we are passionate about blockchain technology,
-              fair elections, and innovative applications of AI. We're thrilled
+              fair elections, and innovative applications of AI. We`re thrilled
               to offer a platform that marries these interests, contributing to
               a transparent, decentralized, and exciting future.
             </p>
             <p className="mt-4 text-xl text-gray-500">
-              Remember: it's not just about guessing who will win, it's about
+              Remember: it`s not just about guessing who will win, it`s about
               participating in the process and the thrill of following these
               significant events.
             </p>
