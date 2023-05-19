@@ -188,84 +188,93 @@ export default function Home() {
           </div>
         </div>
       </nav>
-      <div className="container mx-auto py-10">
+      <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8">
         <h1 className="text-4xl text-center mb-10">Turk Election Bet</h1>
         <CountdownTimer targetDate={targetDate} />
-        <h2 className="text-3xl text-center mb-10">
+        <h2 className="text-3xl text-center my-10">
           Bet on the next Turkish president
         </h2>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="text-center">
+        <div className="grid grid-cols-2 gap-8">
+          <div className="p-6 rounded border-2 border-red-500 text-center">
             <Image
               src="/c1.jpg"
-              alt="Erdogan"
-              className="mx-auto mb-2 p-2 object-cover h-64 w-48"
+              alt="Recep Tayyip Erdoğan's portrait"
+              className="mx-auto mb-4 p-2 object-cover h-64 w-48 rounded-md"
               width={200}
               height={200}
               priority
             />
-            <h1 className="text-2xl text-center mb-1">Recep Tayyip Erdoğan</h1>
+            <h1 className="text-2xl mb-2">Recep Tayyip Erdoğan</h1>
             <input
               type="number"
               placeholder="Enter Bet Amount"
               className="bg-gray-100 text-black rounded py-2 px-4 mb-4 w-36"
               value={betAmountErdogan}
               onChange={(e) => setBetAmountErdogan(e.target.value)}
+              min="0"
             />
             <button
               onClick={() => makeBet("Erdogan", betAmountErdogan)}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-full my-4"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md my-2"
             >
               Bet on Erdogan
             </button>
-            <p>
-              Current Bet: <span id="currentBet1">{userTotalBetErdogan}</span>{" "}
-              ETH
-            </p>
-            <p>
-              Possible Win:{" "}
-              <span id="possibleProfit1">{possibleWinErdogan}</span> ETH
-            </p>
-            <p>
-              Total Bet: <span id="totalBet1">{totalBetErdogan}</span> ETH
-            </p>
+            <div className="mt-6">
+              <p>
+                Current Bet:{" "}
+                <span id="currentBetErdogan">{userTotalBetErdogan}</span> ETH
+              </p>
+              <p>
+                Possible Win:{" "}
+                <span id="possibleProfitErdogan">{possibleWinErdogan}</span> ETH
+              </p>
+              <p>
+                Total Bet: <span id="totalBetErdogan">{totalBetErdogan}</span>{" "}
+                ETH
+              </p>
+            </div>
           </div>
-          <div className="text-center">
+          <div className="p-6 rounded border-2 border-blue-500 text-center">
             <Image
               src="/c2.jpg"
-              alt="Erdogan"
-              className="mx-auto mb-2 p-2 object-cover h-64 w-48"
+              alt="Kemal Kılıçdaroğlu's portrait"
+              className="mx-auto mb-4 p-2 object-cover h-64 w-48 rounded-md"
               width={200}
               height={200}
               priority
             />
-            <h1 className="text-2xl text-center mb-1">Kemal Kılıçdaroğlu</h1>
+            <h1 className="text-2xl mb-2">Kemal Kılıçdaroğlu</h1>
             <input
               type="number"
               placeholder="Enter Bet Amount"
               className="bg-gray-100 text-black rounded py-2 px-4 mb-4 w-36"
               value={betAmountKemal}
               onChange={(e) => setBetAmountKemal(e.target.value)}
+              min="0"
             />
             <button
               onClick={() => makeBet("Kemal", betAmountKemal)}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-full my-4"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md my-2"
             >
               Bet on Kemal
             </button>
-            <p>
-              Current Bet: <span id="currentBet1">{userTotalBetKemal}</span> ETH
-            </p>
-            <p>
-              Possible Win: <span id="possibleProfit1">{possibleWinKemal}</span>{" "}
-              ETH
-            </p>
-            <p>
-              Total Bet: <span id="totalBet1">{totalBetKemal}</span> ETH
-            </p>
+            <div className="mt-6">
+              <p>
+                Current Bet:{" "}
+                <span id="currentBetKemal">{userTotalBetKemal}</span> ETH
+              </p>
+              <p>
+                Possible Win:{" "}
+                <span id="possibleProfitKemal">{possibleWinKemal}</span> ETH
+              </p>
+              <p>
+                Total Bet: <span id="totalBetKemal">{totalBetKemal}</span> ETH
+              </p>
+            </div>
           </div>
         </div>
       </div>
+
       <div className="p-4">
         <h1 className="text-2xl font-bold mb-4">Bets</h1>
         {bets.map((bet: any, index: any) => (
