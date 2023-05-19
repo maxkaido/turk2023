@@ -62,6 +62,9 @@ export default function Home() {
     ? `${account.slice(0, 6)}...${account.slice(-4)}`
     : "";
 
+  const [betAmountErdogan, setBetAmountErdogan] = useState(0);
+  const [betAmountKemal, setBetAmountKemal] = useState(0);
+
   async function makeBet(candidate: string) {
     // Call the bet function on your contract
     if (!contract) return;
@@ -201,8 +204,15 @@ export default function Home() {
               priority
             />
             <h1 className="text-2xl text-center mb-1">Recep Tayyip Erdoğan</h1>
+            <input
+              type="number"
+              placeholder="Enter Bet Amount"
+              className="bg-gray-100 text-black rounded py-2 px-4 mb-4 w-36"
+              value={betAmountErdogan}
+              onChange={(e) => setBetAmountErdogan(e.target.value)}
+            />
             <button
-              onClick={() => makeBet("Erdogan")}
+              onClick={() => makeBet("Erdogan", betAmountErdogan)}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-full my-4"
             >
               Bet on Erdogan
@@ -229,8 +239,15 @@ export default function Home() {
               priority
             />
             <h1 className="text-2xl text-center mb-1">Kemal Kılıçdaroğlu</h1>
+            <input
+              type="number"
+              placeholder="Enter Bet Amount"
+              className="bg-gray-100 text-black rounded py-2 px-4 mb-4 w-36"
+              value={betAmountKemal}
+              onChange={(e) => setBetAmountKemal(e.target.value)}
+            />
             <button
-              onClick={() => makeBet("Kemal")}
+              onClick={() => makeBet("Kemal", betAmountKemal)}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-full my-4"
             >
               Bet on Kemal
