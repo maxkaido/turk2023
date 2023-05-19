@@ -2,7 +2,7 @@
 import Image from "next/image";
 import CountdownTimer from "./CountdownTimer";
 import { useEffect, useState } from "react";
-import ElectionBetArtifact from "../../../hardhat/artifacts/contracts/ElectionBet.sol/ElectionBet.json";
+import ElectionBetArtifact from "../../artifacts/ElectionBet.json";
 import { ethers } from "ethers";
 
 export default function Home() {
@@ -38,7 +38,7 @@ export default function Home() {
     setContract(contract);
 
     const pastEvents = await contract.queryFilter("BetMade");
-    const pastBets = pastEvents.map((event) => ({
+    const pastBets = pastEvents.map((event: any) => ({
       bettor: event.args.bettor,
       amount: ethers.utils.formatEther(event.args.amount),
       candidate: event.args.candidate,
@@ -153,7 +153,7 @@ export default function Home() {
       </div>
       <div className="p-4">
         <h1 className="text-2xl font-bold mb-4">Bets</h1>
-        {bets.map((bet, index) => (
+        {bets.map((bet: any, index: any) => (
           <div key={index} className="bg-gray-900 rounded shadow p-4 mb-4">
             <p className="text-sm text-gray-200">
               <span className="font-semibold">Bet Amount: </span>
@@ -170,57 +170,53 @@ export default function Home() {
           </div>
         ))}
       </div>
-      <div class="bg-gray-300 py-16 px-4 overflow-hidden sm:px-6 lg:px-8 lg:py-24">
-        <div class="relative max-w-xl mx-auto">
-          <div class="text-center">
-            <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+      <div className="bg-gray-300 py-16 px-4 overflow-hidden sm:px-6 lg:px-8 lg:py-24">
+        <div className="relative max-w-xl mx-auto">
+          <div className="text-center">
+            <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
               About ElectionBetting
             </h2>
           </div>
-          <div class="mt-12">
-            <div class="text-center">
-              <p class="text-xl text-gray-500">
+          <div className="mt-12">
+            <div className="text-center">
+              <p className="text-xl text-gray-500">
                 Welcome to the ElectionBetting Platform, where political
                 enthusiasts meet cutting-edge technology!
               </p>
-              <p class="mt-4 text-xl text-gray-500">
+              <p className="mt-4 text-xl text-gray-500">
                 Our platform leverages the power of blockchain and artificial
                 intelligence to provide a unique and thrilling experience.
                 Developed on the Ethereum network, ElectionBetting allows users
                 to place bets on the outcomes of political events - starting
                 with the 2023 Turkish General Elections.
               </p>
-              <p class="mt-4 text-xl text-gray-500">
+              <p className="mt-4 text-xl text-gray-500">
                 Our transparent and secure smart contracts are the backbone of
                 our platform. These contracts not only enable the betting
                 functionality but also manage payouts, all in a fully automated,
                 decentralized manner.
               </p>
-              <p class="mt-4 text-xl text-gray-500">
+              <p className="mt-4 text-xl text-gray-500">
                 To provide real-time and reliable data, we integrate with
                 Chainlink, a leading decentralized oracle network. Chainlink
                 nodes fetch election results from authoritative sources like
-                Wikipedia. We then utilize OpenAI's language processing model,
+                Wikipedia. We then utilize OpenAI`s language processing model,
                 GPT-4, to interpret the data and determine the winner.
               </p>
-              <p class="mt-4 text-xl text-gray-500">
+              <p className="mt-4 text-xl text-gray-500">
                 At ElectionBetting, we are passionate about blockchain
                 technology, fair elections, and innovative applications of AI.
-                We're thrilled to offer a platform that marries these interests,
+                We`re thrilled to offer a platform that marries these interests,
                 contributing to a transparent, decentralized, and exciting
                 future.
               </p>
-              <p class="mt-4 text-xl text-gray-500">
-                Remember: it's not just about guessing who will win, it's about
+              <p className="mt-4 text-xl text-gray-500">
+                Remember: it`s not just about guessing who will win, it`s about
                 participating in the process and the thrill of following these
                 significant events.
               </p>
-              <p class="mt-4 text-xl text-gray-500 font-bold">
+              <p className="mt-4 text-xl text-gray-500 font-bold">
                 Join us in this new era of political engagement!
-              </p>
-              <p class="mt-4 text-xl text-red-600">
-                Note: Please ensure you are of legal age and betting is legal in
-                your jurisdiction before participating. Gamble responsibly.
               </p>
             </div>
           </div>
