@@ -1,4 +1,5 @@
 "use client";
+import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 import CountdownTimer from "./CountdownTimer";
 import { useEffect, useState } from "react";
@@ -7,11 +8,13 @@ import { ethers } from "ethers";
 import About from "./About";
 
 export default function Home() {
+  const dispatch = useDispatch();
+  const myState = useSelector((state) => state.myState);
   // load contract from state
-  const [account, setAccount]: any = useState(null);
-  const [provider, setProvider]: any = useState(null);
-  const [contract, setContract]: any = useState(null);
-  const [bets, setBets]: any = useState([]);
+  const [account, setAccount] = useState(null);
+  const [provider, setProvider] = useState(null);
+  const [contract, setContract] = useState(null);
+  const [bets, setBets] = useState([]);
 
   const contractAddress = "0x8a791620dd6260079bf849dc5567adc3f2fdc318";
 
@@ -45,7 +48,7 @@ export default function Home() {
     setContract(contract);
 
     const pastEvents = await contract.queryFilter("BetMade");
-    const pastBets = pastEvents.map((event: any) => ({
+    const pastBets = pastEvents.map((event) => ({
       bettor: event.args.bettor,
       amount: ethers.utils.formatEther(event.args.amount),
       candidate: event.args.candidate,
@@ -65,7 +68,7 @@ export default function Home() {
   const [betAmountErdogan, setBetAmountErdogan] = useState(0);
   const [betAmountKemal, setBetAmountKemal] = useState(0);
 
-  async function makeBet(candidate: string, betAmount: number) {
+  async function makeBet(candidate, betAmount) {
     // Call the bet function on your contract
     if (!contract) return;
     const value = ethers.utils.parseEther(betAmount.toString());
@@ -212,7 +215,7 @@ export default function Home() {
               placeholder="Enter Bet Amount"
               className="bg-gray-100 text-black rounded py-2 px-4 mb-4 w-36"
               value={betAmountErdogan}
-              onChange={(e: any) => setBetAmountErdogan(e.target.value)}
+              onChange={(e) => setBetAmountErdogan(e.target.value)}
               min="0"
             />
             <button
@@ -251,7 +254,7 @@ export default function Home() {
               placeholder="Enter Bet Amount"
               className="bg-gray-100 text-black rounded py-2 px-4 mb-4 w-36"
               value={betAmountKemal}
-              onChange={(e: any) => setBetAmountKemal(e.target.value)}
+              onChange={(e) => setBetAmountKemal(e.target.value)}
               min="0"
             />
             <button
@@ -279,7 +282,7 @@ export default function Home() {
 
       <div className="p-4">
         <h1 className="text-2xl font-bold mb-4">Bets</h1>
-        {bets.map((bet: any, index: any) => (
+        {bets.map((bet) => (
           <div
             key={index}
             className="bg-gray-900 rounded shadow p-4 mb-4 text-gray-200"
