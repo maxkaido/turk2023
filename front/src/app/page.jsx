@@ -1,5 +1,4 @@
 "use client";
-import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 import CountdownTimer from "./CountdownTimer";
 import { useEffect, useState } from "react";
@@ -8,8 +7,6 @@ import { ethers } from "ethers";
 import About from "./About";
 
 export default function Home() {
-  const dispatch = useDispatch();
-  const myState = useSelector((state) => state.myState);
   // load contract from state
   const [account, setAccount] = useState(null);
   const [provider, setProvider] = useState(null);
