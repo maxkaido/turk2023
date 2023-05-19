@@ -159,6 +159,8 @@ export default function Home() {
       getTotalBetErdogan();
       getUserBetKemal();
       getTotalBetKemal();
+      calculatePossibleWinErdogan();
+      calculatePossibleWinKemal();
     }
   }, [account]);
   const targetDate = new Date("2023-05-28T00:00:00");
@@ -210,7 +212,7 @@ export default function Home() {
               placeholder="Enter Bet Amount"
               className="bg-gray-100 text-black rounded py-2 px-4 mb-4 w-36"
               value={betAmountErdogan}
-              onChange={(e) => setBetAmountErdogan(e.target.value)}
+              onChange={(e: any) => setBetAmountErdogan(e.target.value)}
               min="0"
             />
             <button
@@ -249,7 +251,7 @@ export default function Home() {
               placeholder="Enter Bet Amount"
               className="bg-gray-100 text-black rounded py-2 px-4 mb-4 w-36"
               value={betAmountKemal}
-              onChange={(e) => setBetAmountKemal(e.target.value)}
+              onChange={(e: any) => setBetAmountKemal(e.target.value)}
               min="0"
             />
             <button
