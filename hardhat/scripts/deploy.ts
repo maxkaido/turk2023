@@ -10,11 +10,17 @@ async function main() {
   const CHAINLINK_ORACLE_ADDRESS = deployerAddress;
   const JOB_ID = "my-job-id";
   const FEE = hre.ethers.utils.parseEther("0.001");
+  const SERVICE_FEE_PERCENTAGE = 1;
+  const SERVICE_FEE_WALLET = deployerAddress;
+  const BETTING_END_TIME = 1620000000;
 
   const electionBet = await ElectionBet.deploy(
     CHAINLINK_ORACLE_ADDRESS,
     JOB_ID,
-    FEE
+    FEE,
+    SERVICE_FEE_PERCENTAGE,
+    SERVICE_FEE_WALLET,
+    BETTING_END_TIME
   );
 
   await electionBet.deployed();
