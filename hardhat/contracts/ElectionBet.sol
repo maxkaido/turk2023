@@ -130,7 +130,7 @@ contract ElectionBet is ChainlinkClient, Ownable {
         uint256 userTotalBet = 0;
 
         for (uint256 i = 0; i < bets.length; i++) {
-            if (bets[i].bettor == user && keccak256(bytes(bets[i].candidate)) == keccak256(bytes(candidate))) {
+            if (bets[i].bettor == user && keccak256(bytes(bets[i].candidate)) == keccak256(bytes(candidate)) && !bets[i].withdrawn) {
                 userTotalBet = userTotalBet.add(bets[i].amount);
             }
         }
