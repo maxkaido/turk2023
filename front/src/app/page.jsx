@@ -6,7 +6,7 @@ import CountdownTimer from "./CountdownTimer";
 import ElectionBetArtifact from "../../artifacts/ElectionBet.json";
 import About from "./About";
 
-const contractAddress = "0xa85233C63b9Ee964Add6F2cffe00Fd84eb32338f";
+const contractAddress = "0xC995120Bcaa77979CF4C2856077DbaEAF5488f5e";
 
 export default function Home() {
   const [account, setAccount] = useState(null);
