@@ -13,8 +13,8 @@ export default function Home() {
   const [provider, setProvider] = useState(null);
   const [contract, setContract] = useState(null);
   const [bets, setBets] = useState([]);
-  const [betAmountErdogan, setBetAmountErdogan] = useState(0);
-  const [betAmountKemal, setBetAmountKemal] = useState(0);
+  const [betAmountErdogan, setBetAmountErdogan] = useState("");
+  const [betAmountKemal, setBetAmountKemal] = useState("");
   const [userTotalBetErdogan, setUserTotalBetErdogan] = useState(0);
   const [possibleWinErdogan, setPossibleWinErdogan] = useState(0);
   const [totalBetErdogan, setTotalBetErdogan] = useState(0);
@@ -234,11 +234,12 @@ export default function Home() {
             <h1 className="text-2xl mb-2">Recep Tayyip Erdoğan</h1>
             <input
               type="number"
-              placeholder="Enter Bet Amount"
+              placeholder="Enter Bet Amount (ETH)"
               className="bg-gray-100 text-black rounded py-2 px-4 mb-4 w-36"
               value={betAmountErdogan}
               onChange={(e) => setBetAmountErdogan(e.target.value)}
               min="0"
+              maxLength={7}
             />
             <button
               onClick={() => makeBet("Erdogan", betAmountErdogan)}
@@ -251,13 +252,15 @@ export default function Home() {
                 Current Bet:{" "}
                 <span id="currentBetErdogan">{userTotalBetErdogan}</span> ETH
               </p>
-              <p>
-                Possible Win:{" "}
-                <span id="possibleProfitErdogan">
-                  +{possibleWinAmountErdogan.toFixed(5)}
-                </span>{" "}
-                ETH
-              </p>
+              {possibleWinAmountErdogan > 0 && (
+                <p>
+                  Possible Win:{" "}
+                  <span id="possibleProfitErdogan">
+                    +{possibleWinAmountErdogan.toFixed(5)}
+                  </span>{" "}
+                  ETH
+                </p>
+              )}
               <p>
                 Total Bet: <span id="totalBetErdogan">{totalBetErdogan}</span>{" "}
                 ETH
@@ -276,11 +279,12 @@ export default function Home() {
             <h1 className="text-2xl mb-2">Kemal Kılıçdaroğlu</h1>
             <input
               type="number"
-              placeholder="Enter Bet Amount"
+              placeholder="Enter Bet Amount (ETH)"
               className="bg-gray-100 text-black rounded py-2 px-4 mb-4 w-36"
               value={betAmountKemal}
               onChange={(e) => setBetAmountKemal(e.target.value)}
               min="0"
+              maxLength={7}
             />
             <button
               onClick={() => makeBet("Kemal", betAmountKemal)}
@@ -293,13 +297,15 @@ export default function Home() {
                 Current Bet:{" "}
                 <span id="currentBetKemal">{userTotalBetKemal}</span> ETH
               </p>
-              <p>
-                Possible Win:{" "}
-                <span id="possibleProfitKemal">
-                  +{possibleWinAmountKemal.toFixed(5)}
-                </span>{" "}
-                ETH
-              </p>
+              {possibleWinAmountKemal > 0 && (
+                <p>
+                  Possible Win:{" "}
+                  <span id="possibleProfitKemal">
+                    +{possibleWinAmountKemal.toFixed(5)}
+                  </span>{" "}
+                  ETH
+                </p>
+              )}
               <p>
                 Total Bet: <span id="totalBetKemal">{totalBetKemal}</span> ETH
               </p>
