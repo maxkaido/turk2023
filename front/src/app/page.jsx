@@ -8,6 +8,9 @@ import About from "./About";
 
 const contractAddress = "0xC995120Bcaa77979CF4C2856077DbaEAF5488f5e";
 
+const ETHEREUM_API_URL =
+  "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd";
+
 export default function Home() {
   const [account, setAccount] = useState(null);
   const [provider, setProvider] = useState(null);
@@ -23,6 +26,7 @@ export default function Home() {
   const [totalBetKemal, setTotalBetKemal] = useState(0);
   const [serviceFeePercentage, setServiceFeePercentage] = useState(0);
   const [bettingEndTime, setBettingEndTime] = useState(null);
+  const [ethPriceUSD, setEthPriceUSD] = useState(0);
 
   useEffect(() => {
     if (typeof window.ethereum !== "undefined") {
@@ -41,6 +45,21 @@ export default function Home() {
       fetchData();
     }
   }, [contract, account]);
+
+  useEffect(() => {
+    fetchEthPriceUSD();
+  }, []);
+
+  async function fetchEthPriceUSD() {
+    try {
+      const response = await fetch(ETHEREUM_API_URL);
+      const data = await response.json();
+      const ethPrice = data.ethereum.usd;
+      setEthPriceUSD(ethPrice);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   async function loadBlockchainData() {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -189,6 +208,10 @@ export default function Home() {
   const possibleWinAmountKemal =
     userBetPercentageKemal * remainingBetAmountKemal;
 
+  const formatEthValueInUSD = (ethValue) => {
+    return (ethValue * ethPriceUSD).toFixed(2);
+  };
+
   return (
     <main className="bg-gray-800 text-white min-h-screen">
       <div></div>
@@ -251,6 +274,8 @@ export default function Home() {
               <p>
                 Current Bet:{" "}
                 <span id="currentBetErdogan">{userTotalBetErdogan}</span> ETH
+                {" ≈ $"}
+                {formatEthValueInUSD(userTotalBetErdogan)}
               </p>
               {possibleWinAmountErdogan > 0 && (
                 <p>
@@ -258,12 +283,12 @@ export default function Home() {
                   <span id="possibleProfitErdogan">
                     +{possibleWinAmountErdogan.toFixed(5)}
                   </span>{" "}
-                  ETH
+                  ETH ≈ ${formatEthValueInUSD(possibleWinAmountErdogan)}
                 </p>
               )}
               <p>
                 Total Bet: <span id="totalBetErdogan">{totalBetErdogan}</span>{" "}
-                ETH
+                ETH ≈ ${formatEthValueInUSD(totalBetErdogan)}
               </p>
             </div>
           </div>
@@ -295,7 +320,8 @@ export default function Home() {
             <div className="mt-6">
               <p>
                 Current Bet:{" "}
-                <span id="currentBetKemal">{userTotalBetKemal}</span> ETH
+                <span id="currentBetKemal">{userTotalBetKemal}</span> ETH ≈ $
+                {formatEthValueInUSD(userTotalBetKemal)}
               </p>
               {possibleWinAmountKemal > 0 && (
                 <p>
@@ -303,11 +329,12 @@ export default function Home() {
                   <span id="possibleProfitKemal">
                     +{possibleWinAmountKemal.toFixed(5)}
                   </span>{" "}
-                  ETH
+                  ETH ≈ ${formatEthValueInUSD(possibleWinAmountKemal)}
                 </p>
               )}
               <p>
-                Total Bet: <span id="totalBetKemal">{totalBetKemal}</span> ETH
+                Total Bet: <span id="totalBetKemal">{totalBetKemal}</span> ETH ≈
+                ${formatEthValueInUSD(totalBetKemal)}
               </p>
             </div>
           </div>
@@ -323,7 +350,7 @@ export default function Home() {
           >
             <p className="text-sm">
               <span className="font-semibold">Bet Amount: </span>
-              {bet.amount} Ether
+              {bet.amount} Ether ≈ ${formatEthValueInUSD(bet.amount)}
             </p>
             <p className="text-sm">
               <span className="font-semibold">Bettor: </span>
@@ -356,7 +383,7 @@ export default function Home() {
           onClick={withdrawAllBets}
           className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md my-2"
         >
-          Withdraw All Bets
+          Withdraw
         </button>
       </div>
     </main>
