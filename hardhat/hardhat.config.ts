@@ -36,7 +36,7 @@ const config: HardhatUserConfig = {
   solidity: "0.8.19",
   networks: {
     sepolia: {
-      url: `https://sepolia.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
+      url: process.env.SEPOLIA_URL || "",
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
