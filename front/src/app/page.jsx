@@ -91,6 +91,12 @@ export default function Home() {
     await tx.wait();
   }
 
+  async function withdrawAllBets() {
+    if (!contract) return;
+    const tx = await contract.withdraw();
+    await tx.wait();
+  }
+
   async function getServiceFeePercentage() {
     try {
       const feePercentage = await contract.serviceFeePercentage();
@@ -321,6 +327,14 @@ export default function Home() {
         ) : (
           <p>Betting end time not available</p>
         )}
+      </div>
+      <div className="p-4">
+        <button
+          onClick={withdrawAllBets}
+          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md my-2"
+        >
+          Withdraw All Bets
+        </button>
       </div>
     </main>
   );
