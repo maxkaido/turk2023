@@ -37,6 +37,7 @@ export default function Home() {
       getUserBetKemal();
       getTotalBetKemal();
       getServiceFeePercentage();
+      calculatePossibleWin();
       getBettingEndTime();
     }
   }, [account]);
@@ -125,22 +126,21 @@ export default function Home() {
     }
   };
 
-  const calculatePossibleWin = async (candidate) => {
+  const calculatePossibleWin = async () => {
     try {
-      const possibleWinAmount = await contract.calculatePossibleWin(
-        account,
-        candidate,
-        { from: account }
-      );
-      const formattedPossibleWin = Number(
-        ethers.utils.formatEther(possibleWinAmount)
-      );
+      // calculate win amount for Erdogan
+      let userBetPercentage = userTotalBetErdogan / totalBetErdogan;
+      let serviceFeeAmount = (userTotalBetErdogan * serviceFeePercentage) / 100;
+      let remainingBetAmount = totalBetErdogan - serviceFeeAmount;
 
-      if (candidate === "Erdogan") {
-        setPossibleWinErdogan(formattedPossibleWin);
-      } else if (candidate === "Kemal") {
-        setPossibleWinKemal(formattedPossibleWin);
-      }
+      let possibleWinAmount = userBetPercentage * remainingBetAmount;
+      setPossibleWinErdogan(possibleWinAmount);
+      // calculate win amount for Kemal
+      userBetPercentage = userTotalBetKemal / totalBetKemal;
+      serviceFeeAmount = (userTotalBetKemal * serviceFeePercentage) / 100;
+      remainingBetAmount = totalBetKemal - serviceFeeAmount;
+      possibleWinAmount = userBetPercentage * remainingBetAmount;
+      setPossibleWinKemal(possibleWinAmount);
     } catch (error) {
       console.error(error);
     }
@@ -167,8 +167,6 @@ export default function Home() {
 
   const getUserBetErdogan = () => getUserBet("Erdogan");
   const getUserBetKemal = () => getUserBet("Kemal");
-  const calculatePossibleWinErdogan = () => calculatePossibleWin("Erdogan");
-  const calculatePossibleWinKemal = () => calculatePossibleWin("Kemal");
   const getTotalBetErdogan = () => getTotalBet("Erdogan");
   const getTotalBetKemal = () => getTotalBet("Kemal");
 
