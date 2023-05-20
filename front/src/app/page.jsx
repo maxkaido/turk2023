@@ -6,7 +6,7 @@ import CountdownTimer from "./CountdownTimer";
 import ElectionBetArtifact from "../../artifacts/ElectionBet.json";
 import About from "./About";
 
-const contractAddress = "0x68b1d87f95878fe05b998f19b66f4baba5de1aed";
+const contractAddress = "0xa85233C63b9Ee964Add6F2cffe00Fd84eb32338f";
 
 export default function Home() {
   const [account, setAccount] = useState(null);
@@ -29,18 +29,6 @@ export default function Home() {
       console.log("MetaMask is installed!");
     }
   }, []);
-
-  useEffect(() => {
-    if (account) {
-      getUserBetErdogan();
-      getTotalBetErdogan();
-      getUserBetKemal();
-      getTotalBetKemal();
-      getServiceFeePercentage();
-      calculatePossibleWin();
-      getBettingEndTime();
-    }
-  }, [account]);
 
   useEffect(() => {
     if (account) {
@@ -71,6 +59,14 @@ export default function Home() {
       candidate: event.args.candidate,
     }));
     setBets(pastBets);
+
+    await getUserBetErdogan();
+    await getTotalBetErdogan();
+    await getUserBetKemal();
+    await getTotalBetKemal();
+    await getServiceFeePercentage();
+
+    calculatePossibleWin();
   }
 
   async function requestAccount() {
@@ -140,13 +136,13 @@ export default function Home() {
       let remainingBetAmount = totalBetErdogan - serviceFeeAmount;
 
       let possibleWinAmount = userBetPercentage * remainingBetAmount;
-      setPossibleWinErdogan(possibleWinAmount);
+      setPossibleWinKemal(possibleWinAmount);
       // calculate win amount for Kemal
       userBetPercentage = userTotalBetKemal / totalBetKemal;
       serviceFeeAmount = (userTotalBetKemal * serviceFeePercentage) / 100;
       remainingBetAmount = totalBetKemal - serviceFeeAmount;
       possibleWinAmount = userBetPercentage * remainingBetAmount;
-      setPossibleWinKemal(possibleWinAmount);
+      setPossibleWinErdogan(possibleWinAmount);
     } catch (error) {
       console.error(error);
     }
