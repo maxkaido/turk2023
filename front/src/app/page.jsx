@@ -37,16 +37,10 @@ export default function Home() {
   }, [account]);
 
   useEffect(() => {
-    if (account) {
-      getUserBetErdogan();
-      getTotalBetErdogan();
-      getUserBetKemal();
-      getTotalBetKemal();
-      getServiceFeePercentage();
-      getBettingEndTime();
-      calculatePossibleWin();
+    if (contract && account) {
+      fetchData();
     }
-  }, [account]);
+  }, [contract, account]);
 
   async function loadBlockchainData() {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -63,20 +57,40 @@ export default function Home() {
     );
     console.log("Contract object", contract);
     setContract(contract);
+  }
 
-    const pastEvents = await contract.queryFilter("BetMade");
-    const pastBets = pastEvents.map((event) => ({
-      bettor: event.args.bettor,
-      amount: ethers.utils.formatEther(event.args.amount),
-      candidate: event.args.candidate,
-    }));
-    setBets(pastBets);
+  async function fetchData() {
+    try {
+      const pastEvents = await contract.queryFilter("BetMade");
+      const pastBets = pastEvents.map((event) => ({
+        bettor: event.args.bettor,
+        amount: ethers.utils.formatEther(event.args.amount),
+        candidate: event.args.candidate,
+      }));
+      setBets(pastBets);
+
+      await Promise.all([
+        getUserBet("Erdogan"),
+        getTotalBet("Erdogan"),
+        getUserBet("Kemal"),
+        getTotalBet("Kemal"),
+        getServiceFeePercentage(),
+        getBettingEndTime(),
+      ]);
+      calculatePossibleWin();
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async function requestAccount() {
-    await window.ethereum.request({ method: "eth_requestAccounts" });
-    await loadBlockchainData();
-    calculatePossibleWin();
+    try {
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+      await loadBlockchainData();
+      fetchData();
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   const trimmedAddress = account
@@ -84,18 +98,26 @@ export default function Home() {
     : "";
 
   async function makeBet(candidate, betAmount) {
-    if (!contract) return;
-    const value = ethers.utils.parseEther(betAmount.toString());
-    const tx = await contract.makeBet(candidate, {
-      value,
-    });
-    await tx.wait();
+    try {
+      if (!contract) return;
+      const value = ethers.utils.parseEther(betAmount.toString());
+      const tx = await contract.makeBet(candidate, { value });
+      await tx.wait();
+      fetchData();
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async function withdrawAllBets() {
-    if (!contract) return;
-    const tx = await contract.withdraw();
-    await tx.wait();
+    try {
+      if (!contract) return;
+      const tx = await contract.withdraw();
+      await tx.wait();
+      fetchData();
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async function getServiceFeePercentage() {
@@ -116,7 +138,7 @@ export default function Home() {
     }
   }
 
-  const getUserBet = async (candidate) => {
+  async function getUserBet(candidate) {
     try {
       const userBet = await contract.calculateUserBet(account, candidate, {
         from: account,
@@ -131,29 +153,9 @@ export default function Home() {
     } catch (error) {
       console.error(error);
     }
-  };
+  }
 
-  const calculatePossibleWin = async () => {
-    try {
-      // calculate win amount for Erdogan
-      let userBetPercentage = userTotalBetErdogan / totalBetErdogan;
-      let serviceFeeAmount = (userTotalBetErdogan * serviceFeePercentage) / 100;
-      let remainingBetAmount = totalBetErdogan - serviceFeeAmount;
-
-      let possibleWinAmount = userBetPercentage * remainingBetAmount;
-      setPossibleWinKemal(possibleWinAmount);
-      // calculate win amount for Kemal
-      userBetPercentage = userTotalBetKemal / totalBetKemal;
-      serviceFeeAmount = (userTotalBetKemal * serviceFeePercentage) / 100;
-      remainingBetAmount = totalBetKemal - serviceFeeAmount;
-      possibleWinAmount = userBetPercentage * remainingBetAmount;
-      setPossibleWinErdogan(possibleWinAmount);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const getTotalBet = async (candidate) => {
+  async function getTotalBet(candidate) {
     try {
       const totalBetAmount = await contract.totalBets(candidate, {
         from: account,
@@ -170,12 +172,25 @@ export default function Home() {
     } catch (error) {
       console.error(error);
     }
-  };
+  }
 
-  const getUserBetErdogan = () => getUserBet("Erdogan");
-  const getUserBetKemal = () => getUserBet("Kemal");
-  const getTotalBetErdogan = () => getTotalBet("Erdogan");
-  const getTotalBetKemal = () => getTotalBet("Kemal");
+  const calculatePossibleWin = async () => {
+    try {
+      let userBetPercentage = userTotalBetErdogan / totalBetErdogan;
+      let serviceFeeAmount = (userTotalBetErdogan * serviceFeePercentage) / 100;
+      let remainingBetAmount = totalBetErdogan - serviceFeeAmount;
+      let possibleWinAmount = userBetPercentage * remainingBetAmount;
+      setPossibleWinKemal(possibleWinAmount);
+
+      userBetPercentage = userTotalBetKemal / totalBetKemal;
+      serviceFeeAmount = (userTotalBetKemal * serviceFeePercentage) / 100;
+      remainingBetAmount = totalBetKemal - serviceFeeAmount;
+      possibleWinAmount = userBetPercentage * remainingBetAmount;
+      setPossibleWinErdogan(possibleWinAmount);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const targetDate = new Date("2023-05-28T00:00:00");
 
