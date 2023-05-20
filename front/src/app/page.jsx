@@ -1,19 +1,34 @@
 "use client";
+import { useEffect, useState } from "react";
+import { ethers } from "ethers";
 import Image from "next/image";
 import CountdownTimer from "./CountdownTimer";
-import { useEffect, useState } from "react";
 import ElectionBetArtifact from "../../artifacts/ElectionBet.json";
-import { ethers } from "ethers";
 import About from "./About";
 
+const contractAddress = "0x68b1d87f95878fe05b998f19b66f4baba5de1aed";
+const targetDate = new Date("2023-05-28T00:00:00");
+
 export default function Home() {
-  // load contract from state
   const [account, setAccount] = useState(null);
   const [provider, setProvider] = useState(null);
   const [contract, setContract] = useState(null);
   const [bets, setBets] = useState([]);
+  const [betAmountErdogan, setBetAmountErdogan] = useState(0);
+  const [betAmountKemal, setBetAmountKemal] = useState(0);
+  const [userTotalBetErdogan, setUserTotalBetErdogan] = useState(0);
+  const [possibleWinErdogan, setPossibleWinErdogan] = useState(0);
+  const [totalBetErdogan, setTotalBetErdogan] = useState(0);
+  const [userTotalBetKemal, setUserTotalBetKemal] = useState(0);
+  const [possibleWinKemal, setPossibleWinKemal] = useState(0);
+  const [totalBetKemal, setTotalBetKemal] = useState(0);
+  const [serviceFeePercentage, setServiceFeePercentage] = useState(0);
 
-  const contractAddress = "0x8a791620dd6260079bf849dc5567adc3f2fdc318";
+  useEffect(() => {
+    if (typeof window.ethereum !== "undefined") {
+      console.log("MetaMask is installed!");
+    }
+  }, []);
 
   useEffect(() => {
     if (account) {
@@ -21,14 +36,17 @@ export default function Home() {
       getTotalBetErdogan();
       getUserBetKemal();
       getTotalBetKemal();
+      getServiceFeePercentage();
     }
-    if (typeof window.ethereum !== "undefined") {
-      console.log("MetaMask is installed!");
+  }, [account]);
+
+  useEffect(() => {
+    if (account) {
+      loadBlockchainData();
     }
   }, [account]);
 
   async function loadBlockchainData() {
-    // Connect to Metamask
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     setProvider(provider);
 
@@ -62,11 +80,7 @@ export default function Home() {
     ? `${account.slice(0, 6)}...${account.slice(-4)}`
     : "";
 
-  const [betAmountErdogan, setBetAmountErdogan] = useState(0);
-  const [betAmountKemal, setBetAmountKemal] = useState(0);
-
   async function makeBet(candidate, betAmount) {
-    // Call the bet function on your contract
     if (!contract) return;
     const value = ethers.utils.parseEther(betAmount.toString());
     const tx = await contract.makeBet(candidate, {
@@ -74,96 +88,80 @@ export default function Home() {
     });
     await tx.wait();
   }
-  const [userTotalBetErdogan, setUserTotalBetErdogan] = useState(0);
-  const [possibleWinErdogan, setPossibleWinErdogan] = useState(0);
-  const [totalBetErdogan, setTotalBetErdogan] = useState(0);
-  const [userTotalBetKemal, setUserTotalBetKemal] = useState(0);
-  const [possibleWinKemal, setPossibleWinKemal] = useState(0);
-  const [totalBetKemal, setTotalBetKemal] = useState(0);
 
-  const getUserBetErdogan = async () => {
+  async function getServiceFeePercentage() {
     try {
-      const userBet = await contract.calculateUserBet(account, "Erdogan", {
+      const feePercentage = await contract.serviceFeePercentage();
+      setServiceFeePercentage(feePercentage.toNumber());
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const getUserBet = async (candidate) => {
+    try {
+      const userBet = await contract.calculateUserBet(account, candidate, {
         from: account,
       });
-      setUserTotalBetErdogan(Number(ethers.utils.formatEther(userBet)));
+      const formattedUserBet = Number(ethers.utils.formatEther(userBet));
+
+      if (candidate === "Erdogan") {
+        setUserTotalBetErdogan(formattedUserBet);
+      } else if (candidate === "Kemal") {
+        setUserTotalBetKemal(formattedUserBet);
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
-  const calculatePossibleWinErdogan = async () => {
+  const calculatePossibleWin = async (candidate) => {
     try {
       const possibleWinAmount = await contract.calculatePossibleWin(
         account,
-        "Erdogan",
+        candidate,
         { from: account }
       );
-      setPossibleWinErdogan(
-        Number(ethers.utils.formatEther(possibleWinAmount))
+      const formattedPossibleWin = Number(
+        ethers.utils.formatEther(possibleWinAmount)
       );
+
+      if (candidate === "Erdogan") {
+        setPossibleWinErdogan(formattedPossibleWin);
+      } else if (candidate === "Kemal") {
+        setPossibleWinKemal(formattedPossibleWin);
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
-  const getTotalBetErdogan = async () => {
+  const getTotalBet = async (candidate) => {
     try {
-      const totalBetAmount = await contract.totalBets("Erdogan", {
+      const totalBetAmount = await contract.totalBets(candidate, {
         from: account,
       });
-      setTotalBetErdogan(Number(ethers.utils.formatEther(totalBetAmount)));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const getUserBetKemal = async () => {
-    try {
-      const userBet = await contract.calculateUserBet(account, "Kemal", {
-        from: account,
-      });
-      setUserTotalBetKemal(Number(ethers.utils.formatEther(userBet)));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const calculatePossibleWinKemal = async () => {
-    try {
-      const possibleWinAmount = await contract.calculatePossibleWin(
-        account,
-        "Kemal",
-        { from: account }
+      const formattedTotalBet = Number(
+        ethers.utils.formatEther(totalBetAmount)
       );
-      setPossibleWinKemal(Number(ethers.utils.formatEther(possibleWinAmount)));
+
+      if (candidate === "Erdogan") {
+        setTotalBetErdogan(formattedTotalBet);
+      } else if (candidate === "Kemal") {
+        setTotalBetKemal(formattedTotalBet);
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
-  const getTotalBetKemal = async () => {
-    try {
-      const totalBetAmount = await contract.totalBets("Kemal", {
-        from: account,
-      });
-      setTotalBetKemal(Number(ethers.utils.formatEther(totalBetAmount)));
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const getUserBetErdogan = () => getUserBet("Erdogan");
+  const getUserBetKemal = () => getUserBet("Kemal");
+  const calculatePossibleWinErdogan = () => calculatePossibleWin("Erdogan");
+  const calculatePossibleWinKemal = () => calculatePossibleWin("Kemal");
+  const getTotalBetErdogan = () => getTotalBet("Erdogan");
+  const getTotalBetKemal = () => getTotalBet("Kemal");
 
-  useEffect(() => {
-    if (account) {
-      getUserBetErdogan();
-      getTotalBetErdogan();
-      getUserBetKemal();
-      getTotalBetKemal();
-      calculatePossibleWinErdogan();
-      calculatePossibleWinKemal();
-    }
-  }, [account]);
-  const targetDate = new Date("2023-05-28T00:00:00");
   return (
     <main className="bg-gray-800 text-white min-h-screen">
       <div></div>
@@ -300,6 +298,10 @@ export default function Home() {
         ))}
       </div>
       <About />
+      <div className="p-4">
+        <h1 className="text-2xl font-bold mb-4">Service Fee Percentage</h1>
+        <p>Current service fee percentage: {serviceFeePercentage}%</p>
+      </div>
     </main>
   );
 }
