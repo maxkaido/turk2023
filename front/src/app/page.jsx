@@ -36,6 +36,18 @@ export default function Home() {
     }
   }, [account]);
 
+  useEffect(() => {
+    if (account) {
+      getUserBetErdogan();
+      getTotalBetErdogan();
+      getUserBetKemal();
+      getTotalBetKemal();
+      getServiceFeePercentage();
+      getBettingEndTime();
+      calculatePossibleWin();
+    }
+  }, [account]);
+
   async function loadBlockchainData() {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     setProvider(provider);
@@ -59,19 +71,12 @@ export default function Home() {
       candidate: event.args.candidate,
     }));
     setBets(pastBets);
-
-    await getUserBetErdogan();
-    await getTotalBetErdogan();
-    await getUserBetKemal();
-    await getTotalBetKemal();
-    await getServiceFeePercentage();
-
-    calculatePossibleWin();
   }
 
   async function requestAccount() {
     await window.ethereum.request({ method: "eth_requestAccounts" });
-    loadBlockchainData();
+    await loadBlockchainData();
+    calculatePossibleWin();
   }
 
   const trimmedAddress = account
