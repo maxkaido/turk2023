@@ -258,7 +258,7 @@ export default function Home() {
             <input
               type="number"
               placeholder="Enter Bet Amount (ETH)"
-              className="bg-gray-100 text-black rounded py-2 px-4 mb-4 w-36"
+              className="bg-gray-100 text-black rounded py-2 px-4 mb-4 w-28"
               value={betAmountErdogan}
               onChange={(e) => setBetAmountErdogan(e.target.value)}
               min="0"
@@ -305,7 +305,7 @@ export default function Home() {
             <input
               type="number"
               placeholder="Enter Bet Amount (ETH)"
-              className="bg-gray-100 text-black rounded py-2 px-4 mb-4 w-36"
+              className="bg-gray-100 text-black rounded py-2 px-4 mb-4 w-28"
               value={betAmountKemal}
               onChange={(e) => setBetAmountKemal(e.target.value)}
               min="0"
