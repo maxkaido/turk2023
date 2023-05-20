@@ -2,14 +2,17 @@ pragma solidity ^0.8.9;
 
 import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 contract ElectionBet is ChainlinkClient, Ownable {
+    using SafeMath for uint256;
+
     address private oracle;
     bytes32 private jobId;
-    uint256 private fee;
-    uint256 private serviceFeePercentage; // Service fee percentage
-    address private serviceFeeWallet; // Service fee wallet address
-    uint256 private bettingEndTime; // End time for betting and withdrawal
+    uint256 public fee;
+    uint256 public serviceFeePercentage; // Service fee percentage
+    address public serviceFeeWallet; // Service fee wallet address
+    uint256 public bettingEndTime; // End time for betting and withdrawal
 
     // Define the structure of a bet
     struct Bet {
@@ -88,7 +91,7 @@ contract ElectionBet is ChainlinkClient, Ownable {
         bets.push(newBet);
 
         // Update the total amount bet on this candidate
-        totalBets[candidate] += betAmount;
+        totalBets[candidate] = totalBets[candidate].add(betAmount);
 
         emit BetMade(msg.sender, betAmount, candidate);
     }
@@ -101,11 +104,11 @@ contract ElectionBet is ChainlinkClient, Ownable {
             Bet storage bet = bets[i];
 
             if (bet.bettor == msg.sender && !bet.withdrawn) {
-                totalWithdrawnAmount += bet.amount;
+                totalWithdrawnAmount = totalWithdrawnAmount.add(bet.amount);
                 bet.withdrawn = true;
 
                 // Update the total amount bet on this candidate
-                totalBets[bet.candidate] -= bet.amount;
+                totalBets[bet.candidate] = totalBets[bet.candidate].sub(bet.amount);
             }
         }
 
@@ -128,34 +131,11 @@ contract ElectionBet is ChainlinkClient, Ownable {
 
         for (uint256 i = 0; i < bets.length; i++) {
             if (bets[i].bettor == user && keccak256(bytes(bets[i].candidate)) == keccak256(bytes(candidate))) {
-                userTotalBet += bets[i].amount;
+                userTotalBet = userTotalBet.add(bets[i].amount);
             }
         }
 
         return userTotalBet;
-    }
-
-    // Function to calculate the possible win amount for a user
-    function calculatePossibleWin(address user, string memory candidate) public view returns (uint256) {
-        require(
-            keccak256(bytes(candidate)) == keccak256(bytes("Kemal")) || 
-            keccak256(bytes(candidate)) == keccak256(bytes("Erdogan")),
-            "Invalid candidate"
-        );
-
-        uint256 userTotalBet = calculateUserBet(user, candidate);
-        uint256 totalBetAmount = totalBets[candidate];
-        if (totalBetAmount == 0 || userTotalBet == 0) {
-            return 0;
-        }
-
-        uint256 totalNetWinningAmount = winnings[candidate];
-
-        uint256 payoutAmount = (userTotalBet * totalNetWinningAmount) / totalBetAmount;
-        uint256 feeAmount = (payoutAmount * serviceFeePercentage) / 100;
-        uint256 netPayoutAmount = payoutAmount - feeAmount;
-
-        return netPayoutAmount;
     }
 
     // Function to get the election result
@@ -208,13 +188,17 @@ contract ElectionBet is ChainlinkClient, Ownable {
         // Calculate the payout ratio for each bettor
         for (uint256 i = 0; i < bets.length; i++) {
             if (keccak256(bytes(bets[i].candidate)) == keccak256(bytes(winner))) {
-                uint256 payoutAmount = (bets[i].amount * totalNetWinningAmount) / totalWinningAmount;
+                uint256 payoutAmount = (bets[i].amount.mul(totalNetWinningAmount)).div(totalWinningAmount);
                 // Apply the fee during winning distribution
-                uint256 feeAmount = (payoutAmount * serviceFeePercentage) / 100;
-                uint256 netPayoutAmount = payoutAmount - feeAmount;
+                uint256 feeAmount = (payoutAmount.mul(serviceFeePercentage)).div(100);
+                uint256 netPayoutAmount = payoutAmount.sub(feeAmount);
                 payable(bets[i].bettor).transfer(netPayoutAmount);
             }
         }
+
+        // Transfer service fee to the service fee wallet
+        uint256 totalServiceFeeAmount = (totalNetWinningAmount.mul(serviceFeePercentage)).div(100);
+        payable(serviceFeeWallet).transfer(totalServiceFeeAmount);
     }
 
     // Function to set the oracle address
