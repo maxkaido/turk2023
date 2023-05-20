@@ -77,7 +77,6 @@ export default function Home() {
         getServiceFeePercentage(),
         getBettingEndTime(),
       ]);
-      calculatePossibleWin();
     } catch (error) {
       console.error(error);
     }
@@ -174,25 +173,21 @@ export default function Home() {
     }
   }
 
-  const calculatePossibleWin = async () => {
-    try {
-      let userBetPercentage = userTotalBetErdogan / totalBetErdogan;
-      let serviceFeeAmount = (userTotalBetErdogan * serviceFeePercentage) / 100;
-      let remainingBetAmount = totalBetErdogan - serviceFeeAmount;
-      let possibleWinAmount = userBetPercentage * remainingBetAmount;
-      setPossibleWinKemal(possibleWinAmount);
-
-      userBetPercentage = userTotalBetKemal / totalBetKemal;
-      serviceFeeAmount = (userTotalBetKemal * serviceFeePercentage) / 100;
-      remainingBetAmount = totalBetKemal - serviceFeeAmount;
-      possibleWinAmount = userBetPercentage * remainingBetAmount;
-      setPossibleWinErdogan(possibleWinAmount);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const targetDate = new Date("2023-05-28T00:00:00");
+
+  const userBetPercentageErdogan = userTotalBetErdogan / totalBetErdogan;
+  const serviceFeeAmountErdogan =
+    (userTotalBetErdogan * serviceFeePercentage) / 100;
+  const remainingBetAmountErdogan = totalBetErdogan - serviceFeeAmountErdogan;
+  const possibleWinAmountErdogan =
+    userBetPercentageErdogan * remainingBetAmountErdogan;
+
+  const userBetPercentageKemal = userTotalBetKemal / totalBetKemal;
+  const serviceFeeAmountKemal =
+    (userTotalBetKemal * serviceFeePercentage) / 100;
+  const remainingBetAmountKemal = totalBetKemal - serviceFeeAmountKemal;
+  const possibleWinAmountKemal =
+    userBetPercentageKemal * remainingBetAmountKemal;
 
   return (
     <main className="bg-gray-800 text-white min-h-screen">
@@ -258,7 +253,10 @@ export default function Home() {
               </p>
               <p>
                 Possible Win:{" "}
-                <span id="possibleProfitErdogan">{possibleWinErdogan}</span> ETH
+                <span id="possibleProfitKemal">
+                  +{possibleWinAmountKemal.toFixed(2)}
+                </span>{" "}
+                ETH
               </p>
               <p>
                 Total Bet: <span id="totalBetErdogan">{totalBetErdogan}</span>{" "}
@@ -297,7 +295,10 @@ export default function Home() {
               </p>
               <p>
                 Possible Win:{" "}
-                <span id="possibleProfitKemal">{possibleWinKemal}</span> ETH
+                <span id="possibleProfitErdogan">
+                  +{possibleWinAmountErdogan}
+                </span>{" "}
+                ETH
               </p>
               <p>
                 Total Bet: <span id="totalBetKemal">{totalBetKemal}</span> ETH
