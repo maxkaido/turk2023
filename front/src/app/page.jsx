@@ -177,15 +177,15 @@ export default function Home() {
 
   const userBetPercentageErdogan = userTotalBetErdogan / totalBetErdogan;
   const serviceFeeAmountErdogan =
-    (userTotalBetErdogan * serviceFeePercentage) / 100;
-  const remainingBetAmountErdogan = totalBetErdogan - serviceFeeAmountErdogan;
+    (userTotalBetKemal * serviceFeePercentage) / 100;
+  const remainingBetAmountErdogan = totalBetKemal - serviceFeeAmountErdogan;
   const possibleWinAmountErdogan =
     userBetPercentageErdogan * remainingBetAmountErdogan;
 
   const userBetPercentageKemal = userTotalBetKemal / totalBetKemal;
   const serviceFeeAmountKemal =
-    (userTotalBetKemal * serviceFeePercentage) / 100;
-  const remainingBetAmountKemal = totalBetKemal - serviceFeeAmountKemal;
+    (userTotalBetErdogan * serviceFeePercentage) / 100;
+  const remainingBetAmountKemal = totalBetErdogan - serviceFeeAmountKemal;
   const possibleWinAmountKemal =
     userBetPercentageKemal * remainingBetAmountKemal;
 
@@ -253,8 +253,8 @@ export default function Home() {
               </p>
               <p>
                 Possible Win:{" "}
-                <span id="possibleProfitKemal">
-                  +{possibleWinAmountKemal.toFixed(2)}
+                <span id="possibleProfitErdogan">
+                  +{possibleWinAmountErdogan.toFixed(5)}
                 </span>{" "}
                 ETH
               </p>
@@ -295,8 +295,8 @@ export default function Home() {
               </p>
               <p>
                 Possible Win:{" "}
-                <span id="possibleProfitErdogan">
-                  +{possibleWinAmountErdogan}
+                <span id="possibleProfitKemal">
+                  +{possibleWinAmountKemal.toFixed(5)}
                 </span>{" "}
                 ETH
               </p>
