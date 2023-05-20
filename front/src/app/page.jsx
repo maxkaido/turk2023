@@ -7,7 +7,6 @@ import ElectionBetArtifact from "../../artifacts/ElectionBet.json";
 import About from "./About";
 
 const contractAddress = "0x68b1d87f95878fe05b998f19b66f4baba5de1aed";
-const targetDate = new Date("2023-05-28T00:00:00");
 
 export default function Home() {
   const [account, setAccount] = useState(null);
@@ -23,6 +22,7 @@ export default function Home() {
   const [possibleWinKemal, setPossibleWinKemal] = useState(0);
   const [totalBetKemal, setTotalBetKemal] = useState(0);
   const [serviceFeePercentage, setServiceFeePercentage] = useState(0);
+  const [bettingEndTime, setBettingEndTime] = useState(null);
 
   useEffect(() => {
     if (typeof window.ethereum !== "undefined") {
@@ -37,6 +37,7 @@ export default function Home() {
       getUserBetKemal();
       getTotalBetKemal();
       getServiceFeePercentage();
+      getBettingEndTime();
     }
   }, [account]);
 
@@ -93,6 +94,15 @@ export default function Home() {
     try {
       const feePercentage = await contract.serviceFeePercentage();
       setServiceFeePercentage(feePercentage.toNumber());
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function getBettingEndTime() {
+    try {
+      const endTime = await contract.bettingEndTime();
+      setBettingEndTime(endTime.toNumber());
     } catch (error) {
       console.error(error);
     }
@@ -161,6 +171,8 @@ export default function Home() {
   const calculatePossibleWinKemal = () => calculatePossibleWin("Kemal");
   const getTotalBetErdogan = () => getTotalBet("Erdogan");
   const getTotalBetKemal = () => getTotalBet("Kemal");
+
+  const targetDate = new Date("2023-05-28T00:00:00");
 
   return (
     <main className="bg-gray-800 text-white min-h-screen">
@@ -301,6 +313,16 @@ export default function Home() {
       <div className="p-4">
         <h1 className="text-2xl font-bold mb-4">Service Fee Percentage</h1>
         <p>Current service fee percentage: {serviceFeePercentage}%</p>
+      </div>
+      <div className="p-4">
+        <h1 className="text-2xl font-bold mb-4">Betting End Time</h1>
+        {bettingEndTime ? (
+          <p>
+            Betting end time: {new Date(bettingEndTime * 1000).toLocaleString()}
+          </p>
+        ) : (
+          <p>Betting end time not available</p>
+        )}
       </div>
     </main>
   );
