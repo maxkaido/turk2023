@@ -10,8 +10,7 @@ describe("ElectionBet", function () {
   let oracleAddress;
   let serviceFeeWallet;
 
-  // const jobId = "0x123abc";
-  const jobId = ethers.utils.formatBytes32String("0x123abc");
+  const jobId = "0x123abc";
   const fee = ethers.utils.parseEther("0.1");
   const serviceFeePercentage = 2;
   const bettingEndTime = 1685221200;
@@ -49,20 +48,21 @@ describe("ElectionBet", function () {
 
   describe("Betting", function () {
     it("Should allow users to make bets on valid candidates", async function () {
-      await expect(electionBet.connect(addr1).makeBet("Kemal")).to.emit(
-        electionBet,
-        "BetMade"
-      );
-      await expect(electionBet.connect(addr2).makeBet("Erdogan")).to.emit(
-        electionBet,
-        "BetMade"
-      );
+      const betAmount1 = ethers.utils.parseEther("0.5"); // Bet amount for addr1
+      const betAmount2 = ethers.utils.parseEther("1.0"); // Bet amount for addr2
+
+      await expect(
+        electionBet.connect(addr1).makeBet("Kemal", { value: betAmount1 })
+      ).to.emit(electionBet, "BetMade");
+      await expect(
+        electionBet.connect(addr2).makeBet("Erdogan", { value: betAmount2 })
+      ).to.emit(electionBet, "BetMade");
 
       const totalBetsKemal = await electionBet.totalBets("Kemal");
       const totalBetsErdogan = await electionBet.totalBets("Erdogan");
 
-      expect(totalBetsKemal).to.equal(1);
-      expect(totalBetsErdogan).to.equal(1);
+      expect(totalBetsKemal).to.equal(betAmount1);
+      expect(totalBetsErdogan).to.equal(betAmount2);
     });
 
     it("Should revert when betting on invalid candidates", async function () {
@@ -82,16 +82,25 @@ describe("ElectionBet", function () {
 
   describe("Withdrawal", function () {
     beforeEach(async function () {
-      await electionBet.connect(addr1).makeBet("Kemal");
-      await electionBet.connect(addr1).makeBet("Erdogan");
+      await electionBet
+        .connect(addr1)
+        .makeBet("Kemal", { value: ethers.utils.parseEther("0.5") });
+      await electionBet
+        .connect(addr1)
+        .makeBet("Erdogan", { value: ethers.utils.parseEther("0.5") });
     });
 
     it("Should allow users to withdraw their bets", async function () {
       const balanceBefore = await ethers.provider.getBalance(addr1.address);
-      const userTotalBet = await electionBet.calculateUserBet(
+      const userTotalBetKemal = await electionBet.calculateUserBet(
         addr1.address,
         "Kemal"
       );
+      const userTotalBetErdogan = await electionBet.calculateUserBet(
+        addr1.address,
+        "Erdogan"
+      );
+      const userTotalBet = userTotalBetKemal.add(userTotalBetErdogan);
 
       await expect(electionBet.connect(addr1).withdraw())
         .to.emit(electionBet, "BetWithdrawn")
