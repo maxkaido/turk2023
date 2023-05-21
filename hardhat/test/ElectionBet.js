@@ -1,125 +1,130 @@
-const { expect } = require("chai");
-const { ethers } = require("hardhat");
+
+import "hardhat/console.sol";
+import { ethers } from "hardhat";
+import { expect } from "chai";
 
 describe("ElectionBet", function () {
-  let ElectionBet, electionBet, owner, addr1, addr2;
-  let linkTokenAddress = "0xa36085F69e2889c224210F603D836748e7dC0088";
-  let oracleAddress = "0x7AFe1118Ea78C1eae84ca8feE5C65Bc76CcF879e";
-  let jobId = "0xabc";
-  let fee = ethers.utils.parseEther("0.1");
+  let ElectionBet;
+  let electionBet;
+  let owner;
+  let addr1;
+  let addr2;
+
+  const oracleAddress = owner.address;
+  const jobId = "<job-id>";
+  const fee = 0.1 ether;
+  const serviceFeePercentage = 2;
+  const serviceFeeWallet = "<service-fee-wallet-address>";
+  const bettingEndTime = Math.floor(Date.now() / 1000) + 86400; // Set betting end time 24 hours from now
 
   beforeEach(async function () {
     ElectionBet = await ethers.getContractFactory("ElectionBet");
-    [owner, addr1, addr2, _] = await ethers.getSigners();
-    electionBet = await ElectionBet.deploy(oracleAddress, jobId, fee);
+    [owner, addr1, addr2] = await ethers.getSigners();
+
+    electionBet = await ElectionBet.deploy(
+      oracleAddress,
+      jobId,
+      fee,
+      serviceFeePercentage,
+      serviceFeeWallet,
+      bettingEndTime
+    );
+
     await electionBet.deployed();
   });
 
   describe("Deployment", function () {
-    it("Should set the right oracle and jobId", async function () {
+    it("Should set the correct values during deployment", async function () {
       expect(await electionBet.oracle()).to.equal(oracleAddress);
       expect(await electionBet.jobId()).to.equal(jobId);
+      expect(await electionBet.fee()).to.equal(fee);
+      expect(await electionBet.serviceFeePercentage()).to.equal(serviceFeePercentage);
+      expect(await electionBet.serviceFeeWallet()).to.equal(serviceFeeWallet);
+      expect(await electionBet.bettingEndTime()).to.equal(bettingEndTime);
     });
   });
 
   describe("Betting", function () {
-    it("Should allow making a bet and emit an event", async function () {
-      await electionBet
-        .connect(addr1)
-        .makeBet("Candidate A", { value: ethers.utils.parseEther("1") });
-      expect(await electionBet.totalBets("Candidate A")).to.equal(
-        ethers.utils.parseEther("1")
-      );
-      await expect(
-        electionBet
-          .connect(addr1)
-          .makeBet("Candidate A", { value: ethers.utils.parseEther("1") })
-      )
-        .to.emit(electionBet, "BetMade")
-        .withArgs(addr1.address, ethers.utils.parseEther("1"), "Candidate A");
+    it("Should allow users to make bets on valid candidates", async function () {
+      await expect(electionBet.connect(addr1).makeBet("Kemal")).to.emit(electionBet, "BetMade");
+      await expect(electionBet.connect(addr2).makeBet("Erdogan")).to.emit(electionBet, "BetMade");
+
+      const totalBetsKemal = await electionBet.totalBets("Kemal");
+      const totalBetsErdogan = await electionBet.totalBets("Erdogan");
+
+      expect(totalBetsKemal).to.equal(1);
+      expect(totalBetsErdogan).to.equal(1);
     });
 
-    it("Should not allow making a bet without sending ether", async function () {
-      await expect(
-        electionBet.connect(addr1).makeBet("Candidate A")
-      ).to.be.revertedWith("No ether sent");
-    });
-  });
-
-  describe("Getting Election Results", function () {
-    it("Should get election result", async function () {
-      let tx = await (await electionBet.getElectionResult()).wait();
-      let requestId = tx.events[0].args[0];
-      expect(requestId).to.exist;
+    it("Should revert when betting on invalid candidates", async function () {
+      await expect(electionBet.connect(addr1).makeBet("InvalidCandidate")).to.be.revertedWith("Invalid candidate");
     });
 
-    it("Should allow only the oracle to fulfill the election result", async function () {
-      let tx = await (await electionBet.getElectionResult()).wait();
-      let requestId = tx.events[0].args[0];
+    it("Should revert when betting after the betting end time", async function () {
+      await ethers.provider.send("evm_increaseTime", [86401]); // Increase time by 24 hours
 
-      // As non-oracle
-      await expect(
-        electionBet.connect(addr1).fulfill(requestId, "Candidate A")
-      ).to.be.revertedWith("Not authorized");
-
-      // As oracle
-      await expect(electionBet.fulfill(requestId, "Candidate A"))
-        .to.emit(electionBet, "ElectionResultReceived")
-        .withArgs("Candidate A");
+      await expect(electionBet.connect(addr1).makeBet("Kemal")).to.be.revertedWith("Betting has ended");
     });
   });
 
-  describe("Payouts", function () {
-    it("Should distribute winnings correctly and allow payout", async function () {
-      // Let addr1 and addr2 bet on Candidate A
-      await electionBet
-        .connect(addr1)
-        .makeBet("Candidate A", { value: ethers.utils.parseEther("1") });
-      await electionBet
-        .connect(addr2)
-        .makeBet("Candidate A", { value: ethers.utils.parseEther("2") });
-
-      // Let owner simulate oracle and fulfill with Candidate A as the winner
-      let tx = await (await electionBet.getElectionResult()).wait();
-      let requestId = tx.events[0].args[0];
-      await electionBet.fulfill(requestId, "Candidate A");
-
-      // Check winnings
-      expect(await electionBet.winnings(addr1.address)).to.equal(
-        ethers.utils.parseEther("1")
-      );
-      expect(await electionBet.winnings(addr2.address)).to.equal(
-        ethers.utils.parseEther("2")
-      );
-
-      // Payout addr1
-      let addr1BalanceBefore = await ethers.provider.getBalance(addr1.address);
-      await electionBet.connect(addr1).payout();
-      let addr1BalanceAfter = await ethers.provider.getBalance(addr1.address);
-      expect(addr1BalanceAfter.sub(addr1BalanceBefore)).to.equal(
-        ethers.utils.parseEther("1")
-      );
-
-      // Payout addr2
-      let addr2BalanceBefore = await ethers.provider.getBalance(addr2.address);
-      await electionBet.connect(addr2).payout();
-      let addr2BalanceAfter = await ethers.provider.getBalance(addr2.address);
-      expect(addr2BalanceAfter.sub(addr2BalanceBefore)).to.equal(
-        ethers.utils.parseEther("2")
-      );
+  describe("Withdrawal", function () {
+    beforeEach(async function () {
+      await electionBet.connect(addr1).makeBet("Kemal");
+      await electionBet.connect(addr1).makeBet("Erdogan");
     });
 
-    it("Should not allow payout if no winnings", async function () {
-      await expect(electionBet.connect(addr1).payout()).to.be.revertedWith(
-        "No winnings to payout"
-      );
+    it("Should allow users to withdraw their bets", async function () {
+      const balanceBefore = await ethers.provider.getBalance(addr1.address);
+      const userTotalBet = await electionBet.calculateUserBet(addr1.address, "Kemal");
+
+      await expect(electionBet.connect(addr1).withdraw())
+        .to.emit(electionBet, "BetWithdrawn")
+        .withArgs(addr1.address, userTotalBet, "");
+
+      const balanceAfter = await ethers.provider.getBalance(addr1.address);
+      expect(balanceAfter).to.equal(balanceBefore.add(userTotalBet));
+    });
+
+    it("Should revert when trying to withdraw zero bets", async function () {
+      await expect(electionBet.connect(addr2).withdraw()).to.be.revertedWith("No bets to withdraw");
     });
   });
 
-  // TODO: Add more tests as needed, such as for distributing winnings
+  describe("Election Result", function () {
+    beforeEach(async function () {
+      await electionBet.connect(addr1).makeBet("Kemal");
+      await electionBet.connect(addr2).makeBet("Erdogan");
+    });
+
+    it("Should distribute winnings to the correct bettors", async function () {
+      await electionBet.fulfill("<request-id>", "Kemal");
+
+      const balanceBeforeAddr1 = await ethers.provider.getBalance(addr1.address);
+      const balanceBeforeAddr2 = await ethers.provider.getBalance(addr2.address);
+
+      await expect(electionBet.distributeWinnings("Kemal"))
+        .to.changeBalance(addr1, 0.5 ether) // Assuming total bets on Kemal is 1 ETH
+        .and.changeBalance(addr2, 0);
+
+      const balanceAfterAddr1 = await ethers.provider.getBalance(addr1.address);
+      const balanceAfterAddr2 = await ethers.provider.getBalance(addr2.address);
+
+      expect(balanceAfterAddr1.sub(balanceBeforeAddr1)).to.equal(0.5 ether);
+      expect(balanceAfterAddr2.sub(balanceBeforeAddr2)).to.equal(0);
+    });
+
+    it("Should transfer the service fee to the service fee wallet", async function () {
+      await electionBet.fulfill("<request-id>", "Kemal");
+
+      const balanceBefore = await ethers.provider.getBalance(serviceFeeWallet);
+
+      await expect(electionBet.distributeWinnings("Kemal"))
+        .to.changeBalance(serviceFeeWallet, 0.02 ether); // Assuming total bets on Kemal is 1 ETH, service fee is 2%
+
+      const balanceAfter = await ethers.provider.getBalance(serviceFeeWallet);
+
+      expect(balanceAfter.sub(balanceBefore)).to.equal(0.02 ether);
+    });
+  });
 });
 
-// const { expect } = require("chai");
-// const { ethers } = require("hardhat");
-
-//...
