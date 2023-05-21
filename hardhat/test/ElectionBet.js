@@ -102,12 +102,20 @@ describe("ElectionBet", function () {
       );
       const userTotalBet = userTotalBetKemal.add(userTotalBetErdogan);
 
-      await expect(electionBet.connect(addr1).withdraw())
+      const tx = await electionBet.connect(addr1).withdraw();
+      await expect(tx)
         .to.emit(electionBet, "BetWithdrawn")
         .withArgs(addr1.address, userTotalBet, "");
 
+      const gasUsed = (await tx.wait()).gasUsed;
+      const gasPrice = (await ethers.provider.getGasPrice()).mul(gasUsed);
       const balanceAfter = await ethers.provider.getBalance(addr1.address);
-      expect(balanceAfter).to.equal(balanceBefore.add(userTotalBet));
+      const expectedBalance = balanceBefore.sub(gasPrice).add(userTotalBet);
+
+      expect(balanceAfter).to.be.closeTo(
+        expectedBalance,
+        ethers.utils.parseEther("0.0001")
+      );
     });
 
     it("Should revert when trying to withdraw zero bets", async function () {
