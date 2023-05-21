@@ -175,32 +175,45 @@ contract ElectionBet is ChainlinkClient, Ownable, ReentrancyGuard {
         }
     }
 
-    // Function to distribute winnings based on the election result
-    function distributeWinnings(string memory winner) internal nonReentrant {
-        uint256 totalWinningAmount = totalBets[winner];
-        if (totalWinningAmount == 0) {
-            return;
-        }
 
-        uint256 totalNetWinningAmount = totalWinningAmount;
+    // Mapping to keep track of each user's winnings
+mapping(address => uint256) public userWinnings;
 
-        winnings[winner] = totalNetWinningAmount;
-
-        // Calculate the payout ratio for each bettor
-        for (uint256 i = 0; i < bets.length; i++) {
-            if (keccak256(bytes(bets[i].candidate)) == keccak256(bytes(winner))) {
-                uint256 payoutAmount = (bets[i].amount.mul(totalNetWinningAmount)).div(totalWinningAmount);
-                // Apply the fee during winning distribution
-                uint256 feeAmount = (payoutAmount.mul(serviceFeePercentage)).div(100);
-                uint256 netPayoutAmount = payoutAmount.sub(feeAmount);
-                payable(bets[i].bettor).transfer(netPayoutAmount);
-            }
-        }
-
-        // Transfer service fee to the service fee wallet
-        uint256 totalServiceFeeAmount = (totalNetWinningAmount.mul(serviceFeePercentage)).div(100);
-        payable(serviceFeeWallet).transfer(totalServiceFeeAmount);
+// Function to calculate winnings based on the election result
+function distributeWinnings(string memory winner) internal {
+    uint256 totalWinningAmount = totalBets[winner];
+    if (totalWinningAmount == 0) {
+        return;
     }
+
+    uint256 totalNetWinningAmount = totalWinningAmount;
+
+    winnings[winner] = totalNetWinningAmount;
+
+    // Calculate the winnings for each bettor
+    for (uint256 i = 0; i < bets.length; i++) {
+      if (keccak256(bytes(bets[i].candidate)) == keccak256(bytes(winner))) {
+        uint256 payoutAmount = (bets[i].amount.mul(totalNetWinningAmount)).div(totalWinningAmount);
+        // Apply the fee during winning distribution
+        uint256 feeAmount = (payoutAmount.mul(serviceFeePercentage)).div(100);
+        uint256 netPayoutAmount = payoutAmount.sub(feeAmount);
+        userWinnings[bets[i].bettor] = userWinnings[bets[i].bettor].add(netPayoutAmount);
+      }
+    }
+
+    // Transfer service fee to the service fee wallet
+    uint256 totalServiceFeeAmount = (totalNetWinningAmount.mul(serviceFeePercentage)).div(100);
+    payable(serviceFeeWallet).transfer(totalServiceFeeAmount);
+}
+
+// Function for users to claim their winnings
+function claimWinnings() public {
+  uint256 winnings = userWinnings[msg.sender];
+  require(winnings > 0, "No winnings to claim");
+
+  userWinnings[msg.sender] = 0;
+  payable(msg.sender).transfer(winnings);
+}
 
     // Function to set the oracle address
     function setOracle(address _oracle) public onlyOwner {
