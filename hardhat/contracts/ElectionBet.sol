@@ -3,8 +3,9 @@ pragma solidity ^0.8.9;
 import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract ElectionBet is ChainlinkClient, Ownable {
+contract ElectionBet is ChainlinkClient, Ownable, ReentrancyGuard {
     using SafeMath for uint256;
 
     address private oracle;
@@ -175,7 +176,7 @@ contract ElectionBet is ChainlinkClient, Ownable {
     }
 
     // Function to distribute winnings based on the election result
-    function distributeWinnings(string memory winner) internal {
+    function distributeWinnings(string memory winner) internal nonReentrant {
         uint256 totalWinningAmount = totalBets[winner];
         if (totalWinningAmount == 0) {
             return;
