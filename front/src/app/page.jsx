@@ -451,6 +451,16 @@ export default function Home() {
           </button>
         </div>
       )}
+      <div className="flex justify-center my-4">
+        <a
+          href="https://t.me/turk2023oracle"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
+        >
+          Contact
+        </a>
+      </div>
     </main>
   );
 }
