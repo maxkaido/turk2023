@@ -58,7 +58,14 @@ contract ElectionBetting is ChainlinkClient, Ownable, ReentrancyGuard {
     Confirmation public electionConfirmation;
 
     // Constructor
-    constructor(address _oracle, string memory _jobId, uint256 _fee, uint256 _serviceFeePercentage, address _serviceFeeWallet, uint256 _bettingEndTime) {
+    constructor(
+        address _oracle,
+        string memory _jobId,
+        uint256 _fee,
+        uint256 _serviceFeePercentage,
+        address _serviceFeeWallet,
+        uint256 _bettingEndTime
+    ) {
         setChainlinkToken(0xa36085F69e2889c224210F603D836748e7dC0088);
         oracle = _oracle;
         jobId = stringToBytes32(_jobId);
@@ -71,13 +78,18 @@ contract ElectionBetting is ChainlinkClient, Ownable, ReentrancyGuard {
         electionConfirmation = Confirmation(0, "", 0);
     }
 
-    function stringToBytes32(string memory source) public pure returns (bytes32 result) {
+    function stringToBytes32(string memory source)
+        public
+        pure
+        returns (bytes32 result)
+    {
         bytes memory tempEmptyStringTest = bytes(source);
         if (tempEmptyStringTest.length == 0) {
             return 0x0;
         }
 
-        assembly { // solhint-disable-line no-inline-assembly
+        assembly {
+            // solhint-disable-line no-inline-assembly
             result := mload(add(source, 32))
         }
     }
@@ -85,12 +97,14 @@ contract ElectionBetting is ChainlinkClient, Ownable, ReentrancyGuard {
     // Function to make a bet
     function makeBet(string memory candidate) public payable {
         require(
-            keccak256(bytes(candidate)) == keccak256(bytes("Kemal")) || 
-            keccak256(bytes(candidate)) == keccak256(bytes("Erdogan")),
+            keccak256(bytes(candidate)) == keccak256(bytes("Kemal")) ||
+                keccak256(bytes(candidate)) == keccak256(bytes("Erdogan")),
             "Invalid candidate"
         );
-        require(block.timestamp <= bettingEndTime, "Betting has ended");
-        require(userBet[msg.sender].amount == 0, "Previous bet exists");
+        require(
+            block.timestamp <= bettingEndTime,
+            "Betting has ended"
+        );
 
         // Record the bet amount
         uint256 betAmount = msg.value;
@@ -111,13 +125,18 @@ contract ElectionBetting is ChainlinkClient, Ownable, ReentrancyGuard {
         Bet storage bet = userBet[msg.sender];
         require(bet.amount > 0, "No bet to withdraw");
         require(!bet.withdrawn, "Bet already withdrawn");
-        require(block.timestamp <= bettingEndTime, "Betting has ended");
+        require(
+            block.timestamp <= bettingEndTime,
+            "Betting has ended"
+        );
 
         uint256 withdrawAmount = bet.amount;
         bet.withdrawn = true;
 
         // Update the total amount bet on this candidate
-        totalBets[bet.candidate] = totalBets[bet.candidate].sub(withdrawAmount);
+        totalBets[bet.candidate] = totalBets[bet.candidate].sub(
+            withdrawAmount
+        );
 
         payable(msg.sender).transfer(withdrawAmount);
 
@@ -125,16 +144,23 @@ contract ElectionBetting is ChainlinkClient, Ownable, ReentrancyGuard {
     }
 
     // Function to calculate the total bet amount of a user on a candidate
-    function calculateUserBet(address user, string memory candidate) public view returns (uint256) {
+    function calculateUserBet(address user, string memory candidate)
+        public
+        view
+        returns (uint256)
+    {
         require(
-            keccak256(bytes(candidate)) == keccak256(bytes("Kemal")) || 
-            keccak256(bytes(candidate)) == keccak256(bytes("Erdogan")),
+            keccak256(bytes(candidate)) == keccak256(bytes("Kemal")) ||
+                keccak256(bytes(candidate)) == keccak256(bytes("Erdogan")),
             "Invalid candidate"
         );
 
         Bet memory bet = userBet[user];
 
-        if (keccak256(bytes(bet.candidate)) == keccak256(bytes(candidate)) && !bet.withdrawn) {
+        if (
+            keccak256(bytes(bet.candidate)) == keccak256(bytes(candidate)) &&
+            !bet.withdrawn
+        ) {
             return bet.amount;
         } else {
             return 0;
@@ -143,7 +169,11 @@ contract ElectionBetting is ChainlinkClient, Ownable, ReentrancyGuard {
 
     // Function to get the election result
     function getElectionResult() public onlyOwner returns (bytes32 requestId) {
-        Chainlink.Request memory request = buildChainlinkRequest(jobId, address(this), this.fulfill.selector);
+        Chainlink.Request memory request = buildChainlinkRequest(
+            jobId,
+            address(this),
+            this.fulfill.selector
+        );
 
         // TODO: Set the request parameters
         // request.add("get", "http://api.electionresults.com/turkey2023");
@@ -152,20 +182,29 @@ contract ElectionBetting is ChainlinkClient, Ownable, ReentrancyGuard {
     }
 
     // Function to handle the election result
-    function fulfill(bytes32 _requestId, string memory _winner) public recordChainlinkFulfillment(_requestId) {
+    function fulfill(bytes32 _requestId, string memory _winner)
+        public
+        recordChainlinkFulfillment(_requestId)
+    {
         emit ElectionResultReceived(_winner);
 
         // Check if it's a new confirmation result
-        if (keccak256(bytes(_winner)) != keccak256(bytes(electionConfirmation.result))) {
+        if (
+            keccak256(bytes(_winner)) != keccak256(bytes(electionConfirmation.result))
+        ) {
             // Drop the counter to the previous confirmation result
             electionConfirmation.count = 1;
             electionConfirmation.result = _winner;
             electionConfirmation.lastConfirmationTimestamp = block.timestamp;
         } else {
             // Check if the confirmation interval has passed
-            if (block.timestamp >= electionConfirmation.lastConfirmationTimestamp + 5 minutes) {
+            if (
+                block.timestamp >=
+                electionConfirmation.lastConfirmationTimestamp + 5 minutes
+            ) {
                 electionConfirmation.count++;
-                electionConfirmation.lastConfirmationTimestamp = block.timestamp;
+                electionConfirmation.lastConfirmationTimestamp = block
+                    .timestamp;
 
                 // Check if the confirmation count meets the threshold
                 if (electionConfirmation.count == 3) {
@@ -196,7 +235,12 @@ contract ElectionBetting is ChainlinkClient, Ownable, ReentrancyGuard {
     }
 
     // Function to distribute winnings for a specific batch of bets
-    function distributeWinningsBatch(string memory winner, uint256 batchIndex, uint256 batchSize, uint256 numBatches) internal {
+    function distributeWinningsBatch(
+        string memory winner,
+        uint256 batchIndex,
+        uint256 batchSize,
+        uint256 numBatches
+    ) internal {
         uint256 totalWinningAmount = totalBets[winner];
         uint256 totalNetWinningAmount = candidateWinnings[winner];
 
@@ -209,12 +253,21 @@ contract ElectionBetting is ChainlinkClient, Ownable, ReentrancyGuard {
 
         // Distribute winnings for the bets in the batch
         for (uint256 i = startIndex; i < endIndex; i++) {
-            if (keccak256(bytes(bets[i].candidate)) == keccak256(bytes(winner))) {
-                uint256 payoutAmount = (bets[i].amount.mul(totalNetWinningAmount)).div(totalWinningAmount);
+            if (
+                keccak256(bytes(bets[i].candidate)) ==
+                keccak256(bytes(winner))
+            ) {
+                uint256 payoutAmount = (bets[i].amount.mul(totalNetWinningAmount)).div(
+                    totalWinningAmount
+                );
                 // Apply the fee during winning distribution
-                uint256 feeAmount = (payoutAmount.mul(serviceFeePercentage)).div(100);
+                uint256 feeAmount = (payoutAmount.mul(serviceFeePercentage)).div(
+                    100
+                );
                 uint256 netPayoutAmount = payoutAmount.sub(feeAmount);
-                userWinnings[bets[i].bettor] = userWinnings[bets[i].bettor].add(netPayoutAmount);
+                userWinnings[bets[i].bettor] = userWinnings[bets[i].bettor].add(
+                    netPayoutAmount
+                );
             }
         }
 
@@ -223,12 +276,21 @@ contract ElectionBetting is ChainlinkClient, Ownable, ReentrancyGuard {
             // Call the next batch in a new transaction
             uint256 nextBatchIndex = batchIndex + 1;
             uint256 gasLimit = gasleft() - 5000; // Reduce the gas limit to leave room for other operations
-            bytes memory data = abi.encodeWithSignature("distributeWinningsBatch(string,uint256,uint256,uint256)", winner, nextBatchIndex, batchSize, numBatches);
-            (bool success, ) = address(this).call{gas: gasLimit}(data);
+            bytes memory data =
+                abi.encodeWithSignature(
+                    "distributeWinningsBatch(string,uint256,uint256,uint256)",
+                    winner,
+                    nextBatchIndex,
+                    batchSize,
+                    numBatches
+                );
+            (bool success, ) = address(this).call{ gas: gasLimit }(data);
             require(success, "Batch distribution failed");
         } else {
             // Transfer service fee to the service fee wallet
-            uint256 totalServiceFeeAmount = (totalNetWinningAmount.mul(serviceFeePercentage)).div(100);
+            uint256 totalServiceFeeAmount = (totalNetWinningAmount.mul(
+                serviceFeePercentage
+            )).div(100);
             payable(serviceFeeWallet).transfer(totalServiceFeeAmount);
         }
     }
@@ -240,6 +302,18 @@ contract ElectionBetting is ChainlinkClient, Ownable, ReentrancyGuard {
 
         userWinnings[msg.sender] = 0;
         payable(msg.sender).transfer(winnings);
+    }
+
+    // Function to declare the winner manually
+    function declareWinner(string memory winner) public onlyOwner {
+        require(
+            keccak256(bytes(winner)) == keccak256(bytes("Kemal")) ||
+                keccak256(bytes(winner)) == keccak256(bytes("Erdogan")),
+            "Invalid candidate"
+        );
+
+        emit ElectionResultReceived(winner);
+        distributeWinnings(winner);
     }
 
     // Function to set the oracle address
@@ -258,13 +332,22 @@ contract ElectionBetting is ChainlinkClient, Ownable, ReentrancyGuard {
     }
 
     // Function to set the service fee percentage
-    function setServiceFeePercentage(uint256 _serviceFeePercentage) public onlyOwner {
-        require(_serviceFeePercentage <= 5, "Service fee percentage should not exceed 5");
+    function setServiceFeePercentage(uint256 _serviceFeePercentage)
+        public
+        onlyOwner
+    {
+        require(
+            _serviceFeePercentage <= 5,
+            "Service fee percentage should not exceed 5"
+        );
         serviceFeePercentage = _serviceFeePercentage;
     }
 
     // Function to set the service fee wallet
-    function setServiceFeeWallet(address _serviceFeeWallet) public onlyOwner {
+    function setServiceFeeWallet(address _serviceFeeWallet)
+        public
+        onlyOwner
+    {
         serviceFeeWallet = _serviceFeeWallet;
     }
 
