@@ -73,13 +73,13 @@ async function fetchWikiAndAskQuestion(url, question) {
   }
 }
 
-app.get("/results", cache.route(), async (req, res) => {
+app.get("/turk2023", cache.route(), async (req, res) => {
   try {
     const answer = await fetchWikiAndAskQuestion(
       "https://en.m.wikipedia.org/wiki/2023_Turkish_presidential_election",
       "What is the outcome of the 2023 Turkish presidential election? Please respond with 'Erdogan' if Erdogan won, 'Kemal' if Kemal won, or 'n/a' if the result is not known or uncertain."
     );
-    res.json({ answer });
+    res.send(answer);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "An error occurred" });
