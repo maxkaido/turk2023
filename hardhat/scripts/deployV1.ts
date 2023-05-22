@@ -3,9 +3,7 @@ const hre = require("hardhat");
 
 async function main() {
   // We get the contract to deploy
-  const ElectionBetting = await hre.ethers.getContractFactory(
-    "ElectionBetting"
-  );
+  const ElectionBet = await hre.ethers.getContractFactory("ElectionBet");
 
   const [deployer] = await hre.ethers.getSigners();
   const deployerAddress = await deployer.getAddress();
@@ -16,7 +14,7 @@ async function main() {
   const SERVICE_FEE_WALLET = deployerAddress;
   const BETTING_END_TIME = 1685221200;
 
-  const electionBetting = await ElectionBetting.deploy(
+  const electionBet = await ElectionBet.deploy(
     CHAINLINK_ORACLE_ADDRESS,
     JOB_ID,
     FEE,
@@ -25,9 +23,9 @@ async function main() {
     BETTING_END_TIME
   );
 
-  await electionBetting.deployed();
+  await electionBet.deployed();
 
-  console.log("ElectionBetting deployed to:", electionBetting.address);
+  console.log("ElectionBet deployed to:", electionBet.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
