@@ -6,7 +6,7 @@ import CountdownTimer from "./CountdownTimer";
 import ElectionBettingArtifact from "../../artifacts/ElectionBetting.json";
 import About from "./About";
 
-const contractAddress = "0x6Eb7c692c027f6dB1FEa2E1578b284ae90aCa983";
+const contractAddress = "0x5da23e954041cf86418303c2Af598B57E5c0505D";
 
 const ETHEREUM_API_URL =
   "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd";
@@ -27,6 +27,7 @@ export default function Home() {
   const [serviceFeePercentage, setServiceFeePercentage] = useState(0);
   const [bettingEndTime, setBettingEndTime] = useState(null);
   const [ethPriceUSD, setEthPriceUSD] = useState(0);
+  const [isOwner, setIsOwner] = useState(false);
 
   useEffect(() => {
     if (typeof window.ethereum !== "undefined") {
@@ -76,6 +77,9 @@ export default function Home() {
     );
     console.log("Contract object", contract);
     setContract(contract);
+
+    const owner = await contract.owner();
+    setIsOwner(owner === account);
   }
 
   async function fetchData() {
@@ -223,16 +227,10 @@ export default function Home() {
     return (ethValue * ethPriceUSD).toFixed(2);
   };
 
-  const declareRandomWinner = async () => {
+  const declareWinner = async (candidate) => {
     try {
       if (!contract) return;
-      // Randomly choose between Erdogan and Kemal
-      const candidates = ["Erdogan", "Kemal"];
-      const randomCandidate =
-        candidates[Math.floor(Math.random() * candidates.length)];
-
-      // Trigger the contract function to declare the random winner
-      const tx = await contract.declareWinner(randomCandidate);
+      const tx = await contract.declareWinner(candidate);
       await tx.wait();
       fetchData();
     } catch (error) {
@@ -437,14 +435,22 @@ export default function Home() {
           <p>Betting end time not available</p>
         )}
       </div>
-      <div className="p-4">
-        <button
-          onClick={declareRandomWinner}
-          className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
-        >
-          Declare Random Winner
-        </button>
-      </div>
+      {isOwner && (
+        <div className="p-4">
+          <button
+            onClick={() => declareWinner("Erdogan")}
+            className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
+          >
+            Declare Erdogan Winner
+          </button>
+          <button
+            onClick={() => declareWinner("Kemal")}
+            className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
+          >
+            Declare Kemal Winner
+          </button>
+        </div>
+      )}
     </main>
   );
 }
