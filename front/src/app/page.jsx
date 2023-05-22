@@ -6,7 +6,7 @@ import CountdownTimer from "./CountdownTimer";
 import ElectionBetArtifact from "../../artifacts/ElectionBet.json";
 import About from "./About";
 
-const contractAddress = "0x179cc4C03f6Bea57c70fAcaEa4EdC4E6DC2B2803";
+const contractAddress = "0xC995120Bcaa77979CF4C2856077DbaEAF5488f5e";
 
 const ETHEREUM_API_URL =
   "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd";
@@ -127,10 +127,21 @@ export default function Home() {
     }
   }
 
-  async function withdrawAllBets() {
+  async function withdraw() {
     try {
       if (!contract) return;
       const tx = await contract.withdraw();
+      await tx.wait();
+      fetchData();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function claimWinnings() {
+    try {
+      if (!contract) return;
+      const tx = await contract.claimWinnings();
       await tx.wait();
       fetchData();
     } catch (error) {
@@ -270,12 +281,27 @@ export default function Home() {
             >
               Bet on Erdogan
             </button>
+            {userTotalBetErdogan > 0 && (
+              <>
+                <button
+                  onClick={withdraw}
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
+                >
+                  Withdraw
+                </button>
+                <button
+                  onClick={claimWinnings}
+                  className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
+                >
+                  Claim Winnings
+                </button>
+              </>
+            )}
             <div className="mt-6">
               <p>
                 Current Bet:{" "}
-                <span id="currentBetErdogan">{userTotalBetErdogan}</span> ETH
-                {" ≈ $"}
-                {formatEthValueInUSD(userTotalBetErdogan)}
+                <span id="currentBetErdogan">{userTotalBetErdogan}</span> ETH ≈
+                ${formatEthValueInUSD(userTotalBetErdogan)}
               </p>
               {possibleWinAmountErdogan > 0 && (
                 <p>
@@ -317,6 +343,22 @@ export default function Home() {
             >
               Bet on Kemal
             </button>
+            {userTotalBetKemal > 0 && (
+              <>
+                <button
+                  onClick={withdraw}
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
+                >
+                  Withdraw
+                </button>
+                <button
+                  onClick={claimWinnings}
+                  className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
+                >
+                  Claim Winnings
+                </button>
+              </>
+            )}
             <div className="mt-6">
               <p>
                 Current Bet:{" "}
@@ -377,14 +419,6 @@ export default function Home() {
         ) : (
           <p>Betting end time not available</p>
         )}
-      </div>
-      <div className="p-4">
-        <button
-          onClick={withdrawAllBets}
-          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md my-2"
-        >
-          Withdraw
-        </button>
       </div>
     </main>
   );
