@@ -177,7 +177,7 @@ contract ElectionBetting is ChainlinkClient, Ownable, ReentrancyGuard {
       );
 
       // Set the request parameters
-      request.add("get", "https://api.oracle.thebay.me/turk2023");
+      request.add("get", "https://api.thebay.me/turk2023");
       request.add("path", "result");
 
       return sendChainlinkRequestTo(oracle, request, fee);
