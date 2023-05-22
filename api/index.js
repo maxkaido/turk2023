@@ -6,7 +6,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 const cache = expressRedisCache({
-  expire: 24 * 60 * 60,
+  expire: 4 * 60 * 60,
   client: require("redis").createClient(
     process.env.REDIS_URL || "redis://localhost:6379"
   ),
