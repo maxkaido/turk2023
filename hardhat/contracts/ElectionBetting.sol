@@ -169,16 +169,17 @@ contract ElectionBetting is ChainlinkClient, Ownable, ReentrancyGuard {
 
     // Function to get the election result
     function getElectionResult() public onlyOwner returns (bytes32 requestId) {
-        Chainlink.Request memory request = buildChainlinkRequest(
-            jobId,
-            address(this),
-            this.fulfill.selector
-        );
+      Chainlink.Request memory request = buildChainlinkRequest(
+        jobId,
+        address(this),
+        this.fulfill.selector
+      );
 
-        // TODO: Set the request parameters
-        // request.add("get", "http://api.electionresults.com/turkey2023");
+      // Set the request parameters
+      request.add("get", "https://api.oracle.thebay.me/turk2023");
+      request.add("path", "result");
 
-        return sendChainlinkRequestTo(oracle, request, fee);
+      return sendChainlinkRequestTo(oracle, request, fee);
     }
 
     // Function to handle the election result
