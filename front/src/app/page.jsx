@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import Image from "next/image";
 import CountdownTimer from "./CountdownTimer";
-import ElectionBetArtifact from "../../artifacts/ElectionBet.json";
+import ElectionBettingArtifact from "../../artifacts/ElectionBetting.json";
 import About from "./About";
 
-const contractAddress = "0xC995120Bcaa77979CF4C2856077DbaEAF5488f5e";
+const contractAddress = "0x34da7bCeF13055e25d5e7f86b2C3e5892a50Cc78";
 
 const ETHEREUM_API_URL =
   "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd";
@@ -71,7 +71,7 @@ export default function Home() {
 
     const contract = new ethers.Contract(
       contractAddress,
-      ElectionBetArtifact.abi,
+      ElectionBettingArtifact.abi,
       signer
     );
     console.log("Contract object", contract);
@@ -221,6 +221,23 @@ export default function Home() {
 
   const formatEthValueInUSD = (ethValue) => {
     return (ethValue * ethPriceUSD).toFixed(2);
+  };
+
+  const declareRandomWinner = async () => {
+    try {
+      if (!contract) return;
+      // Randomly choose between Erdogan and Kemal
+      const candidates = ["Erdogan", "Kemal"];
+      const randomCandidate =
+        candidates[Math.floor(Math.random() * candidates.length)];
+
+      // Trigger the contract function to declare the random winner
+      const tx = await contract.declareWinner(randomCandidate);
+      await tx.wait();
+      fetchData();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -419,6 +436,14 @@ export default function Home() {
         ) : (
           <p>Betting end time not available</p>
         )}
+      </div>
+      <div className="p-4">
+        <button
+          onClick={declareRandomWinner}
+          className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
+        >
+          Declare Random Winner
+        </button>
       </div>
     </main>
   );
