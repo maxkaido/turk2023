@@ -6,7 +6,7 @@ import CountdownTimer from "./CountdownTimer";
 import ElectionBettingArtifact from "../../artifacts/ElectionBetting.json";
 import About from "./About";
 
-const contractAddress = "0x34da7bCeF13055e25d5e7f86b2C3e5892a50Cc78";
+const contractAddress = "0x6Eb7c692c027f6dB1FEa2E1578b284ae90aCa983";
 
 const ETHEREUM_API_URL =
   "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd";
