@@ -7,6 +7,7 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 contract ElectionBetting is ChainlinkClient, Ownable, ReentrancyGuard {
+    using Chainlink for Chainlink.Request;
     using SafeMath for uint256;
 
     address private oracle;
