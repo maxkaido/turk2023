@@ -308,9 +308,14 @@ contract ElectionBetting is ChainlinkClient, Ownable, ReentrancyGuard {
     function declareWinner(string memory winner) public onlyOwner {
         require(
             keccak256(bytes(winner)) == keccak256(bytes("Kemal")) ||
-                keccak256(bytes(winner)) == keccak256(bytes("Erdogan")),
+            keccak256(bytes(winner)) == keccak256(bytes("Erdogan")),
             "Invalid candidate"
         );
+        require(
+          block.timestamp > bettingEndTime + 1 weeks,
+          "Cannot declare winner before one week after betting end"
+        );
+
 
         emit ElectionResultReceived(winner);
         distributeWinnings(winner);
