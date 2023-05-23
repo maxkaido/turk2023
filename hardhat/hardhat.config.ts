@@ -35,6 +35,11 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 const config: HardhatUserConfig = {
   solidity: "0.8.19",
   networks: {
+    avalanche: {
+      url: process.env.AVALANCHE_URL,
+      accounts:
+        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    },
     sepolia: {
       url: process.env.SEPOLIA_URL || "",
       accounts:
@@ -60,18 +65,6 @@ const config: HardhatUserConfig = {
   },
   etherscan: {
     apiKey: process.env.ETHERSCAN_API_KEY,
-  },
-  namedAccounts: {
-    deployer: {
-      default: 0, // here this will by default take the first account as deployer
-      1: "0x31422E72FB5371cd48c99df43A09Fb30Cc915338", // similarly on mainnet it will take the first account as deployer. Note though that depending on how hardhat network are configured, the account 0 on one network can be different than on another
-      ropsten: "0x517Cb67a73d3BC4C39b45E904915131fC3087953", // but for rinkeby it will be a specific address
-    },
-    depositWallet: {
-      default: 1, // here this will by default take the second account as feeCollector (so in the test this will be a different account than the deployer)
-      1: "0x0AdE4eDBC12DC079D4fFDA37B8Df4a344bc2A5a3", // on the mainnet the gnosis multisig
-      ropsten: "0x906233EaaFBbF5D8d4b92f13D380a03699D283Dc",
-    },
   },
 };
 

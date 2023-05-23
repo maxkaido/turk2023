@@ -67,7 +67,7 @@ contract ElectionBetting is ChainlinkClient, Ownable, ReentrancyGuard {
         address _serviceFeeWallet,
         uint256 _bettingEndTime
     ) {
-        setChainlinkToken(0xa36085F69e2889c224210F603D836748e7dC0088);
+        setChainlinkToken(0x0b9d5D9136855f6FEc3c0993feE6E9CE8a297846); // LINK token on Avalanche Fuji Testnet
         oracle = _oracle;
         jobId = stringToBytes32(_jobId);
         fee = _fee;
