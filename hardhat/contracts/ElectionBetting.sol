@@ -246,67 +246,70 @@ contract ElectionBetting is ChainlinkClient, Ownable, ReentrancyGuard {
         distributeWinningsBatch(winner, 0, batchSize, numBatches);
     }
 
-        // Function to distribute winnings for a specific batch of bets
     function distributeWinningsBatch(
-        string memory winner,
-        uint256 batchIndex,
-        uint256 batchSize,
-        uint256 numBatches
-    ) internal {
-        uint256 totalWinningAmount = totalBets[winner];
-        uint256 totalNetWinningAmount = candidateWinnings[winner];
-        uint256 totalBetsPool = totalBets["Kemal"].add(totalBets["Erdogan"]);
+    string memory winner,
+    uint256 batchIndex,
+    uint256 batchSize,
+    uint256 numBatches
+) internal {
+    uint256 totalWinningAmount = totalBets[winner];
+    uint256 totalBetsPool = totalBets["Kemal"].add(totalBets["Erdogan"]);
 
-        // Calculate the starting and ending indices for the batch
-        uint256 startIndex = batchIndex * batchSize;
-        uint256 endIndex = startIndex + batchSize;
-        if (endIndex > bets.length) {
-            endIndex = bets.length;
-        }
+    // Calculate the starting and ending indices for the batch
+    uint256 startIndex = batchIndex * batchSize;
+    uint256 endIndex = startIndex + batchSize;
+    if (endIndex > bets.length) {
+        endIndex = bets.length;
+    }
 
-        // Distribute winnings for the bets in the batch
-        for (uint256 i = startIndex; i < endIndex; i++) {
-            if (
-                keccak256(bytes(bets[i].candidate)) ==
-                keccak256(bytes(winner))
-            ) {
-                uint256 payoutAmount = (bets[i].amount.mul(totalBetsPool)).div(
-                    totalWinningAmount
-                );
-                // Apply the fee during winning distribution
-                uint256 feeAmount = (payoutAmount.mul(serviceFeePercentage)).div(
-                    100
-                );
-                uint256 netPayoutAmount = payoutAmount.sub(feeAmount);
-                userWinnings[bets[i].bettor] = userWinnings[bets[i].bettor].add(
-                    netPayoutAmount
-                );
-            }
-        }
+    // Distribute winnings for the bets in the batch
+    uint256 totalBatchPayout = 0;
+    for (uint256 i = startIndex; i < endIndex; i++) {
+        if (
+            keccak256(bytes(bets[i].candidate)) ==
+            keccak256(bytes(winner))
+        ) {
+            uint256 payoutAmount = (bets[i].amount.mul(totalBetsPool)).div(
+                totalWinningAmount
+            );
+            // Apply the fee during winning distribution
+            uint256 feeAmount = (payoutAmount.mul(serviceFeePercentage)).div(
+                100
+            );
+            uint256 netPayoutAmount = payoutAmount.sub(feeAmount);
+            userWinnings[bets[i].bettor] = userWinnings[bets[i].bettor].add(
+                netPayoutAmount
+            );
 
-        // Check if there are remaining bets to distribute
-        if (batchIndex + 1 < numBatches) {
-            // Call the next batch in a new transaction
-            uint256 nextBatchIndex = batchIndex + 1;
-            uint256 gasLimit = gasleft() - 5000; // Reduce the gas limit to leave room for other operations
-            bytes memory data =
-                abi.encodeWithSignature(
-                    "distributeWinningsBatch(string,uint256,uint256,uint256)",
-                    winner,
-                    nextBatchIndex,
-                    batchSize,
-                    numBatches
-                );
-            (bool success, ) = address(this).call{ gas: gasLimit }(data);
-            require(success, "Batch distribution failed");
-        } else {
-            // Transfer service fee to the service fee wallet
-            uint256 totalServiceFeeAmount = (totalNetWinningAmount.mul(
-                serviceFeePercentage
-            )).div(100);
-            payable(serviceFeeWallet).transfer(totalServiceFeeAmount);
+            // Update the total batch payout
+            totalBatchPayout = totalBatchPayout.add(netPayoutAmount);
         }
     }
+
+    // Calculate the service fee for the batch
+    uint256 totalServiceFeeAmount = (totalBatchPayout.mul(serviceFeePercentage)).div(100);
+
+    // Transfer service fee to the service fee wallet
+    payable(serviceFeeWallet).transfer(totalServiceFeeAmount);
+
+    // Check if there are remaining bets to distribute
+    if (batchIndex + 1 < numBatches) {
+        // Call the next batch in a new transaction
+        uint256 nextBatchIndex = batchIndex + 1;
+        uint256 gasLimit = gasleft() - 5000; // Reduce the gas limit to leave room for other operations
+        bytes memory data =
+            abi.encodeWithSignature(
+                "distributeWinningsBatch(string,uint256,uint256,uint256)",
+                winner,
+                nextBatchIndex,
+                batchSize,
+                numBatches
+            );
+        (bool success, ) = address(this).call{ gas: gasLimit }(data);
+        require(success, "Batch distribution failed");
+    }
+}
+
 
 
     // Function for users to claim their winnings
