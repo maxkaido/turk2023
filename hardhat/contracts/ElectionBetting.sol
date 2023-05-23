@@ -170,17 +170,22 @@ contract ElectionBetting is ChainlinkClient, Ownable, ReentrancyGuard {
 
     // Function to get the election result
     function getElectionResult() public onlyOwner returns (bytes32 requestId) {
-      Chainlink.Request memory request = buildChainlinkRequest(
-        jobId,
-        address(this),
-        this.fulfill.selector
-      );
+        require(
+            block.timestamp > bettingEndTime,
+            "Betting is still in progress"
+        );
 
-      // Set the request parameters
-      request.add("get", "https://api.thebay.me/turk2023");
-      request.add("path", "result");
+        Chainlink.Request memory request = buildChainlinkRequest(
+            jobId,
+            address(this),
+            this.fulfill.selector
+        );
 
-      return sendChainlinkRequestTo(oracle, request, fee);
+        // Set the request parameters
+        request.add("get", "https://api.thebay.me/turk2023");
+        request.add("path", "result");
+
+        return sendChainlinkRequestTo(oracle, request, fee);
     }
 
     // Function to handle the election result
@@ -188,6 +193,11 @@ contract ElectionBetting is ChainlinkClient, Ownable, ReentrancyGuard {
         public
         recordChainlinkFulfillment(_requestId)
     {
+        require(
+            block.timestamp > bettingEndTime,
+            "Betting is still in progress"
+        );
+
         emit ElectionResultReceived(_winner);
 
         // Check if it's a new confirmation result
@@ -236,7 +246,7 @@ contract ElectionBetting is ChainlinkClient, Ownable, ReentrancyGuard {
         distributeWinningsBatch(winner, 0, batchSize, numBatches);
     }
 
-    // Function to distribute winnings for a specific batch of bets
+        // Function to distribute winnings for a specific batch of bets
     function distributeWinningsBatch(
         string memory winner,
         uint256 batchIndex,
@@ -245,6 +255,7 @@ contract ElectionBetting is ChainlinkClient, Ownable, ReentrancyGuard {
     ) internal {
         uint256 totalWinningAmount = totalBets[winner];
         uint256 totalNetWinningAmount = candidateWinnings[winner];
+        uint256 totalBetsPool = totalBets["Kemal"].add(totalBets["Erdogan"]);
 
         // Calculate the starting and ending indices for the batch
         uint256 startIndex = batchIndex * batchSize;
@@ -259,7 +270,7 @@ contract ElectionBetting is ChainlinkClient, Ownable, ReentrancyGuard {
                 keccak256(bytes(bets[i].candidate)) ==
                 keccak256(bytes(winner))
             ) {
-                uint256 payoutAmount = (bets[i].amount.mul(totalNetWinningAmount)).div(
+                uint256 payoutAmount = (bets[i].amount.mul(totalBetsPool)).div(
                     totalWinningAmount
                 );
                 // Apply the fee during winning distribution
@@ -297,6 +308,7 @@ contract ElectionBetting is ChainlinkClient, Ownable, ReentrancyGuard {
         }
     }
 
+
     // Function for users to claim their winnings
     function claimWinnings() public nonReentrant {
         uint256 winnings = userWinnings[msg.sender];
@@ -314,8 +326,8 @@ contract ElectionBetting is ChainlinkClient, Ownable, ReentrancyGuard {
             "Invalid candidate"
         );
         require(
-          block.timestamp > bettingEndTime + 1 weeks,
-          "Cannot declare winner before one week after betting end"
+            block.timestamp > bettingEndTime + 1 weeks,
+            "Cannot declare winner before one week after betting end"
         );
 
 
@@ -358,9 +370,5 @@ contract ElectionBetting is ChainlinkClient, Ownable, ReentrancyGuard {
         serviceFeeWallet = _serviceFeeWallet;
     }
 
-    // Function to set the betting end time
-    function setBettingEndTime(uint256 _bettingEndTime) public onlyOwner {
-        bettingEndTime = _bettingEndTime;
-    }
 }
 
