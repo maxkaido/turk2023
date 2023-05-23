@@ -9,7 +9,7 @@ import About from "./About";
 const sepoliaContractAddress = "0x460DeFA3ed9986f21C588ab611cE78d0496EadFA";
 const avalancheContractAddress = "0x179cc4C03f6Bea57c70fAcaEa4EdC4E6DC2B2803";
 
-const contractAddress = avalancheContractAddress;
+const contractAddress = sepoliaContractAddress;
 
 const ETHEREUM_API_URL =
   "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd";
