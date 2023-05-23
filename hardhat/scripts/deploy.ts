@@ -1,5 +1,6 @@
 import { ethers } from "hardhat";
 const hre = require("hardhat");
+import axios from "axios";
 
 async function main() {
   // We get the contract to deploy
@@ -8,6 +9,7 @@ async function main() {
   );
 
   const [deployer] = await hre.ethers.getSigners();
+  console.log("Deploying contracts with the account:", deployer.address);
   const deployerAddress = await deployer.getAddress();
   const CHAINLINK_ORACLE_ADDRESS = deployerAddress;
   const JOB_ID = "my-job-id";
@@ -27,6 +29,33 @@ async function main() {
 
   await electionBetting.deployed();
 
+  // Get the gas price from an API
+  const gasPriceResponse = await axios.get(
+    "https://api.etherscan.io/api?module=gastracker&action=gasoracle"
+  );
+  const gasPrice = gasPriceResponse.data.result.ProposeGasPrice;
+
+  // Get the Ether to USD conversion rate from an API
+  const etherPriceResponse = await axios.get(
+    "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd"
+  );
+  const etherPrice = etherPriceResponse.data.ethereum.usd;
+
+  // Estimate the deployment gas cost
+  const estimate = await ethers.provider.estimateGas({
+    data: electionBetting.bytecode,
+  });
+
+  // Convert the gas cost to wei
+  const gasCostInWei = estimate.mul(gasPrice);
+
+  // Convert the gas cost from wei to Ether
+  const gasCostInEther = ethers.utils.formatEther(gasCostInWei);
+
+  // Calculate the deployment cost in USD
+  const deploymentCostInUSD = parseFloat(gasCostInEther) * etherPrice;
+
+  console.log(`Estimated deployment cost: ${deploymentCostInUSD} USD`);
   console.log("ElectionBetting deployed to:", electionBetting.address);
 }
 
