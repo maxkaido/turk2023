@@ -9,10 +9,10 @@ import About from "./About";
 const sepoliaContractAddress = "0x460DeFA3ed9986f21C588ab611cE78d0496EadFA";
 const avalancheContractAddress = "0x179cc4C03f6Bea57c70fAcaEa4EdC4E6DC2B2803";
 
-const contractAddress = sepoliaContractAddress;
+const contractAddress = avalancheContractAddress;
 
 const ETHEREUM_API_URL =
-  "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd";
+  "https://api.coingecko.com/api/v3/simple/price?ids=avalanche-2&vs_currencies=usd";
 
 export default function Home() {
   const [account, setAccount] = useState(null);
@@ -318,7 +318,7 @@ export default function Home() {
             <div className="mt-6">
               <p>
                 Current Bet:{" "}
-                <span id="currentBetErdogan">{userTotalBetErdogan}</span> ETH ≈
+                <span id="currentBetErdogan">{userTotalBetErdogan}</span> AVA ≈
                 ${formatEthValueInUSD(userTotalBetErdogan)}
               </p>
               {possibleWinAmountErdogan > 0 && (
@@ -332,7 +332,7 @@ export default function Home() {
               )}
               <p>
                 Total Bet: <span id="totalBetErdogan">{totalBetErdogan}</span>{" "}
-                ETH ≈ ${formatEthValueInUSD(totalBetErdogan)}
+                AVA ≈ ${formatEthValueInUSD(totalBetErdogan)}
               </p>
             </div>
           </div>
@@ -348,7 +348,7 @@ export default function Home() {
             <h1 className="text-2xl mb-2">Kemal Kılıçdaroğlu</h1>
             <input
               type="number"
-              placeholder="Enter Bet Amount (ETH)"
+              placeholder="Enter Bet Amount (AVA)"
               className="bg-gray-100 text-black rounded py-2 px-4 mb-4 w-28"
               value={betAmountKemal}
               onChange={(e) => setBetAmountKemal(e.target.value)}
@@ -380,7 +380,7 @@ export default function Home() {
             <div className="mt-6">
               <p>
                 Current Bet:{" "}
-                <span id="currentBetKemal">{userTotalBetKemal}</span> ETH ≈ $
+                <span id="currentBetKemal">{userTotalBetKemal}</span> AVA ≈ $
                 {formatEthValueInUSD(userTotalBetKemal)}
               </p>
               {possibleWinAmountKemal > 0 && (
@@ -389,11 +389,11 @@ export default function Home() {
                   <span id="possibleProfitKemal">
                     +{possibleWinAmountKemal.toFixed(5)}
                   </span>{" "}
-                  ETH ≈ ${formatEthValueInUSD(possibleWinAmountKemal)}
+                  AVA ≈ ${formatEthValueInUSD(possibleWinAmountKemal)}
                 </p>
               )}
               <p>
-                Total Bet: <span id="totalBetKemal">{totalBetKemal}</span> ETH ≈
+                Total Bet: <span id="totalBetKemal">{totalBetKemal}</span> AVA ≈
                 ${formatEthValueInUSD(totalBetKemal)}
               </p>
             </div>
