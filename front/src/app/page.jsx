@@ -58,7 +58,7 @@ export default function Home() {
     try {
       const response = await fetch(ETHEREUM_API_URL);
       const data = await response.json();
-      const ethPrice = data.ethereum.usd;
+      const ethPrice = data["avalanche-2"].usd;
       setEthPriceUSD(ethPrice);
     } catch (error) {
       console.error(error);
@@ -286,7 +286,7 @@ export default function Home() {
             <h1 className="text-2xl mb-2">Recep Tayyip Erdoğan</h1>
             <input
               type="number"
-              placeholder="Enter Bet Amount (ETH)"
+              placeholder="Enter Bet Amount (AVA)"
               className="bg-gray-100 text-black rounded py-2 px-4 mb-4 w-28"
               value={betAmountErdogan}
               onChange={(e) => setBetAmountErdogan(e.target.value)}
@@ -325,9 +325,9 @@ export default function Home() {
                 <p>
                   Possible Win:{" "}
                   <span id="possibleProfitErdogan">
-                    +{possibleWinAmountErdogan.toFixed(5)}
+                    +{possibleWinAmountErdogan.toFixed(2)}
                   </span>{" "}
-                  ETH ≈ ${formatEthValueInUSD(possibleWinAmountErdogan)}
+                  AVA ≈ ${formatEthValueInUSD(possibleWinAmountErdogan)}
                 </p>
               )}
               <p>
@@ -387,7 +387,7 @@ export default function Home() {
                 <p>
                   Possible Win:{" "}
                   <span id="possibleProfitKemal">
-                    +{possibleWinAmountKemal.toFixed(5)}
+                    +{possibleWinAmountKemal.toFixed(2)}
                   </span>{" "}
                   AVA ≈ ${formatEthValueInUSD(possibleWinAmountKemal)}
                 </p>
