@@ -274,7 +274,7 @@ export default function Home() {
           Bet on the next Turkish president
         </h2>
         <div className="grid grid-cols-2 gap-8">
-          <div className="p-6 rounded border-2 border-red-500 text-center">
+          <div className="p-6 rounded border-2 border-white text-center">
             <Image
               src="/c1.jpg"
               alt="Recep Tayyip Erdoğan's portrait"
@@ -336,7 +336,7 @@ export default function Home() {
               </p>
             </div>
           </div>
-          <div className="p-6 rounded border-2 border-blue-500 text-center">
+          <div className="p-6 rounded border-2 border-white text-center">
             <Image
               src="/c2.jpg"
               alt="Kemal Kılıçdaroğlu's portrait"
