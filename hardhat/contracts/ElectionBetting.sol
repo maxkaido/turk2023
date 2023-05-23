@@ -78,6 +78,10 @@ contract ElectionBetting is ChainlinkClient, Ownable, ReentrancyGuard {
         // Initialize election confirmation
         electionConfirmation = Confirmation(0, "", 0);
     }
+        // Function to set the Chainlink token address
+    function setChainlinkTokenAddress(address _tokenAddress) public onlyOwner {
+        setChainlinkToken(_tokenAddress); // LINK token on Avalanche Fuji Testnet
+    }
 
     function stringToBytes32(string memory source)
         public
