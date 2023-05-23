@@ -328,10 +328,10 @@ contract ElectionBetting is ChainlinkClient, Ownable, ReentrancyGuard {
             keccak256(bytes(winner)) == keccak256(bytes("Erdogan")),
             "Invalid candidate"
         );
-        require(
-            block.timestamp > bettingEndTime + 1 weeks,
-            "Cannot declare winner before one week after betting end"
-        );
+        // require(
+            // block.timestamp > bettingEndTime + 1 weeks,
+            // "Cannot declare winner before one week after betting end"
+        // );
 
 
         emit ElectionResultReceived(winner);
