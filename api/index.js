@@ -8,6 +8,11 @@ const app = express();
 const port = process.env.PORT || 3000;
 const expire = process.env.NODE_ENV === "production" ? 24 * 60 * 60 : 60; // 24 hours in seconds
 
+function calculatePrice(tokens) {
+  const pricePerToken = 0.002 / 1000; // $0.002 per 1000 tokens
+  return tokens * pricePerToken;
+}
+
 const cache = expressRedisCache({
   expire: 1,
   client: require("redis").createClient(
@@ -58,7 +63,9 @@ async function fetchWikiAndAskQuestion(url, question) {
           },
         }
       );
-      console.log(response.data);
+      const totalTokens = response.data.usage.total_tokens;
+      const price = calculatePrice(totalTokens);
+      console.log(`Cost of the request: $${price}`);
 
       return response.data.choices[0].message.content;
     } catch (error) {
