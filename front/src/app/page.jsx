@@ -299,7 +299,7 @@ export default function Home() {
             >
               Bet on Erdogan
             </button>
-            {userTotalBetErdogan > 0 && (
+            {userTotalBetErdogan > 0 ? (
               <>
                 <button
                   onClick={withdraw}
@@ -310,6 +310,21 @@ export default function Home() {
                 <button
                   onClick={claimWinnings}
                   className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
+                >
+                  Claim Winnings
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  className="bg-red-500 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
+                  disabled
+                >
+                  Withdraw
+                </button>
+                <button
+                  className="bg-green-500 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
+                  disabled
                 >
                   Claim Winnings
                 </button>
@@ -361,7 +376,7 @@ export default function Home() {
             >
               Bet on Kemal
             </button>
-            {userTotalBetKemal > 0 && (
+            {userTotalBetKemal > 0 ? (
               <>
                 <button
                   onClick={withdraw}
@@ -372,6 +387,21 @@ export default function Home() {
                 <button
                   onClick={claimWinnings}
                   className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
+                >
+                  Claim Winnings
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  className="bg-red-500 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
+                  disabled
+                >
+                  Withdraw
+                </button>
+                <button
+                  className="bg-green-500 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
+                  disabled
                 >
                   Claim Winnings
                 </button>
@@ -454,16 +484,6 @@ export default function Home() {
           </button>
         </div>
       )}
-      <div className="flex justify-center my-4">
-        <a
-          href="https://t.me/turk2023oracle"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
-        >
-          Contact
-        </a>
-      </div>
     </main>
   );
 }
