@@ -1,26 +1,22 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { ethers } from "ethers";
 import Image from "next/image";
 import CountdownTimer from "../components/CountdownTimer";
 import ElectionBettingArtifact from "../../artifacts/ElectionBetting.json";
 import About from "../components/About";
-import { useContext } from "react";
 import EthereumContext from "../context/EthereumContext";
 
 const sepoliaContractAddress = "0x460DeFA3ed9986f21C588ab611cE78d0496EadFA";
 const avalancheContractAddress = "0x179cc4C03f6Bea57c70fAcaEa4EdC4E6DC2B2803";
 
-const contractAddress = avalancheContractAddress;
+const contractAddress = sepoliaContractAddress;
 
 const ETHEREUM_API_URL =
   "https://api.coingecko.com/api/v3/simple/price?ids=avalanche-2&vs_currencies=usd";
 
 export default function Home() {
   const { state, setState } = useContext(EthereumContext);
-  const [account, setAccount] = useState(null);
-  const [provider, setProvider] = useState(null);
-  const [contract, setContract] = useState(null);
   const [bets, setBets] = useState([]);
   const [betAmountErdogan, setBetAmountErdogan] = useState("");
   const [betAmountKemal, setBetAmountKemal] = useState("");
@@ -42,16 +38,16 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (account) {
+    if (state.account) {
       loadBlockchainData();
     }
-  }, [account]);
+  }, [state.account]);
 
   useEffect(() => {
-    if (contract && account) {
+    if (state.contract && state.account) {
       fetchData();
     }
-  }, [contract, account]);
+  }, [state.contract, state.account]);
 
   useEffect(() => {
     fetchEthPriceUSD();
@@ -70,11 +66,11 @@ export default function Home() {
 
   async function loadBlockchainData() {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
-    setProvider(provider);
+    setState((prevState) => ({ ...prevState, provider }));
 
     const signer = provider.getSigner();
     const account = await signer.getAddress();
-    setAccount(account);
+    setState((prevState) => ({ ...prevState, account }));
 
     const contract = new ethers.Contract(
       contractAddress,
@@ -82,7 +78,7 @@ export default function Home() {
       signer
     );
     console.log("Contract object", contract);
-    setContract(contract);
+    setState((prevState) => ({ ...prevState, contract }));
 
     const owner = await contract.owner();
     setIsOwner(owner === account);
@@ -90,7 +86,7 @@ export default function Home() {
 
   async function fetchData() {
     try {
-      const pastEvents = await contract.queryFilter("BetMade");
+      const pastEvents = await state.contract.queryFilter("BetMade");
       const pastBets = pastEvents.map((event) => ({
         bettor: event.args.bettor,
         amount: ethers.utils.formatEther(event.args.amount),
@@ -121,15 +117,15 @@ export default function Home() {
     }
   }
 
-  const trimmedAddress = account
-    ? `${account.slice(0, 6)}...${account.slice(-4)}`
+  const trimmedAddress = state.account
+    ? `${state.account.slice(0, 6)}...${state.account.slice(-4)}`
     : "";
 
   async function makeBet(candidate, betAmount) {
     try {
-      if (!contract) return;
+      if (!state.contract) return;
       const value = ethers.utils.parseEther(betAmount.toString());
-      const tx = await contract.makeBet(candidate, { value });
+      const tx = await state.contract.makeBet(candidate, { value });
       await tx.wait();
       fetchData();
     } catch (error) {
@@ -139,8 +135,8 @@ export default function Home() {
 
   async function withdraw() {
     try {
-      if (!contract) return;
-      const tx = await contract.withdraw();
+      if (!state.contract) return;
+      const tx = await state.contract.withdraw();
       await tx.wait();
       fetchData();
     } catch (error) {
@@ -150,8 +146,8 @@ export default function Home() {
 
   async function claimWinnings() {
     try {
-      if (!contract) return;
-      const tx = await contract.claimWinnings();
+      if (!state.contract) return;
+      const tx = await state.contract.claimWinnings();
       await tx.wait();
       fetchData();
     } catch (error) {
@@ -161,7 +157,7 @@ export default function Home() {
 
   async function getServiceFeePercentage() {
     try {
-      const feePercentage = await contract.serviceFeePercentage();
+      const feePercentage = await state.contract.serviceFeePercentage();
       setServiceFeePercentage(feePercentage.toNumber());
     } catch (error) {
       console.error(error);
@@ -170,7 +166,7 @@ export default function Home() {
 
   async function getBettingEndTime() {
     try {
-      const endTime = await contract.bettingEndTime();
+      const endTime = await state.contract.bettingEndTime();
       setBettingEndTime(endTime.toNumber());
     } catch (error) {
       console.error(error);
@@ -179,9 +175,13 @@ export default function Home() {
 
   async function getUserBet(candidate) {
     try {
-      const userBet = await contract.calculateUserBet(account, candidate, {
-        from: account,
-      });
+      const userBet = await state.contract.calculateUserBet(
+        state.account,
+        candidate,
+        {
+          from: state.account,
+        }
+      );
       const formattedUserBet = Number(ethers.utils.formatEther(userBet));
 
       if (candidate === "Erdogan") {
@@ -196,8 +196,8 @@ export default function Home() {
 
   async function getTotalBet(candidate) {
     try {
-      const totalBetAmount = await contract.totalBets(candidate, {
-        from: account,
+      const totalBetAmount = await state.contract.totalBets(candidate, {
+        from: state.account,
       });
       const formattedTotalBet = Number(
         ethers.utils.formatEther(totalBetAmount)
@@ -235,8 +235,8 @@ export default function Home() {
 
   const declareWinner = async (candidate) => {
     try {
-      if (!contract) return;
-      const tx = await contract.declareWinner(candidate);
+      if (!state.contract) return;
+      const tx = await state.contract.declareWinner(candidate);
       await tx.wait();
       fetchData();
     } catch (error) {
@@ -256,7 +256,7 @@ export default function Home() {
               </div>
             </div>
             <div className="flex">
-              {account ? (
+              {state.account ? (
                 <p className="text-white mr-4">{trimmedAddress}</p>
               ) : (
                 <button
@@ -277,7 +277,7 @@ export default function Home() {
           Bet on the next Turkish president
         </h2>
         <div className="grid grid-cols-2 gap-8">
-          <div className="p-6 rounded border-2 border-white text-center">
+          <div className="p-6 rounded border-2 border-red-500 text-center">
             <Image
               src="/c1.jpg"
               alt="Recep Tayyip Erdoğan's portrait"
@@ -354,7 +354,7 @@ export default function Home() {
               </p>
             </div>
           </div>
-          <div className="p-6 rounded border-2 border-white text-center">
+          <div className="p-6 rounded border-2 border-blue-500 text-center">
             <Image
               src="/c2.jpg"
               alt="Kemal Kılıçdaroğlu's portrait"
