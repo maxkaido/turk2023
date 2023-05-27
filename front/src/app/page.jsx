@@ -440,7 +440,7 @@ export default function Home() {
           >
             <p className="text-sm">
               <span className="font-semibold">Bet Amount: </span>
-              {bet.amount} Ether ≈ ${formatEthValueInUSD(bet.amount)}
+              {bet.amount} AVAX ≈ ${formatEthValueInUSD(bet.amount)}
             </p>
             <p className="text-sm">
               <span className="font-semibold">Bettor: </span>
