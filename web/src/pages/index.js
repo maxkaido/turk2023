@@ -21,10 +21,8 @@ export default function Home() {
   const [betAmountErdogan, setBetAmountErdogan] = useState("");
   const [betAmountKemal, setBetAmountKemal] = useState("");
   const [userTotalBetErdogan, setUserTotalBetErdogan] = useState(0);
-  // const [possibleWinErdogan, setPossibleWinErdogan] = useState(0);
   const [totalBetErdogan, setTotalBetErdogan] = useState(0);
   const [userTotalBetKemal, setUserTotalBetKemal] = useState(0);
-  // const [possibleWinKemal, setPossibleWinKemal] = useState(0);
   const [totalBetKemal, setTotalBetKemal] = useState(0);
   const [serviceFeePercentage, setServiceFeePercentage] = useState(0);
   const [bettingEndTime, setBettingEndTime] = useState(null);
