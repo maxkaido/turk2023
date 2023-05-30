@@ -6,28 +6,8 @@ import EthereumContext from "../context/EthereumContext";
 import p from "../../package.json";
 import NetworkSwitch from "@/components/NetworkSwitch";
 
-// Network configuration
-const networks = {
-  dev: {
-    contractAddress: "<dev_contract_address>",
-    ethApiUrl:
-      "https://api.coingecko.com/api/v3/simple/price?ids=avalanche-2&vs_currencies=usd",
-  },
-  sepolia: {
-    contractAddress: "<sepolia_contract_address>",
-    ethApiUrl:
-      "https://api.coingecko.com/api/v3/simple/price?ids=avalanche-2&vs_currencies=usd",
-  },
-  avalanche: {
-    contractAddress: "0x179cc4C03f6Bea57c70fAcaEa4EdC4E6DC2B2803",
-    ethApiUrl:
-      "https://api.coingecko.com/api/v3/simple/price?ids=avalanche-2&vs_currencies=usd",
-  },
-};
-
 export default function Navbar() {
   const [selectedNetwork, setSelectedNetwork] = useState("avalanche"); // Default selected network is "avalanche"
-  const networkConfig = networks[selectedNetwork];
   const { state, setState } = useContext(EthereumContext);
   const [menuOpen, setMenuOpen] = useState(false);
   const router = useRouter();

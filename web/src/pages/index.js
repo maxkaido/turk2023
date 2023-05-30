@@ -30,7 +30,7 @@ const networks = {
 
 export default function Home() {
   const { state, setState } = useContext(EthereumContext);
-  const [selectedNetwork, setSelectedNetwork] = useState("avalanche"); // Default selected network is "avalanche"
+  const [selectedNetwork] = useState("avalanche"); // Default selected network is "avalanche"
   const networkConfig = networks[selectedNetwork];
 
   // Destructure networkConfig to get contractAddress and ethApiUrl

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Switch from "react-switch";
 
 const networks = {
@@ -29,7 +28,7 @@ export default function NetworkSwitch({ selectedNetwork, onNetworkChange }) {
     <div className="flex items-center">
       <Switch
         checked={selectedNetwork === "avalanche"}
-        onChange={(checked) => {
+        onChange={() => {
           const nextNetwork = getNextNetwork(selectedNetwork);
           onNetworkChange(nextNetwork);
         }}
