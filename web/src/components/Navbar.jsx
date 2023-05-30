@@ -44,7 +44,7 @@ export default function Navbar() {
               <FontAwesomeIcon icon={faBars} className="h-6 w-6" />
             </button>
             <div className="flex-shrink-0">
-              <p className="text-white text-lg font-bold">
+              <p className="text-white text-sm font-bold">
                 Election Betting | v{p.version}
               </p>
             </div>

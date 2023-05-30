@@ -18,7 +18,7 @@ export default function App({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>Bet on the next Turkish president | v{p.version}</title>
+        <title>Election Betting | v{p.version}</title>
         <meta name="description" content="Election Betting" />
         <link
           rel="apple-touch-icon"
