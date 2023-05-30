@@ -37,64 +37,67 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <p className="text-white">TurkElectro Oracle</p>
+              <p className="text-white text-lg font-bold">TurkElectro Oracle</p>
             </div>
           </div>
-          <div className="flex">
+          <div className="flex items-center">
             {state.account ? (
-              <p className="text-white mr-4">
+              <p className="text-white text-sm mr-4">
                 <FontAwesomeIcon icon={faUser} className="mr-2" />
                 {trimmedAddress}
               </p>
             ) : (
               <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold text-sm py-2 px-4 rounded"
                 onClick={requestAccount}
               >
                 Connect Wallet
               </button>
             )}
+            <button
+              className="text-white focus:outline-none lg:hidden"
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              <FontAwesomeIcon icon={faBars} className="h-6 w-6" />
+            </button>
           </div>
-          <button
-            className="text-white focus:outline-none"
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            <FontAwesomeIcon icon={faBars} className="h-6 w-6" />
-          </button>
         </div>
       </div>
       {menuOpen && (
-        <div>
-          <div className="px-2 pt-2 pb-3 sm:px-3">
-            <p className="text-white" onClick={() => handleMenuLinkClick("/")}>
+        <div className="px-4 pt-2 pb-4 sm:px-6">
+          <div className="space-y-2">
+            <p
+              className="text-white text-sm cursor-pointer hover:text-gray-300"
+              onClick={() => handleMenuLinkClick("/")}
+            >
               Home
             </p>
             <p
-              className="text-white"
+              className="text-white text-sm cursor-pointer hover:text-gray-300"
               onClick={() => handleMenuLinkClick("/about")}
             >
               About
             </p>
             <p
-              className="text-white"
+              className="text-white text-sm cursor-pointer hover:text-gray-300"
               onClick={() => handleMenuLinkClick("/turkey-2023")}
             >
               Turkey 2023
             </p>
             <p
-              className="text-white"
+              className="text-white text-sm cursor-pointer hover:text-gray-300"
               onClick={() => handleMenuLinkClick("/argentina-2023")}
             >
               Argentina 2023
             </p>
             <p
-              className="text-white"
+              className="text-white text-sm cursor-pointer hover:text-gray-300"
               onClick={() => handleMenuLinkClick("/uk-2024")}
             >
               UK 2024
             </p>
             <p
-              className="text-white"
+              className="text-white text-sm cursor-pointer hover:text-gray-300"
               onClick={() => handleMenuLinkClick("/usa-2024")}
             >
               USA 2024
