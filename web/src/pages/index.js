@@ -8,7 +8,6 @@ import Bets from "@/components/Bets";
 import ServiceFee from "@/components/ServiceFee";
 import BettingEndTime from "@/components/BettingEndTime";
 import OwnerActions from "@/components/OwnerActions";
-import Switch from "react-switch";
 
 // Network configuration
 const networks = {
@@ -246,34 +245,6 @@ export default function Home() {
     <main className="bg-gray-800 text-white min-h-screen">
       <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8">
         <h1 className="text-4xl text-center mb-10">Turk Election Bet</h1>
-        <div className="flex justify-center mb-8">
-          <Switch
-            checked={selectedNetwork === "avalanche"}
-            onChange={() => {
-              if (selectedNetwork === "avalanche") {
-                setSelectedNetwork("sepolia");
-              } else if (selectedNetwork === "sepolia") {
-                setSelectedNetwork("dev");
-              } else {
-                setSelectedNetwork("avalanche");
-              }
-            }}
-            onColor="#3182CE"
-            offColor="#D1D5DB"
-            checkedIcon={false}
-            uncheckedIcon={false}
-            height={24}
-            width={48}
-            className="relative inline-flex items-center rounded-full"
-          />
-          <span className="ml-3 text-lg">
-            {selectedNetwork === "avalanche"
-              ? "Avalanche"
-              : selectedNetwork === "sepolia"
-              ? "Sepolia"
-              : "Dev"}
-          </span>
-        </div>
         <CountdownTimer
           targetDate={targetDate}
           suppressHydrationWarning={true}
