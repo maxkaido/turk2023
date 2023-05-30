@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState, useContext } from "react";
 import { ethers } from "ethers";
 import CountdownTimer from "../components/CountdownTimer";
@@ -8,35 +9,17 @@ import Bets from "@/components/Bets";
 import ServiceFee from "@/components/ServiceFee";
 import BettingEndTime from "@/components/BettingEndTime";
 import OwnerActions from "@/components/OwnerActions";
-import Switch from "react-switch";
 
-// Network configuration
-const networks = {
-  dev: {
-    contractAddress: "<dev_contract_address>",
-    ethApiUrl:
-      "https://api.coingecko.com/api/v3/simple/price?ids=avalanche-2&vs_currencies=usd",
-  },
-  sepolia: {
-    contractAddress: "<sepolia_contract_address>",
-    ethApiUrl:
-      "https://api.coingecko.com/api/v3/simple/price?ids=avalanche-2&vs_currencies=usd",
-  },
-  avalanche: {
-    contractAddress: "0x179cc4C03f6Bea57c70fAcaEa4EdC4E6DC2B2803",
-    ethApiUrl:
-      "https://api.coingecko.com/api/v3/simple/price?ids=avalanche-2&vs_currencies=usd",
-  },
-};
+// const sepoliaContractAddress = "0x460DeFA3ed9986f21C588ab611cE78d0496EadFA";
+const avalancheContractAddress = "0x179cc4C03f6Bea57c70fAcaEa4EdC4E6DC2B2803";
+
+const contractAddress = avalancheContractAddress;
+
+const ETHEREUM_API_URL =
+  "https://api.coingecko.com/api/v3/simple/price?ids=avalanche-2&vs_currencies=usd";
 
 export default function Home() {
   const { state, setState } = useContext(EthereumContext);
-  const [selectedNetwork, setSelectedNetwork] = useState("avalanche"); // Default selected network is "avalanche"
-  const networkConfig = networks[selectedNetwork];
-
-  // Destructure networkConfig to get contractAddress and ethApiUrl
-  const { contractAddress, ethApiUrl } = networkConfig;
-
   const [bets, setBets] = useState([]);
   const [betAmountErdogan, setBetAmountErdogan] = useState("");
   const [betAmountKemal, setBetAmountKemal] = useState("");
@@ -48,6 +31,12 @@ export default function Home() {
   const [bettingEndTime, setBettingEndTime] = useState(null);
   const [ethPriceUSD, setEthPriceUSD] = useState(0);
   const [isOwner, setIsOwner] = useState(false);
+
+  useEffect(() => {
+    if (typeof window.ethereum !== "undefined") {
+      console.log("MetaMask is installed!");
+    }
+  }, []);
 
   useEffect(() => {
     if (state.account) {
@@ -67,9 +56,9 @@ export default function Home() {
 
   async function fetchEthPriceUSD() {
     try {
-      const response = await fetch(ethApiUrl); // Use ethApiUrl from the networkConfig
+      const response = await fetch(ETHEREUM_API_URL);
       const data = await response.json();
-      const ethPrice = data["avalanche-2"].usd; // Use "avalanche-2" if using Avalanche network, modify for other networks
+      const ethPrice = data["avalanche-2"].usd;
       setEthPriceUSD(ethPrice);
     } catch (error) {
       console.error(error);
@@ -85,7 +74,7 @@ export default function Home() {
     setState((prevState) => ({ ...prevState, account }));
 
     const contract = new ethers.Contract(
-      contractAddress, // Use contractAddress from the networkConfig
+      contractAddress,
       ElectionBettingArtifact.abi,
       signer
     );
@@ -246,34 +235,6 @@ export default function Home() {
     <main className="bg-gray-800 text-white min-h-screen">
       <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8">
         <h1 className="text-4xl text-center mb-10">Turk Election Bet</h1>
-        <div className="flex justify-center mb-8">
-          <Switch
-            checked={selectedNetwork === "avalanche"}
-            onChange={() => {
-              if (selectedNetwork === "avalanche") {
-                setSelectedNetwork("sepolia");
-              } else if (selectedNetwork === "sepolia") {
-                setSelectedNetwork("dev");
-              } else {
-                setSelectedNetwork("avalanche");
-              }
-            }}
-            onColor="#3182CE"
-            offColor="#D1D5DB"
-            checkedIcon={false}
-            uncheckedIcon={false}
-            height={24}
-            width={48}
-            className="relative inline-flex items-center rounded-full"
-          />
-          <span className="ml-3 text-lg">
-            {selectedNetwork === "avalanche"
-              ? "Avalanche"
-              : selectedNetwork === "sepolia"
-              ? "Sepolia"
-              : "Dev"}
-          </span>
-        </div>
         <CountdownTimer
           targetDate={targetDate}
           suppressHydrationWarning={true}
