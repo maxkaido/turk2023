@@ -10,7 +10,7 @@ import EthereumContext from "../context/EthereumContext";
 const sepoliaContractAddress = "0x460DeFA3ed9986f21C588ab611cE78d0496EadFA";
 const avalancheContractAddress = "0x179cc4C03f6Bea57c70fAcaEa4EdC4E6DC2B2803";
 
-const contractAddress = sepoliaContractAddress;
+const contractAddress = avalancheContractAddress;
 
 const ETHEREUM_API_URL =
   "https://api.coingecko.com/api/v3/simple/price?ids=avalanche-2&vs_currencies=usd";
@@ -213,7 +213,7 @@ export default function Home() {
     }
   }
 
-  const targetDate = new Date("2023-05-28T00:00:00");
+  const targetDate = new Date("2023-06-10T00:00:00");
 
   const userBetPercentageErdogan = userTotalBetErdogan / totalBetErdogan;
   const serviceFeeAmountErdogan =
