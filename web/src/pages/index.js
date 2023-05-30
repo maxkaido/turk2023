@@ -7,7 +7,7 @@ import ElectionBettingArtifact from "../../artifacts/ElectionBetting.json";
 import About from "../components/About";
 import EthereumContext from "../context/EthereumContext";
 
-const sepoliaContractAddress = "0x460DeFA3ed9986f21C588ab611cE78d0496EadFA";
+// const sepoliaContractAddress = "0x460DeFA3ed9986f21C588ab611cE78d0496EadFA";
 const avalancheContractAddress = "0x179cc4C03f6Bea57c70fAcaEa4EdC4E6DC2B2803";
 
 const contractAddress = avalancheContractAddress;
@@ -21,10 +21,10 @@ export default function Home() {
   const [betAmountErdogan, setBetAmountErdogan] = useState("");
   const [betAmountKemal, setBetAmountKemal] = useState("");
   const [userTotalBetErdogan, setUserTotalBetErdogan] = useState(0);
-  const [possibleWinErdogan, setPossibleWinErdogan] = useState(0);
+  // const [possibleWinErdogan, setPossibleWinErdogan] = useState(0);
   const [totalBetErdogan, setTotalBetErdogan] = useState(0);
   const [userTotalBetKemal, setUserTotalBetKemal] = useState(0);
-  const [possibleWinKemal, setPossibleWinKemal] = useState(0);
+  // const [possibleWinKemal, setPossibleWinKemal] = useState(0);
   const [totalBetKemal, setTotalBetKemal] = useState(0);
   const [serviceFeePercentage, setServiceFeePercentage] = useState(0);
   const [bettingEndTime, setBettingEndTime] = useState(null);

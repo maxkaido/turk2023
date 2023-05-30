@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { getTemplate } from "@/network";
+import Navbar from "@/components/Navbar";
 
 export default function TemplatePage({ template }) {
   if (!template) {
