@@ -51,10 +51,7 @@ export default function Navbar() {
           </div>
           <div className="flex items-center">
             {state.account ? (
-              <p className="text-white text-sm mr-4">
-                <FontAwesomeIcon icon={faUser} className="mr-2" />
-                {trimmedAddress}
-              </p>
+              <p className="text-white text-sm mr-4">{trimmedAddress}</p>
             ) : (
               <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold text-sm py-2 px-4 rounded"
