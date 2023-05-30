@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faUser } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import EthereumContext from "../context/EthereumContext";
+import p from "../../package.json";
 
 export default function Navbar() {
   const { state, setState } = useContext(EthereumContext);
@@ -43,7 +44,9 @@ export default function Navbar() {
               <FontAwesomeIcon icon={faBars} className="h-6 w-6" />
             </button>
             <div className="flex-shrink-0">
-              <p className="text-white text-lg font-bold">Election Betting</p>
+              <p className="text-white text-lg font-bold">
+                Election Betting | v{p.version}
+              </p>
             </div>
           </div>
           <div className="flex items-center">
