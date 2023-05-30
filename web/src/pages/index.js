@@ -11,6 +11,7 @@ import Bets from "@/components/Bets";
 import ServiceFee from "@/components/ServiceFee";
 import BettingEndTime from "@/components/BettingEndTime";
 import OwnerActions from "@/components/OwnerActions";
+import Footer from "@/components/Footer";
 
 // const sepoliaContractAddress = "0x460DeFA3ed9986f21C588ab611cE78d0496EadFA";
 const avalancheContractAddress = "0x179cc4C03f6Bea57c70fAcaEa4EdC4E6DC2B2803";
@@ -279,6 +280,7 @@ export default function Home() {
       <ServiceFee serviceFeePercentage={serviceFeePercentage} />
       <BettingEndTime bettingEndTime={bettingEndTime} />
       {isOwner && <OwnerActions declareWinner={declareWinner} />}
+      <Footer />
     </main>
   );
 }

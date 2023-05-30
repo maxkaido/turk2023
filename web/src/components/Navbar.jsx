@@ -64,9 +64,8 @@ export default function Navbar() {
             <p className="text-white">About</p>
             <p className="text-white">Turkey 2023</p>
             <p className="text-white">Argentina 2023</p>
-            <p className="text-white">Argentina 2023</p>
             <p className="text-white">UK 2024</p>
-            <p className="text-white">US 2024</p>
+            <p className="text-white">USA 2024</p>
           </div>
         </div>
       )}
