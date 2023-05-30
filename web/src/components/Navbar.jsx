@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import EthereumContext from "../context/EthereumContext";
 import p from "../../package.json";
