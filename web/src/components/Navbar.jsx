@@ -1,11 +1,13 @@
 import { useState, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faUser } from "@fortawesome/free-solid-svg-icons";
+import { useRouter } from "next/router";
 import EthereumContext from "../context/EthereumContext";
 
 export default function Navbar() {
   const { state, setState } = useContext(EthereumContext);
   const [menuOpen, setMenuOpen] = useState(false);
+  const router = useRouter();
 
   const trimmedAddress = state.account
     ? `${state.account.slice(0, 6)}...${state.account.slice(-4)}`
@@ -23,6 +25,11 @@ export default function Navbar() {
       console.error(error);
     }
   }
+
+  const handleMenuLinkClick = (path) => {
+    router.push(path);
+    setMenuOpen(false);
+  };
 
   return (
     <nav className="bg-gray-900">
@@ -49,7 +56,7 @@ export default function Navbar() {
             )}
           </div>
           <button
-            className="lg:hidden text-white focus:outline-none"
+            className="text-white focus:outline-none"
             onClick={() => setMenuOpen(!menuOpen)}
           >
             <FontAwesomeIcon icon={faBars} className="h-6 w-6" />
@@ -57,15 +64,41 @@ export default function Navbar() {
         </div>
       </div>
       {menuOpen && (
-        <div className="lg:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            {/* Menu items go here */}
-            <p className="text-white">Home</p>
-            <p className="text-white">About</p>
-            <p className="text-white">Turkey 2023</p>
-            <p className="text-white">Argentina 2023</p>
-            <p className="text-white">UK 2024</p>
-            <p className="text-white">USA 2024</p>
+        <div>
+          <div className="px-2 pt-2 pb-3 sm:px-3">
+            <p className="text-white" onClick={() => handleMenuLinkClick("/")}>
+              Home
+            </p>
+            <p
+              className="text-white"
+              onClick={() => handleMenuLinkClick("/about")}
+            >
+              About
+            </p>
+            <p
+              className="text-white"
+              onClick={() => handleMenuLinkClick("/turkey-2023")}
+            >
+              Turkey 2023
+            </p>
+            <p
+              className="text-white"
+              onClick={() => handleMenuLinkClick("/argentina-2023")}
+            >
+              Argentina 2023
+            </p>
+            <p
+              className="text-white"
+              onClick={() => handleMenuLinkClick("/uk-2024")}
+            >
+              UK 2024
+            </p>
+            <p
+              className="text-white"
+              onClick={() => handleMenuLinkClick("/usa-2024")}
+            >
+              USA 2024
+            </p>
           </div>
         </div>
       )}

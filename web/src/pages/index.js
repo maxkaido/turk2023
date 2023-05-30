@@ -3,7 +3,6 @@ import { useEffect, useState, useContext } from "react";
 import { ethers } from "ethers";
 import CountdownTimer from "../components/CountdownTimer";
 import ElectionBettingArtifact from "../../artifacts/ElectionBetting.json";
-import About from "../components/About";
 import EthereumContext from "../context/EthereumContext";
 import Navbar from "@/components/Navbar";
 import Candidate from "@/components/Candidate";
@@ -11,7 +10,6 @@ import Bets from "@/components/Bets";
 import ServiceFee from "@/components/ServiceFee";
 import BettingEndTime from "@/components/BettingEndTime";
 import OwnerActions from "@/components/OwnerActions";
-import Footer from "@/components/Footer";
 
 // const sepoliaContractAddress = "0x460DeFA3ed9986f21C588ab611cE78d0496EadFA";
 const avalancheContractAddress = "0x179cc4C03f6Bea57c70fAcaEa4EdC4E6DC2B2803";
@@ -276,11 +274,9 @@ export default function Home() {
         </div>
       </div>
       <Bets bets={bets} formatEthValueInUSD={formatEthValueInUSD} />
-      <About />
       <ServiceFee serviceFeePercentage={serviceFeePercentage} />
       <BettingEndTime bettingEndTime={bettingEndTime} />
       {isOwner && <OwnerActions declareWinner={declareWinner} />}
-      <Footer />
     </main>
   );
 }
