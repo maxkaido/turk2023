@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState, useContext } from "react";
 import { ethers } from "ethers";
-import Image from "next/image";
 import CountdownTimer from "../components/CountdownTimer";
 import ElectionBettingArtifact from "../../artifacts/ElectionBetting.json";
 import About from "../components/About";
@@ -110,10 +109,6 @@ export default function Home() {
       console.error(error);
     }
   }
-
-  const trimmedAddress = state.account
-    ? `${state.account.slice(0, 6)}...${state.account.slice(-4)}`
-    : "";
 
   async function makeBet(candidate, betAmount) {
     try {
