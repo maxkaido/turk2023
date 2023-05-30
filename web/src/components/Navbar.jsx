@@ -36,8 +36,14 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
+            <button
+              className="text-white focus:outline-none mr-4"
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              <FontAwesomeIcon icon={faBars} className="h-6 w-6" />
+            </button>
             <div className="flex-shrink-0">
-              <p className="text-white text-lg font-bold">Election Betting</p>
+              <p className="text-white text-lg font-bold">TurkElectro Oracle</p>
             </div>
           </div>
           <div className="flex items-center">
@@ -48,18 +54,12 @@ export default function Navbar() {
               </p>
             ) : (
               <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold text-sm py-2 px-4 rounded mx-4"
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold text-sm py-2 px-4 rounded"
                 onClick={requestAccount}
               >
                 Connect Wallet
               </button>
             )}
-            <button
-              className="text-white focus:outline-none"
-              onClick={() => setMenuOpen(!menuOpen)}
-            >
-              <FontAwesomeIcon icon={faBars} className="h-6 w-6" />
-            </button>
           </div>
         </div>
       </div>

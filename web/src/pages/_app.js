@@ -6,6 +6,7 @@ import Head from "next/head";
 import EthereumContext from "../context/EthereumContext";
 import Navbar from "../components/Navbar";
 import Footer from "@/components/Footer";
+import p from "../../package.json";
 
 export default function App({ Component, pageProps }) {
   const [sharedState, setSharedState] = useState({
@@ -17,7 +18,7 @@ export default function App({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>Bet on the next Turkish president</title>
+        <title>Bet on the next Turkish president | v{p.version}</title>
         <meta name="description" content="Election Betting" />
         <link
           rel="apple-touch-icon"
