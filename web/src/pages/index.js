@@ -8,6 +8,10 @@ import About from "../components/About";
 import EthereumContext from "../context/EthereumContext";
 import Navbar from "@/components/Navbar";
 import Candidate from "@/components/Candidate";
+import Bets from "@/components/Bets";
+import ServiceFee from "@/components/ServiceFee";
+import BettingEndTime from "@/components/BettingEndTime";
+import OwnerActions from "@/components/OwnerActions";
 
 // const sepoliaContractAddress = "0x460DeFA3ed9986f21C588ab611cE78d0496EadFA";
 const avalancheContractAddress = "0x179cc4C03f6Bea57c70fAcaEa4EdC4E6DC2B2803";
@@ -102,16 +106,6 @@ export default function Home() {
         getServiceFeePercentage(),
         getBettingEndTime(),
       ]);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async function requestAccount() {
-    try {
-      await window.ethereum.request({ method: "eth_requestAccounts" });
-      await loadBlockchainData();
-      fetchData();
     } catch (error) {
       console.error(error);
     }
@@ -247,30 +241,6 @@ export default function Home() {
   return (
     <main className="bg-gray-800 text-white min-h-screen">
       <Navbar />
-
-      <nav className="bg-gray-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <p className="text-white">TurkElectro Oracle</p>
-              </div>
-            </div>
-            <div className="flex">
-              {state.account ? (
-                <p className="text-white mr-4">{trimmedAddress}</p>
-              ) : (
-                <button
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                  onClick={requestAccount}
-                >
-                  Connect Wallet
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      </nav>
       <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8">
         <h1 className="text-4xl text-center mb-10">Turk Election Bet</h1>
         <CountdownTimer targetDate={targetDate} />
@@ -278,216 +248,39 @@ export default function Home() {
           Bet on the next Turkish president
         </h2>
         <div className="grid grid-cols-2 gap-8">
-          <div className="p-6 rounded border-2 border-red-500 text-center">
-            <Image
-              src="/c1.jpg"
-              alt="Recep Tayyip Erdoğan's portrait"
-              className="mx-auto mb-4 p-2 object-cover h-64 w-48 rounded-md"
-              width={200}
-              height={200}
-              priority
-            />
-            <h1 className="text-2xl mb-2">Recep Tayyip Erdoğan</h1>
-            <input
-              type="number"
-              placeholder="Enter Bet Amount (AVA)"
-              className="bg-gray-100 text-black rounded py-2 px-4 mb-4 w-28"
-              value={betAmountErdogan}
-              onChange={(e) => setBetAmountErdogan(e.target.value)}
-              min="0"
-              maxLength={7}
-            />
-            <button
-              onClick={() => makeBet("Erdogan", betAmountErdogan)}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
-            >
-              Bet on Erdogan
-            </button>
-            {userTotalBetErdogan > 0 ? (
-              <>
-                <button
-                  onClick={withdraw}
-                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
-                >
-                  Withdraw
-                </button>
-                <button
-                  onClick={claimWinnings}
-                  className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
-                >
-                  Claim Winnings
-                </button>
-              </>
-            ) : (
-              <>
-                <button
-                  className="bg-red-500 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
-                  disabled
-                >
-                  Withdraw
-                </button>
-                <button
-                  className="bg-green-500 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
-                  disabled
-                >
-                  Claim Winnings
-                </button>
-              </>
-            )}
-            <div className="mt-6">
-              <p>
-                Current Bet:{" "}
-                <span id="currentBetErdogan">{userTotalBetErdogan}</span> AVA ≈
-                ${formatEthValueInUSD(userTotalBetErdogan)}
-              </p>
-              {possibleWinAmountErdogan > 0 && (
-                <p>
-                  Possible Win:{" "}
-                  <span id="possibleProfitErdogan">
-                    +{possibleWinAmountErdogan.toFixed(2)}
-                  </span>{" "}
-                  AVA ≈ ${formatEthValueInUSD(possibleWinAmountErdogan)}
-                </p>
-              )}
-              <p>
-                Total Bet: <span id="totalBetErdogan">{totalBetErdogan}</span>{" "}
-                AVA ≈ ${formatEthValueInUSD(totalBetErdogan)}
-              </p>
-            </div>
-          </div>
-          <div className="p-6 rounded border-2 border-blue-500 text-center">
-            <Image
-              src="/c2.jpg"
-              alt="Kemal Kılıçdaroğlu's portrait"
-              className="mx-auto mb-4 p-2 object-cover h-64 w-48 rounded-md"
-              width={200}
-              height={200}
-              priority
-            />
-            <h1 className="text-2xl mb-2">Kemal Kılıçdaroğlu</h1>
-            <input
-              type="number"
-              placeholder="Enter Bet Amount (AVA)"
-              className="bg-gray-100 text-black rounded py-2 px-4 mb-4 w-28"
-              value={betAmountKemal}
-              onChange={(e) => setBetAmountKemal(e.target.value)}
-              min="0"
-              maxLength={7}
-            />
-            <button
-              onClick={() => makeBet("Kemal", betAmountKemal)}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
-            >
-              Bet on Kemal
-            </button>
-            {userTotalBetKemal > 0 ? (
-              <>
-                <button
-                  onClick={withdraw}
-                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
-                >
-                  Withdraw
-                </button>
-                <button
-                  onClick={claimWinnings}
-                  className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
-                >
-                  Claim Winnings
-                </button>
-              </>
-            ) : (
-              <>
-                <button
-                  className="bg-red-500 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
-                  disabled
-                >
-                  Withdraw
-                </button>
-                <button
-                  className="bg-green-500 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
-                  disabled
-                >
-                  Claim Winnings
-                </button>
-              </>
-            )}
-            <div className="mt-6">
-              <p>
-                Current Bet:{" "}
-                <span id="currentBetKemal">{userTotalBetKemal}</span> AVA ≈ $
-                {formatEthValueInUSD(userTotalBetKemal)}
-              </p>
-              {possibleWinAmountKemal > 0 && (
-                <p>
-                  Possible Win:{" "}
-                  <span id="possibleProfitKemal">
-                    +{possibleWinAmountKemal.toFixed(2)}
-                  </span>{" "}
-                  AVA ≈ ${formatEthValueInUSD(possibleWinAmountKemal)}
-                </p>
-              )}
-              <p>
-                Total Bet: <span id="totalBetKemal">{totalBetKemal}</span> AVA ≈
-                ${formatEthValueInUSD(totalBetKemal)}
-              </p>
-            </div>
-          </div>
+          <Candidate
+            imageSrc="/c1.jpg"
+            name="Recep Tayyip Erdoğan"
+            betAmount={betAmountErdogan}
+            setBetAmount={setBetAmountErdogan}
+            makeBet={makeBet}
+            userTotalBet={userTotalBetErdogan}
+            withdraw={withdraw}
+            claimWinnings={claimWinnings}
+            totalBet={totalBetErdogan}
+            possibleWinAmount={possibleWinAmountErdogan}
+            formatEthValueInUSD={formatEthValueInUSD}
+          />
+          <Candidate
+            imageSrc="/c2.jpg"
+            name="Kemal Kılıçdaroğlu"
+            betAmount={betAmountKemal}
+            setBetAmount={setBetAmountKemal}
+            makeBet={makeBet}
+            userTotalBet={userTotalBetKemal}
+            withdraw={withdraw}
+            claimWinnings={claimWinnings}
+            totalBet={totalBetKemal}
+            possibleWinAmount={possibleWinAmountKemal}
+            formatEthValueInUSD={formatEthValueInUSD}
+          />
         </div>
       </div>
-
-      <div className="p-4">
-        <h1 className="text-2xl font-bold mb-4">Bets</h1>
-        {bets.map((bet, index) => (
-          <div
-            key={index}
-            className="bg-gray-900 rounded shadow p-4 mb-4 text-gray-200"
-          >
-            <p className="text-sm">
-              <span className="font-semibold">Bet Amount: </span>
-              {bet.amount} AVA ≈ ${formatEthValueInUSD(bet.amount)}
-            </p>
-            <p className="text-sm">
-              <span className="font-semibold">Bettor: </span>
-              {bet.bettor}
-            </p>
-            <p className="text-sm">
-              <span className="font-semibold">Candidate: </span>
-              {bet.candidate}
-            </p>
-          </div>
-        ))}
-      </div>
+      <Bets bets={bets} formatEthValueInUSD={formatEthValueInUSD} />
       <About />
-      <div className="p-4">
-        <h1 className="text-2xl font-bold mb-4">Service Fee Percentage</h1>
-        <p>Current service fee percentage: {serviceFeePercentage}%</p>
-      </div>
-      <div className="p-4">
-        <h1 className="text-2xl font-bold mb-4">Betting End Time</h1>
-        {bettingEndTime ? (
-          <p>
-            Betting end time: {new Date(bettingEndTime * 1000).toLocaleString()}
-          </p>
-        ) : (
-          <p>Betting end time not available</p>
-        )}
-      </div>
-      {isOwner && (
-        <div className="p-4">
-          <button
-            onClick={() => declareWinner("Erdogan")}
-            className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
-          >
-            Declare Erdogan Winner
-          </button>
-          <button
-            onClick={() => declareWinner("Kemal")}
-            className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
-          >
-            Declare Kemal Winner
-          </button>
-        </div>
-      )}
+      <ServiceFee serviceFeePercentage={serviceFeePercentage} />
+      <BettingEndTime bettingEndTime={bettingEndTime} />
+      {isOwner && <OwnerActions declareWinner={declareWinner} />}
     </main>
   );
 }

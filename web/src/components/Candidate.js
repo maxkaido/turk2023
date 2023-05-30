@@ -37,7 +37,7 @@ export default function Candidate({
         onClick={() => makeBet(name, betAmount)}
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
       >
-        Bet on {name}
+        Bet ${formatEthValueInUSD(betAmount)}
       </button>
       {userTotalBet > 0 ? (
         <>
