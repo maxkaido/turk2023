@@ -43,7 +43,7 @@ export default function Navbar() {
               <FontAwesomeIcon icon={faBars} className="h-6 w-6" />
             </button>
             <div className="flex-shrink-0">
-              <p className="text-white text-lg font-bold">TurkElectro Oracle</p>
+              <p className="text-white text-lg font-bold">Election Betting</p>
             </div>
           </div>
           <div className="flex items-center">
