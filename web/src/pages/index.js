@@ -4,7 +4,6 @@ import { ethers } from "ethers";
 import CountdownTimer from "../components/CountdownTimer";
 import ElectionBettingArtifact from "../../artifacts/ElectionBetting.json";
 import EthereumContext from "../context/EthereumContext";
-import Navbar from "@/components/Navbar";
 import Candidate from "@/components/Candidate";
 import Bets from "@/components/Bets";
 import ServiceFee from "@/components/ServiceFee";
@@ -234,7 +233,6 @@ export default function Home() {
 
   return (
     <main className="bg-gray-800 text-white min-h-screen">
-      <Navbar />
       <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8">
         <h1 className="text-4xl text-center mb-10">Turk Election Bet</h1>
         <CountdownTimer
