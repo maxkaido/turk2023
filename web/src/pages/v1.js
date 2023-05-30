@@ -6,8 +6,6 @@ import CountdownTimer from "../components/CountdownTimer";
 import ElectionBettingArtifact from "../../artifacts/ElectionBetting.json";
 import About from "../components/About";
 import EthereumContext from "../context/EthereumContext";
-import Navbar from "@/components/Navbar";
-import Candidate from "@/components/Candidate";
 
 // const sepoliaContractAddress = "0x460DeFA3ed9986f21C588ab611cE78d0496EadFA";
 const avalancheContractAddress = "0x179cc4C03f6Bea57c70fAcaEa4EdC4E6DC2B2803";
@@ -246,8 +244,7 @@ export default function Home() {
 
   return (
     <main className="bg-gray-800 text-white min-h-screen">
-      <Navbar />
-
+      <div></div>
       <nav className="bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
