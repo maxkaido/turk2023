@@ -238,7 +238,10 @@ export default function Home() {
       <Navbar />
       <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8">
         <h1 className="text-4xl text-center mb-10">Turk Election Bet</h1>
-        <CountdownTimer targetDate={targetDate} />
+        <CountdownTimer
+          targetDate={targetDate}
+          suppressHydrationWarning={true}
+        />
         <h2 className="text-3xl text-center my-10">
           Bet on the next Turkish president
         </h2>
