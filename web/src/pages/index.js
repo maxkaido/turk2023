@@ -34,8 +34,8 @@ export default function Home() {
               <p className="text-gray-700 mb-6">
                 Welcome to Election Betting, where you can place bets on the
                 upcoming election. Choose your candidate and enter the amount
-                you want to bet. If your candidate wins, you'll get a share of
-                the total winnings. It's easy, fun, and exciting!
+                you want to bet. If your candidate wins, you`ll get a share of
+                the total winnings. It`s easy, fun, and exciting!
               </p>
               <div className="mb-6">
                 <h3 className="text-xl font-bold mb-2">How it works</h3>
@@ -44,7 +44,7 @@ export default function Home() {
                   <li>Enter the amount you want to bet.</li>
                   <li>Wait for the election result.</li>
                   <li>
-                    If your candidate wins, you'll receive a portion of the
+                    If your candidate wins, you`ll receive a portion of the
                     total winnings.
                   </li>
                 </ol>
@@ -63,8 +63,8 @@ export default function Home() {
               <div className="mb-6">
                 <h3 className="text-xl font-bold mb-2">Claim Your Winnings</h3>
                 <p className="text-gray-700">
-                  If you win, you can claim your winnings by clicking the "Claim
-                  Winnings" button. The winnings will be transferred to your
+                  If you win, you can claim your winnings by clicking the `Claim
+                  Winnings` button. The winnings will be transferred to your
                   account automatically.
                 </p>
               </div>
