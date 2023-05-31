@@ -80,16 +80,8 @@ export default function Home() {
                 <h3 className="text-xl font-bold mb-2">Contact Support</h3>
                 <p className="text-gray-700">
                   If you have any questions or need assistance, please contact
-                  our support team at support@electionbetting.com.
+                  our support team at wcbkaido.team
                 </p>
-              </div>
-              <div className="text-center">
-                <a
-                  href="/bet"
-                  className="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                >
-                  Start Betting
-                </a>
               </div>
             </div>
           </div>
