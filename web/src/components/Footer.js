@@ -7,7 +7,7 @@ export default function Footer() {
     <footer className="bg-gray-900 py-4">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center">
         <a
-          href="https://t.me/turk2023oracle"
+          href="https://t.me/wikicryptobet"
           target="_blank"
           rel="noopener noreferrer"
           className="text-white hover:text-gray-300"
