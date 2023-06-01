@@ -1,6 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTelegram } from "@fortawesome/free-brands-svg-icons";
+import { faTelegram, faGithub } from "@fortawesome/free-brands-svg-icons";
 
 export default function Footer() {
   return (
@@ -12,7 +12,15 @@ export default function Footer() {
           rel="noopener noreferrer"
           className="text-white hover:text-gray-300"
         >
-          <FontAwesomeIcon icon={faTelegram} className="h-10 w-10 mr-2" />
+          <FontAwesomeIcon icon={faTelegram} className="h-10 w-10 mr-4" />
+        </a>
+        <a
+          href="https://github.com/maxkaido/turk2023"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-white hover:text-gray-300"
+        >
+          <FontAwesomeIcon icon={faGithub} className="h-10 w-10" />
         </a>
       </div>
     </footer>
