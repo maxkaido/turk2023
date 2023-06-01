@@ -1,15 +1,27 @@
+import { Disclosure } from "@headlessui/react";
+import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { useState, useContext } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import EthereumContext from "../context/EthereumContext";
 import p from "../../package.json";
 import NetworkSwitch from "@/components/NetworkSwitch";
 
+const navigation = [
+  { name: "Home", href: "/" },
+  { name: "About", href: "/about" },
+  { name: "Turkey 2023", href: "/turkey-2023" },
+  { name: "Argentina 2023", href: "/argentina-2023" },
+  { name: "UK 2024", href: "/uk-2024" },
+  { name: "USA 2024", href: "/usa-2024" },
+];
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
+
 export default function Navbar() {
   const [selectedNetwork, setSelectedNetwork] = useState("avalanche"); // Default selected network is "avalanche"
   const { state, setState } = useContext(EthereumContext);
-  const [menuOpen, setMenuOpen] = useState(false);
   const router = useRouter();
 
   const trimmedAddress = state.account
@@ -29,90 +41,87 @@ export default function Navbar() {
     }
   }
 
-  const handleMenuLinkClick = (path) => {
-    router.push(path);
-    setMenuOpen(false);
-  };
-
   return (
-    <nav className="bg-gray-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center">
-            <button
-              className="text-white focus:outline-none mr-4"
-              onClick={() => setMenuOpen(!menuOpen)}
-            >
-              <FontAwesomeIcon icon={faBars} className="h-6 w-6" />
-            </button>
-            <div className="flex-shrink-0">
-              <p className="text-white text-sm font-bold hidden lg:block">
-                Election Betting | v{p.version}
-              </p>
+    <Disclosure as="nav" className="bg-gray-900">
+      {({ open }) => (
+        <>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between h-16">
+              <div className="flex items-center">
+                <div className="-ml-2 mr-2 flex items-center md:hidden">
+                  {/* Mobile menu button */}
+                  <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                    <span className="sr-only">Open main menu</span>
+                    {open ? (
+                      <XIcon className="block h-6 w-6" aria-hidden="true" />
+                    ) : (
+                      <MenuIcon className="block h-6 w-6" aria-hidden="true" />
+                    )}
+                  </Disclosure.Button>
+                </div>
+                <div className="flex-shrink-0 flex items-center text-gray-200 hidden lg:block">
+                  Wiki Crypto Bet - v{p.version}
+                </div>
+                <div className="hidden md:ml-6 md:flex md:items-center md:space-x-4">
+                  {navigation.map((item) => (
+                    <a
+                      key={item.name}
+                      href={item.href}
+                      className={classNames(
+                        router.pathname === item.href
+                          ? "bg-gray-900 text-white"
+                          : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                        "px-3 py-2 rounded-md text-sm font-medium"
+                      )}
+                    >
+                      {item.name}
+                    </a>
+                  ))}
+                </div>
+              </div>
+              <div className="flex items-center">
+                <div className="flex items-center">
+                  <NetworkSwitch
+                    selectedNetwork={selectedNetwork}
+                    onNetworkChange={setSelectedNetwork}
+                  />
+                </div>
+                <div className="flex items-center ml-4">
+                  {state.account ? (
+                    <p className="text-white text-sm mr-4">{trimmedAddress}</p>
+                  ) : (
+                    <button
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold text-sm py-2 px-4 rounded"
+                      onClick={requestAccount}
+                    >
+                      Connect Wallet
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
-          <div className="flex items-center">
-            <NetworkSwitch
-              selectedNetwork={selectedNetwork}
-              onNetworkChange={setSelectedNetwork}
-            />
-          </div>
-          <div className="flex items-center">
-            {state.account ? (
-              <p className="text-white text-sm mr-4">{trimmedAddress}</p>
-            ) : (
-              <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold text-sm py-2 px-4 rounded"
-                onClick={requestAccount}
-              >
-                Connect Wallet
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
-      {menuOpen && (
-        <div className="px-4 pt-2 pb-4 sm:px-6">
-          <div className="space-y-2">
-            <p
-              className="text-white text-sm cursor-pointer hover:text-gray-300"
-              onClick={() => handleMenuLinkClick("/")}
-            >
-              Home
-            </p>
-            <p
-              className="text-white text-sm cursor-pointer hover:text-gray-300"
-              onClick={() => handleMenuLinkClick("/about")}
-            >
-              About
-            </p>
-            <p
-              className="text-white text-sm cursor-pointer hover:text-gray-300"
-              onClick={() => handleMenuLinkClick("/turkey-2023")}
-            >
-              Turkey 2023
-            </p>
-            <p
-              className="text-white text-sm cursor-pointer hover:text-gray-300"
-              onClick={() => handleMenuLinkClick("/argentina-2023")}
-            >
-              Argentina 2023
-            </p>
-            <p
-              className="text-white text-sm cursor-pointer hover:text-gray-300"
-              onClick={() => handleMenuLinkClick("/uk-2024")}
-            >
-              UK 2024
-            </p>
-            <p
-              className="text-white text-sm cursor-pointer hover:text-gray-300"
-              onClick={() => handleMenuLinkClick("/usa-2024")}
-            >
-              USA 2024
-            </p>
-          </div>
-        </div>
+
+          <Disclosure.Panel className="md:hidden">
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+              {navigation.map((item) => (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className={classNames(
+                    router.pathname === item.href
+                      ? "bg-gray-900 text-white"
+                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                    "block px-3 py-2 rounded-md text-base font-medium"
+                  )}
+                >
+                  {item.name}
+                </a>
+              ))}
+            </div>
+          </Disclosure.Panel>
+        </>
       )}
-    </nav>
+    </Disclosure>
   );
 }
