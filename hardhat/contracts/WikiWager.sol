@@ -17,11 +17,14 @@ contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
     address public serviceFeeWallet; // Service fee wallet address
     uint256 public bettingEndTime; // End time for betting and withdrawal
 
+    // Define the candidates enum
+    enum Candidates {Kemal, Erdogan}
+
     // Define the structure of a bet
     struct Bet {
         address bettor;
         uint256 amount;
-        string candidate;
+        Candidates candidate;
         bool withdrawn;
     }
 
@@ -29,10 +32,10 @@ contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
     Bet[] public bets;
 
     // Mapping to keep track of total amount bet on each candidate
-    mapping(string => uint256) public totalBets;
+    mapping(Candidates => uint256) public totalBets;
 
     // Mapping to keep track of winnings for each candidate
-    mapping(string => uint256) public candidateWinnings;
+    mapping(Candidates => uint256) public candidateWinnings;
 
     // Mapping to keep track of each user's bet
     mapping(address => Bet) public userBet;
@@ -41,18 +44,18 @@ contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
     mapping(address => uint256) public userWinnings;
 
     // Event to emit when a bet is made
-    event BetMade(address indexed bettor, uint256 amount, string candidate);
+    event BetMade(address indexed bettor, uint256 amount, Candidates candidate);
 
     // Event to emit when a bet is withdrawn
-    event BetWithdrawn(address indexed bettor, uint256 amount, string candidate);
+    event BetWithdrawn(address indexed bettor, uint256 amount, Candidates candidate);
 
     // Event to emit when the election result is received
-    event ElectionResultReceived(string winner);
+    event ElectionResultReceived(Candidates winner);
 
     // Struct to track confirmation result
     struct Confirmation {
         uint256 count;
-        string result;
+        Candidates result;
         uint256 lastConfirmationTimestamp;
     }
 
@@ -76,9 +79,10 @@ contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
         bettingEndTime = _bettingEndTime;
 
         // Initialize election confirmation
-        electionConfirmation = Confirmation(0, "", 0);
+        electionConfirmation = Confirmation(0, Candidates.Kemal, 0);
     }
-        // Function to set the Chainlink token address
+
+    // Function to set the Chainlink token address
     function setChainlinkTokenAddress(address _tokenAddress) public onlyOwner {
         setChainlinkToken(_tokenAddress); // LINK token on Avalanche Fuji Testnet
     }
@@ -100,10 +104,9 @@ contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
     }
 
     // Function to make a bet
-    function makeBet(string memory candidate) public payable {
+    function makeBet(Candidates candidate) public payable {
         require(
-            keccak256(bytes(candidate)) == keccak256(bytes("Kemal")) ||
-                keccak256(bytes(candidate)) == keccak256(bytes("Erdogan")),
+            candidate == Candidates.Kemal || candidate == Candidates.Erdogan,
             "Invalid candidate"
         );
         require(
@@ -149,23 +152,19 @@ contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
     }
 
     // Function to calculate the total bet amount of a user on a candidate
-    function calculateUserBet(address user, string memory candidate)
+    function calculateUserBet(address user, Candidates candidate)
         public
         view
         returns (uint256)
     {
         require(
-            keccak256(bytes(candidate)) == keccak256(bytes("Kemal")) ||
-                keccak256(bytes(candidate)) == keccak256(bytes("Erdogan")),
+            candidate == Candidates.Kemal || candidate == Candidates.Erdogan,
             "Invalid candidate"
         );
 
         Bet memory bet = userBet[user];
 
-        if (
-            keccak256(bytes(bet.candidate)) == keccak256(bytes(candidate)) &&
-            !bet.withdrawn
-        ) {
+        if (bet.candidate == candidate && !bet.withdrawn) {
             return bet.amount;
         } else {
             return 0;
@@ -202,15 +201,22 @@ contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
             "Betting is still in progress"
         );
 
-        emit ElectionResultReceived(_winner);
+        Candidates winner;
+        if (keccak256(bytes(_winner)) == keccak256(bytes("Kemal"))) {
+            winner = Candidates.Kemal;
+        } else if (keccak256(bytes(_winner)) == keccak256(bytes("Erdogan"))) {
+            winner = Candidates.Erdogan;
+        } else {
+            revert("Invalid winner");
+        }
+
+        emit ElectionResultReceived(winner);
 
         // Check if it's a new confirmation result
-        if (
-            keccak256(bytes(_winner)) != keccak256(bytes(electionConfirmation.result))
-        ) {
+        if (winner != electionConfirmation.result) {
             // Drop the counter to the previous confirmation result
             electionConfirmation.count = 1;
-            electionConfirmation.result = _winner;
+            electionConfirmation.result = winner;
             electionConfirmation.lastConfirmationTimestamp = block.timestamp;
         } else {
             // Check if the confirmation interval has passed
@@ -233,7 +239,7 @@ contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
     }
 
     // Function to distribute winnings in batches
-    function distributeWinnings(string memory winner) internal {
+    function distributeWinnings(Candidates winner) internal {
         uint256 totalWinningAmount = totalBets[winner];
         if (totalWinningAmount == 0) {
             return;
@@ -251,70 +257,65 @@ contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
     }
 
     function distributeWinningsBatch(
-    string memory winner,
-    uint256 batchIndex,
-    uint256 batchSize,
-    uint256 numBatches
-) internal {
-    uint256 totalWinningAmount = totalBets[winner];
-    uint256 totalBetsPool = totalBets["Kemal"].add(totalBets["Erdogan"]);
+        Candidates winner,
+        uint256 batchIndex,
+        uint256 batchSize,
+        uint256 numBatches
+    ) internal {
+        uint256 totalWinningAmount = totalBets[winner];
+        uint256 totalBetsPool = totalBets[Candidates.Kemal].add(totalBets[Candidates.Erdogan]);
 
-    // Calculate the starting and ending indices for the batch
-    uint256 startIndex = batchIndex * batchSize;
-    uint256 endIndex = startIndex + batchSize;
-    if (endIndex > bets.length) {
-        endIndex = bets.length;
-    }
+        // Calculate the starting and ending indices for the batch
+        uint256 startIndex = batchIndex * batchSize;
+        uint256 endIndex = startIndex + batchSize;
+        if (endIndex > bets.length) {
+            endIndex = bets.length;
+        }
 
-    // Distribute winnings for the bets in the batch
-    uint256 totalBatchPayout = 0;
-    for (uint256 i = startIndex; i < endIndex; i++) {
-        if (
-            keccak256(bytes(bets[i].candidate)) ==
-            keccak256(bytes(winner))
-        ) {
-            uint256 payoutAmount = (bets[i].amount.mul(totalBetsPool)).div(
-                totalWinningAmount
-            );
-            // Apply the fee during winning distribution
-            uint256 feeAmount = (payoutAmount.mul(serviceFeePercentage)).div(
-                100
-            );
-            uint256 netPayoutAmount = payoutAmount.sub(feeAmount);
-            userWinnings[bets[i].bettor] = userWinnings[bets[i].bettor].add(
-                netPayoutAmount
-            );
+        // Distribute winnings for the bets in the batch
+        uint256 totalBatchPayout = 0;
+        for (uint256 i = startIndex; i < endIndex; i++) {
+            if (bets[i].candidate == winner) {
+                uint256 payoutAmount = (bets[i].amount.mul(totalBetsPool)).div(
+                    totalWinningAmount
+                );
+                // Apply the fee during winning distribution
+                uint256 feeAmount = (payoutAmount.mul(serviceFeePercentage)).div(
+                    100
+                );
+                uint256 netPayoutAmount = payoutAmount.sub(feeAmount);
+                userWinnings[bets[i].bettor] = userWinnings[bets[i].bettor].add(
+                    netPayoutAmount
+                );
 
-            // Update the total batch payout
-            totalBatchPayout = totalBatchPayout.add(netPayoutAmount);
+                // Update the total batch payout
+                totalBatchPayout = totalBatchPayout.add(netPayoutAmount);
+            }
+        }
+
+        // Calculate the service fee for the batch
+        uint256 totalServiceFeeAmount = (totalBatchPayout.mul(serviceFeePercentage)).div(100);
+
+        // Transfer service fee to the service fee wallet
+        payable(serviceFeeWallet).transfer(totalServiceFeeAmount);
+
+        // Check if there are remaining bets to distribute
+        if (batchIndex + 1 < numBatches) {
+            // Call the next batch in a new transaction
+            uint256 nextBatchIndex = batchIndex + 1;
+            uint256 gasLimit = gasleft() - 5000; // Reduce the gas limit to leave room for other operations
+            bytes memory data =
+                abi.encodeWithSignature(
+                    "distributeWinningsBatch(Candidates,uint256,uint256,uint256)",
+                    winner,
+                    nextBatchIndex,
+                    batchSize,
+                    numBatches
+                );
+            (bool success, ) = address(this).call{ gas: gasLimit }(data);
+            require(success, "Batch distribution failed");
         }
     }
-
-    // Calculate the service fee for the batch
-    uint256 totalServiceFeeAmount = (totalBatchPayout.mul(serviceFeePercentage)).div(100);
-
-    // Transfer service fee to the service fee wallet
-    payable(serviceFeeWallet).transfer(totalServiceFeeAmount);
-
-    // Check if there are remaining bets to distribute
-    if (batchIndex + 1 < numBatches) {
-        // Call the next batch in a new transaction
-        uint256 nextBatchIndex = batchIndex + 1;
-        uint256 gasLimit = gasleft() - 5000; // Reduce the gas limit to leave room for other operations
-        bytes memory data =
-            abi.encodeWithSignature(
-                "distributeWinningsBatch(string,uint256,uint256,uint256)",
-                winner,
-                nextBatchIndex,
-                batchSize,
-                numBatches
-            );
-        (bool success, ) = address(this).call{ gas: gasLimit }(data);
-        require(success, "Batch distribution failed");
-    }
-}
-
-
 
     // Function for users to claim their winnings
     function claimWinnings() public nonReentrant {
@@ -326,10 +327,9 @@ contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
     }
 
     // Function to declare the winner manually
-    function declareWinner(string memory winner) public onlyOwner {
+    function declareWinner(Candidates winner) public onlyOwner {
         require(
-            keccak256(bytes(winner)) == keccak256(bytes("Kemal")) ||
-            keccak256(bytes(winner)) == keccak256(bytes("Erdogan")),
+            winner == Candidates.Kemal || winner == Candidates.Erdogan,
             "Invalid candidate"
         );
         // disabled for testing
@@ -377,6 +377,5 @@ contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
     {
         serviceFeeWallet = _serviceFeeWallet;
     }
-
 }
 
