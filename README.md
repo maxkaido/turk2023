@@ -2,4 +2,10 @@
 
 ## [sepolia](https://turk2023.kaido.team)
 
-## [mainnet (wip)](https://oracle.thebay.me)
+## [avalanche (wip)](https://oracle.thebay.me)
+
+## todo
+
+- tailwindui
+
+## changelog
