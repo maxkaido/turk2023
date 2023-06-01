@@ -200,7 +200,7 @@ export default function Home() {
     }
   }
 
-  const targetDate = new Date("2023-06-10T00:00:00");
+  const targetDate = new Date("2023-05-28T00:00:00");
 
   const userBetPercentageErdogan = userTotalBetErdogan / totalBetErdogan;
   const serviceFeeAmountErdogan =
