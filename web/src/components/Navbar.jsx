@@ -59,7 +59,7 @@ export default function Navbar() {
                     )}
                   </Disclosure.Button>
                 </div>
-                <div className="flex-shrink-0 flex items-center text-gray-200 hidden lg:block">
+                <div className="flex-shrink-0 flex items-center text-gray-200 hidden lg:block font-semibold">
                   Wiki Crypto Bet - v{p.version}
                 </div>
                 <div className="hidden md:ml-6 md:flex md:items-center md:space-x-4">
