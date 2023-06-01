@@ -25,6 +25,7 @@
   }
   ```
 */
+import FAQ from "../components/FAQ";
 import { Fragment } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import {
@@ -262,23 +263,10 @@ export default function Example() {
                   We`ve got answers! Check out our frequently asked questions
                   (FAQ) section to find solutions to common inquiries.
                 </p>
-                <div className="mt-8">
-                  <div className="inline-flex rounded-md shadow">
-                    <a
-                      href="#"
-                      className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-gray-900 bg-white hover:bg-gray-50"
-                    >
-                      Visit the FAQ Section
-                      <ExternalLinkIcon
-                        className="-mr-1 ml-3 h-5 w-5 text-gray-400"
-                        aria-hidden="true"
-                      />
-                    </a>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
+          <FAQ />
         </main>
       </div>
     </div>
