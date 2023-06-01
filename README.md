@@ -14,6 +14,8 @@
 
 # v0.4
 
+- bug fixes
+
 - better nav menu
 
 - FAQ
