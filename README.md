@@ -1,13 +1,11 @@
 # turk2023
 
-## [sepolia](https://turk2023.kaido.team)
-
-## [avalanche (wip)](https://oracle.thebay.me)
+## [oracle.thebay.me](https://oracle.thebay.me)
 
 ## todo
 
 - init chainlink functions
-- check reqs for hackathon
+- [check reqs for hackathon}(https://github.com/SxT-Community/chainlink-hackathon)
 
 ## changelog
 
