@@ -63,7 +63,7 @@ export default function Navbar() {
                   <span className=" font-semibold hidden lg:block mr-2">
                     Wiki Crypto Bet |
                   </span>
-                  <span className=" font-light text-sm mr-2">v{p.version}</span>
+                  <span className=" font-light text-xs mr-2">v{p.version}</span>
                 </div>
                 <div className="hidden md:ml-6 md:flex md:items-center md:space-x-4">
                   {navigation.map((item) => (
@@ -94,7 +94,7 @@ export default function Navbar() {
                     <p className="text-white text-sm mr-4">{trimmedAddress}</p>
                   ) : (
                     <button
-                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold text-sm py-2 px-4 rounded"
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold text-xs py-2 px-4 rounded"
                       onClick={requestAccount}
                     >
                       Connect Wallet
