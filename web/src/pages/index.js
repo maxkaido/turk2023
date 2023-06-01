@@ -260,9 +260,7 @@ export default function Example() {
                 </p>
                 <p className="mt-3 text-lg text-gray-300">
                   We`ve got answers! Check out our frequently asked questions
-                  (FAQ) section to find solutions to common inquiries. If you
-                  can`t find what you`re looking for, our support team is here
-                  to assist you.
+                  (FAQ) section to find solutions to common inquiries.
                 </p>
                 <div className="mt-8">
                   <div className="inline-flex rounded-md shadow">
