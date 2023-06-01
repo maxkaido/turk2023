@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Analytics } from "@vercel/analytics/react";
 import { Toaster } from "react-hot-toast";
 import "@/styles/globals.css";
 import Head from "next/head";
@@ -52,7 +51,6 @@ export default function App({ Component, pageProps }) {
         <Toaster />
         <Footer />
       </>
-      <Analytics />
     </>
   );
 }
