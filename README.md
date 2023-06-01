@@ -5,7 +5,7 @@
 ## todo
 
 - init chainlink functions
-- [check reqs for hackathon}(https://github.com/SxT-Community/chainlink-hackathon)
+- [check reqs for hackathon](https://github.com/SxT-Community/chainlink-hackathon)
 
 ## changelog
 
