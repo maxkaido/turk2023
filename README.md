@@ -6,8 +6,11 @@
 
 ## todo
 
-- tailwindui
 - init chainlink functions
 - check reqs for hackathon
 
 ## changelog
+
+# v0.4
+
+- tailwindui
