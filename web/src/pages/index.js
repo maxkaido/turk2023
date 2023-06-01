@@ -1,30 +1,3 @@
-/*
-  This example requires Tailwind CSS v2.0+ 
-  
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  const colors = require('tailwindcss/colors')
-  
-  module.exports = {
-    // ...
-    theme: {
-      extend: {
-        colors: {
-          teal: colors.teal,
-          cyan: colors.cyan,
-        },
-      },
-    },
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-      require('@tailwindcss/aspect-ratio'),
-    ],
-  }
-  ```
-*/
 import FAQ from "../components/FAQ";
 import { Fragment } from "react";
 import { Popover, Transition } from "@headlessui/react";
@@ -183,7 +156,7 @@ export default function Example() {
                   environment where trust is built into the system
                 </p>
               </div>
-              <div className="mt-12 -mb-10 sm:-mb-24 lg:-mb-20">
+              <div className="mt-12 ">
                 <img
                   className="rounded-lg shadow-xl ring-1 ring-black ring-opacity-5"
                   src="/sc1.png"
