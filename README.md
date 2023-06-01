@@ -5,10 +5,13 @@
 ## todo
 
 - init chainlink functions
+
 - [check reqs for hackathon](https://github.com/SxT-Community/chainlink-hackathon)
 
 ## changelog
 
 # v0.4
+
+- new landing page
 
 - tailwindui
