@@ -14,6 +14,10 @@
 
 # v0.4
 
+- better nav menu
+
+- FAQ
+
 - new landing page [oracle.thebay.me](https://oracle.thebay.me)
 
 - tailwindui
