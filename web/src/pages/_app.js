@@ -6,6 +6,7 @@ import EthereumContext from "../context/EthereumContext";
 import Navbar from "../components/Navbar";
 import Footer from "@/components/Footer";
 import p from "../../package.json";
+import Script from "next/script";
 
 export default function App({ Component, pageProps }) {
   const [sharedState, setSharedState] = useState({
@@ -51,6 +52,18 @@ export default function App({ Component, pageProps }) {
         <Toaster />
         <Footer />
       </>
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-TVL62JDK5R"
+        strategy="afterInteractive"
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-TVL62JDK5R');
+        `}
+      </Script>
     </>
   );
 }
