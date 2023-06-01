@@ -37,7 +37,6 @@ import {
   ShieldCheckIcon,
   XIcon,
 } from "@heroicons/react/outline";
-import { ExternalLinkIcon } from "@heroicons/react/solid";
 
 const features = [
   {
