@@ -40,7 +40,7 @@ export default function NetworkSwitch({ selectedNetwork, onNetworkChange }) {
         width={48}
         className="relative inline-flex items-center rounded-full"
       />
-      <span className="ml-3 text-lg text-gray-300">
+      <span className="ml-3 text-gray-300">
         {networks[selectedNetwork].name}
       </span>
     </div>

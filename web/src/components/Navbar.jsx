@@ -59,9 +59,11 @@ export default function Navbar() {
                     )}
                   </Disclosure.Button>
                 </div>
-                <div className="flex-shrink-0 flex items-center text-gray-200 hidden lg:block">
-                  <span className=" font-semibold"> Wiki Crypto Bet </span>
-                  <span className=" font-light text-sm"> | v{p.version} </span>
+                <div className="flex-shrink-0 flex items-center text-gray-200">
+                  <span className=" font-semibold hidden lg:block mr-2">
+                    Wiki Crypto Bet |
+                  </span>
+                  <span className=" font-light text-sm mr-2">v{p.version}</span>
                 </div>
                 <div className="hidden md:ml-6 md:flex md:items-center md:space-x-4">
                   {navigation.map((item) => (
