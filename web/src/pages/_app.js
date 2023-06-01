@@ -5,7 +5,6 @@ import Head from "next/head";
 import EthereumContext from "../context/EthereumContext";
 import Navbar from "../components/Navbar";
 import Footer from "@/components/Footer";
-import p from "../../package.json";
 import Script from "next/script";
 
 export default function App({ Component, pageProps }) {
@@ -18,7 +17,7 @@ export default function App({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>Wiki Crypto Bet | v{p.version}</title>
+        <title>Wiki Crypto Bet</title>
         <meta name="description" content="Election Betting" />
         <link
           rel="apple-touch-icon"
