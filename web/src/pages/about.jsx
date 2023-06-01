@@ -2,7 +2,7 @@ import React from "react";
 
 const AboutElectionBetting = () => {
   return (
-    <div className="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 py-16 px-4 overflow-hidden sm:px-6 lg:px-8 lg:py-24">
+    <div className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 py-16 px-4 overflow-hidden sm:px-6 lg:px-8 lg:py-24">
       <div className="relative max-w-xl mx-auto">
         <div className="text-center">
           <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
