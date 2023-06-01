@@ -31,13 +31,12 @@ import {
   CloudUploadIcon,
   CogIcon,
   LockClosedIcon,
-  MenuIcon,
   RefreshIcon,
   ServerIcon,
   ShieldCheckIcon,
   XIcon,
 } from "@heroicons/react/outline";
-import { ChevronRightIcon, ExternalLinkIcon } from "@heroicons/react/solid";
+import { ExternalLinkIcon } from "@heroicons/react/solid";
 
 const features = [
   {
