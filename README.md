@@ -4,14 +4,18 @@
 
 ## todo
 
+- [check reqs for hackathon](https://github.com/SxT-Community/chainlink-hackathon)
+
 - init chainlink functions
 
-- [check reqs for hackathon](https://github.com/SxT-Community/chainlink-hackathon)
+- make contract universal
 
 ## changelog
 
 # v0.4
 
-- new landing page
+- new landing page [oracle.thebay.me](https://oracle.thebay.me)
 
 - tailwindui
+
+- add GA
