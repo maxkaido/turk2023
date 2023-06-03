@@ -45,6 +45,22 @@ async function fetchWikiAndAskQuestion(url, question) {
     // Fetch the Wikipedia page intro section
     let content = await getIntroSection(url);
 
+    // Calculate the maximum number of tokens allowed
+    const maxTokens = 2000;
+
+    // Calculate the number of tokens in the question and the content
+    const questionTokens = question.split(" ").length;
+    const contentTokens = content.split(" ").length;
+
+    // Truncate the content if it exceeds the maximum allowed tokens
+    if (questionTokens + contentTokens > maxTokens) {
+      const tokensToTrim = questionTokens + contentTokens - maxTokens;
+      content = content
+        .split(" ")
+        .slice(0, contentTokens - tokensToTrim)
+        .join(" ");
+    }
+
     content = `I have read the following document: ${content}\n\n${question}\n\ntimestamp: ${Date.now()}`;
     try {
       const response = await axios.post(
