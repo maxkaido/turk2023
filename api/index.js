@@ -34,7 +34,7 @@ async function getArticle(url) {
     }
     console.log("introSection", introSection);
     // return first 1000 words
-    introSection = introSection.split(" ").slice(0, 100).join(" ");
+    introSection = introSection.split(" ").slice(0, 500).join(" ");
     return introSection;
   } catch (error) {
     console.log(error);
