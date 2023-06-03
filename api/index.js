@@ -32,9 +32,10 @@ async function getArticle(url) {
       const text = paragraph.replace(/<[^>]*>/g, ""); // Remove HTML tags
       introSection += text;
     }
-    console.log("introSection", introSection);
-    // return first 1000 words
+    // console.log("introSection", introSection);
+    // return first N words
     introSection = introSection.split(" ").slice(0, 500).join(" ");
+    console.log("introSection", introSection);
     return introSection;
   } catch (error) {
     console.log(error);
