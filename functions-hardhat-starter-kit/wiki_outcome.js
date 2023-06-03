@@ -8,10 +8,7 @@ async function getArticle(url) {
   try {
     const response = await Functions.makeHttpRequest({ url })
     const paragraphs = response.data.split("<p>").slice(1)
-    let introSection = paragraphs
-      .filter((paragraph) => !paragraph.includes("Links"))
-      .map((paragraph) => paragraph.replace(/<[^>]*>/g, ""))
-      .join("")
+    let introSection = paragraphs.map((paragraph) => paragraph.replace(/<[^>]*>/g, "")).join("")
     introSection = introSection.split(" ").slice(0, 100).join(" ")
     console.log("Intro section:", introSection)
     return introSection
