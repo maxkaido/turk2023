@@ -2,17 +2,19 @@
 
 // Arguments can be provided when a request is initiated on-chain and used in the request source code as shown below
 // const wikipediaPageUrl = args[0]
-const wikipediaPageUrl = "https://en.m.wikipedia.org/api/rest_v1/page/html/2023_Turkish_presidential_election"
+const wikipediaPageUrl = "2023_Turkish_presidential_election"
 
 if (!secrets.openaiApiKey) {
   throw Error("Need to set openaiApiKey variable")
 }
 
 const openaiApiKey = secrets.openaiApiKey
+const url = `https://en.m.wikipedia.org/api/rest_v1/page/html/${wikipediaPageUrl}`
+console.log(`Fetching Wikipedia page: ${url}`)
 
 // Use the Wikipedia API to fetch the HTML of the page
 const wikipediaRequest = Functions.makeHttpRequest({
-  url: `https://en.m.wikipedia.org/api/rest_v1/page/html/${wikipediaPageUrl}`,
+  url,
 })
 
 // Wait for the response
@@ -27,6 +29,8 @@ const htmlContent = wikipediaResponse.data
 const startIndexOfBackground = htmlContent.indexOf("Background")
 const endIndexOfBackground = htmlContent.indexOf("References")
 const articleContent = htmlContent.slice(startIndexOfBackground, endIndexOfBackground)
+
+console.log(`Article content: ${articleContent}`)
 
 // Use the OpenAI API to interpret the article content
 const openaiRequest = Functions.makeHttpRequest({
