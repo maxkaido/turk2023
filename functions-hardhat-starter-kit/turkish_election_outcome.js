@@ -1,8 +1,14 @@
 // This example shows how to fetch the outcome of the 2023 Turkish presidential election from a Wikipedia page and use GPT-3 to interpret the result
 
 // Arguments can be provided when a request is initiated on-chain and used in the request source code as shown below
-const wikipediaPageUrl = args[0]
-const openaiApiKey = args[1]
+// const wikipediaPageUrl = args[0]
+const wikipediaPageUrl = "https://en.m.wikipedia.org/api/rest_v1/page/html/2023_Turkish_presidential_election"
+
+if (!secrets.openaiApiKey) {
+  throw Error("Need to set openaiApiKey variable")
+}
+
+const openaiApiKey = secrets.openaiApiKey
 
 // Use the Wikipedia API to fetch the HTML of the page
 const wikipediaRequest = Functions.makeHttpRequest({
