@@ -1,35 +1,29 @@
 if (!secrets.openaiApiKey) {
-  throw Error("Need to set openaiApiKey variable")
+  throw new Error("Need to set openaiApiKey variable")
 }
 const api_key = secrets.openaiApiKey
 
 async function getArticle(url) {
-  console.log("fetching url", url)
+  console.log("Fetching URL:", url)
   try {
     const response = await Functions.makeHttpRequest({ url })
     const paragraphs = response.data.split("<p>").slice(1)
-    let introSection = ""
-    for (const paragraph of paragraphs) {
-      if (paragraph.includes("Links")) break
-      const text = paragraph.replace(/<[^>]*>/g, "") // Remove HTML tags
-      introSection += text
-    }
-    // console.log("introSection", introSection);
-    // return first N words
+    let introSection = paragraphs
+      .filter((paragraph) => !paragraph.includes("Links"))
+      .map((paragraph) => paragraph.replace(/<[^>]*>/g, ""))
+      .join("")
     introSection = introSection.split(" ").slice(0, 100).join(" ")
-    console.log("introSection", introSection)
+    console.log("Intro section:", introSection)
     return introSection
   } catch (error) {
-    console.log(error)
+    console.error("Error in getArticle:", error)
   }
 }
 
 async function fetchWikiAndAskQuestion(url, question) {
   try {
-    // Fetch the Wikipedia page intro section
     let content = await getArticle(url)
-    console.log("content", content)
-
+    console.log("Content:", content)
     content = `I have read the following document: ${content}\n\n${question}\n\ntimestamp: ${Date.now()}`
     try {
       const openaiRequest = Functions.makeHttpRequest({
@@ -41,30 +35,38 @@ async function fetchWikiAndAskQuestion(url, question) {
         },
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${api_key}`, // Replace with your API key
+          Authorization: `Bearer ${api_key}`,
         },
       })
       const openaiResponse = await openaiRequest
-      // console.log("openaiResponse", openaiResponse)
-
       if (openaiResponse.error) {
-        throw Error("OpenAI API request failed")
+        throw new Error("OpenAI API request failed")
       }
 
+      function calculatePrice(tokens) {
+        const pricePerToken = 0.002 / 1000 // $0.002 per 1000 tokens
+        return tokens * pricePerToken
+      }
+
+      const totalTokens = openaiResponse.data.usage.total_tokens
+      const price = calculatePrice(totalTokens)
+      console.log(`Cost of the request: $${price}`)
       return openaiResponse.data.choices[0].message.content
     } catch (error) {
-      console.error(error)
+      console.error("Error in OpenAI request:", error)
     }
   } catch (error) {
-    console.error(error)
+    console.error("Error in fetchWikiAndAskQuestion:", error)
   }
 }
 
-const answer = await fetchWikiAndAskQuestion(
-  "https://en.wikipedia.org/api/rest_v1/page/html/2023_Turkish_presidential_election",
-  "What is the outcome of the 2023 Turkish presidential election? Please respond with 'Erdogan' if Erdogan won, 'Kemal' if Kemal won, or 'n/a' if the result is not known or uncertain."
-)
+async function main() {
+  const answer = await fetchWikiAndAskQuestion(
+    "https://en.wikipedia.org/api/rest_v1/page/html/2023_Turkish_presidential_election",
+    "What is the outcome of the 2023 Turkish presidential election? Please respond exactly with 'Erdogan' if Erdogan won, 'Kemal' if Kemal won, or 'n/a' if the result is not known or uncertain."
+  )
+  console.log("Answer:", answer)
+  return Functions.encodeString(answer)
+}
 
-console.log("answer", answer)
-
-return Functions.encodeString(answer)
+return main().catch(console.error)
