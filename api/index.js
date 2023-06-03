@@ -2,7 +2,6 @@ const express = require("express");
 const axios = require("axios");
 const { OpenAIApi } = require("openai");
 const expressRedisCache = require("express-redis-cache");
-const { JSDOM } = require("jsdom");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -22,18 +21,20 @@ const cache = expressRedisCache({
   ),
 }); // Cache for 24 hours
 
-async function getIntroSection(url) {
+async function getArticle(url) {
   console.log("fetching url", url);
   try {
     const response = await axios.get(url);
-    const dom = new JSDOM(response.data);
-    const doc = dom.window.document;
+    const paragraphs = response.data.split("<p>").slice(1);
     let introSection = "";
-    const nodes = doc.querySelectorAll("p");
-    for (let node of nodes) {
-      if (node.textContent.includes("Background")) break;
-      introSection += node.textContent;
+    for (const paragraph of paragraphs) {
+      if (paragraph.includes("Links")) break;
+      const text = paragraph.replace(/<[^>]*>/g, ""); // Remove HTML tags
+      introSection += text;
     }
+    console.log("introSection", introSection);
+    // return first 1000 words
+    introSection = introSection.split(" ").slice(0, 100).join(" ");
     return introSection;
   } catch (error) {
     console.log(error);
@@ -43,23 +44,8 @@ async function getIntroSection(url) {
 async function fetchWikiAndAskQuestion(url, question) {
   try {
     // Fetch the Wikipedia page intro section
-    let content = await getIntroSection(url);
-
-    // Calculate the maximum number of tokens allowed
-    const maxTokens = 2000;
-
-    // Calculate the number of tokens in the question and the content
-    const questionTokens = question.split(" ").length;
-    const contentTokens = content.split(" ").length;
-
-    // Truncate the content if it exceeds the maximum allowed tokens
-    if (questionTokens + contentTokens > maxTokens) {
-      const tokensToTrim = questionTokens + contentTokens - maxTokens;
-      content = content
-        .split(" ")
-        .slice(0, contentTokens - tokensToTrim)
-        .join(" ");
-    }
+    let content = await getArticle(url);
+    console.log("content", content);
 
     content = `I have read the following document: ${content}\n\n${question}\n\ntimestamp: ${Date.now()}`;
     try {
@@ -92,7 +78,7 @@ async function fetchWikiAndAskQuestion(url, question) {
 app.get("/turk2023", cache.route(), async (req, res) => {
   try {
     const answer = await fetchWikiAndAskQuestion(
-      "https://en.m.wikipedia.org/api/rest_v1/page/html/2023_Turkish_presidential_election",
+      "https://en.wikipedia.org/api/rest_v1/page/html/2023_Turkish_presidential_election",
       "What is the outcome of the 2023 Turkish presidential election? Please respond with 'Erdogan' if Erdogan won, 'Kemal' if Kemal won, or 'n/a' if the result is not known or uncertain."
     );
     res.send(answer);
