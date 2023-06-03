@@ -1,6 +1,5 @@
 const express = require("express");
 const axios = require("axios");
-const { OpenAIApi } = require("openai");
 const expressRedisCache = require("express-redis-cache");
 
 const app = express();
