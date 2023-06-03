@@ -13,6 +13,8 @@ function calculatePrice(tokens) {
   return tokens * pricePerToken;
 }
 
+const api_key = process.env.OPENAI_API_KEY;
+
 const cache = expressRedisCache({
   expire: 1,
   client: require("redis").createClient(
@@ -37,11 +39,6 @@ async function getIntroSection(url) {
     console.log(error);
   }
 }
-
-const api_key = process.env.OPENAI_API_KEY;
-const openai = new OpenAIApi({
-  api_key,
-});
 
 async function fetchWikiAndAskQuestion(url, question) {
   try {
