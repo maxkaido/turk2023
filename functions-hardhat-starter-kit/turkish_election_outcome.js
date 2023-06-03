@@ -7,8 +7,8 @@ const wikipediaPageUrl = "2023_Turkish_presidential_election"
 if (!secrets.openaiApiKey) {
   throw Error("Need to set openaiApiKey variable")
 }
-
 const openaiApiKey = secrets.openaiApiKey
+
 const url = `https://en.m.wikipedia.org/api/rest_v1/page/html/${wikipediaPageUrl}`
 console.log(`Fetching Wikipedia page: ${url}`)
 
