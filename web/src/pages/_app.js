@@ -17,7 +17,7 @@ export default function App({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>Wiki Crypto Bet</title>
+        <title>Wiki Wager</title>
         <meta name="description" content="Election Betting" />
         <link
           rel="apple-touch-icon"
