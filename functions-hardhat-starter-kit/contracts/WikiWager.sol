@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
 
-import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+// import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
+// import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "./FunctionsConsumer.sol";
 
-contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
+contract WikiWager is FunctionsConsumer, ReentrancyGuard {
     using SafeMath for uint256;
 
     address private oracle;
@@ -76,8 +76,7 @@ contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
         address _serviceFeeWallet,
         uint256 _bettingEndTime,
         string[] memory _candidateNames
-    ) {
-        setChainlinkToken(0x0b9d5D9136855f6FEc3c0993feE6E9CE8a297846); // LINK token on Avalanche Fuji Testnet
+    ) FunctionsConsumer(_oracle) {
         oracle = _oracle;
         jobId = stringToBytes32(_jobId);
         fee = _fee;
@@ -94,10 +93,6 @@ contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
         }
     }
 
-    // Function to set the Chainlink token address
-    function setChainlinkTokenAddress(address _tokenAddress) public onlyOwner {
-        setChainlinkToken(_tokenAddress); // LINK token on Avalanche Fuji Testnet
-    }
 
     function stringToBytes32(string memory source)
         public
@@ -174,17 +169,17 @@ contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
         }
     }
 
+
     // Function to handle the event result
-    function fulfill(bytes32 _requestId, string memory _winner)
+    function fulfill()
         public
-        recordChainlinkFulfillment(_requestId)
     {
         require(
             block.timestamp > bettingEndTime,
             "Betting is still in progress"
         );
 
-        uint256 winnerIndex = findCandidateIndex(_winner);
+        uint256 winnerIndex = findCandidateIndex(string(latestResponse));
         require(winnerIndex < candidates.length, "Invalid winner");
 
         emit EventResultReceived(winnerIndex);
@@ -301,11 +296,6 @@ contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
 
         userWinnings[msg.sender] = 0;
         payable(msg.sender).transfer(winnings);
-    }
-
-    // Function to set the oracle address
-    function setOracle(address _oracle) public onlyOwner {
-        oracle = _oracle;
     }
 
     // Function to set the job ID
