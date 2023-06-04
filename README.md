@@ -4,8 +4,6 @@
 
 ## todo
 
-## changelog
-
 - submit
 
 - tests
@@ -14,9 +12,15 @@
 
 - update dapp UI
 
-- sepolia with CF
+- deploy sepolia
+
+- deploy dev
+
+## changelog
 
 # v0.6
+
+- refactor WikiWager
 
 - init chainlink functions
 
