@@ -2,7 +2,6 @@
 pragma solidity ^0.8.9;
 
 // import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
-// import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "./FunctionsConsumer.sol";
@@ -11,7 +10,6 @@ contract WikiWager is FunctionsConsumer, ReentrancyGuard {
     using SafeMath for uint256;
 
     address private oracle;
-    bytes32 private jobId;
     uint256 public fee;
     uint256 public serviceFeePercentage; // Service fee percentage
     address public serviceFeeWallet; // Service fee wallet address
@@ -70,17 +68,13 @@ contract WikiWager is FunctionsConsumer, ReentrancyGuard {
     // Constructor
     constructor(
         address _oracle,
-        string memory _jobId,
         uint256 _fee,
-        uint256 _serviceFeePercentage,
         address _serviceFeeWallet,
         uint256 _bettingEndTime,
         string[] memory _candidateNames
     ) FunctionsConsumer(_oracle) {
         oracle = _oracle;
-        jobId = stringToBytes32(_jobId);
         fee = _fee;
-        serviceFeePercentage = _serviceFeePercentage;
         serviceFeeWallet = _serviceFeeWallet;
         bettingEndTime = _bettingEndTime;
 
@@ -93,19 +87,6 @@ contract WikiWager is FunctionsConsumer, ReentrancyGuard {
         }
     }
 
-
-    function stringToBytes32(string memory source)
-        public
-        pure
-        returns (bytes32 result)
-    {
-        bytes memory tempEmptyStringTest = bytes(source);
-        if (tempEmptyStringTest.length == 0) {
-            return 0x0;
-        }
-
-        result = bytes32(uint256(keccak256(abi.encodePacked(source))));
-    }
 
     // Function to make a bet
     function makeBet(uint256 candidateIndex) public payable {
@@ -124,6 +105,7 @@ contract WikiWager is FunctionsConsumer, ReentrancyGuard {
 
         // Update the total amount bet on this candidate
         totalBets[candidateIndex] = totalBets[candidateIndex].add(betAmount);
+
         userBet[msg.sender] = newBet;
 
         emit BetMade(msg.sender, betAmount, candidateIndex);
@@ -298,26 +280,9 @@ contract WikiWager is FunctionsConsumer, ReentrancyGuard {
         payable(msg.sender).transfer(winnings);
     }
 
-    // Function to set the job ID
-    function setJobId(bytes32 _jobId) public onlyOwner {
-        jobId = _jobId;
-    }
-
     // Function to set the fee
     function setFee(uint256 _fee) public onlyOwner {
         fee = _fee;
-    }
-
-    // Function to set the service fee percentage
-    function setServiceFeePercentage(uint256 _serviceFeePercentage)
-        public
-        onlyOwner
-    {
-        require(
-            _serviceFeePercentage <= 5,
-            "Service fee percentage should not exceed 5"
-        );
-        serviceFeePercentage = _serviceFeePercentage;
     }
 
     // Function to set the service fee wallet
