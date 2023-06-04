@@ -5,6 +5,7 @@ import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "./FunctionsConsumer.sol";
 
 contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
     using Chainlink for Chainlink.Request;
