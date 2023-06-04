@@ -7,7 +7,7 @@ const networks = {
   },
   sepolia: {
     name: "Sepolia",
-    contractAddress: "0x07De61A057EcC57B268fADFa361Fa94113BB5146",
+    contractAddress: "0xecb2f7CB515b61d08988f7D35b493A5cB7a86D75",
   },
   avalanche: {
     name: "Avalanche",

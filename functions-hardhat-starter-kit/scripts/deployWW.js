@@ -11,6 +11,8 @@ async function main() {
   const bettingEndTime = Math.floor(Date.now() / 1000) + 24 * 60 * 60 // 1 day from deploy time
   const candidateNames = ["Erdogan", "Kemal"] // Set your desired candidate names
 
+  console.table({ oracle, serviceFeePercentage, serviceFeeWallet, bettingEndTime, candidateNames })
+
   // Deploy the contract
   const wikiWager = await WikiWager.deploy(
     oracle,
