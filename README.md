@@ -4,15 +4,29 @@
 
 ## todo
 
-- [check reqs for hackathon](https://github.com/SxT-Community/chainlink-hackathon)
+## changelog
+
+- submit
+
+- tests
+
+- video demo
+
+- update dapp UI
+
+- sepolia with CF
+
+# v0.6
 
 - init chainlink functions
 
+# v0.5 Wiki Wager
+
+- better api
+
 - make contract universal
 
-## changelog
-
-# v0.4
+# v0.4 Wiki Crypto Bet
 
 - bug fixes
 
@@ -25,3 +39,7 @@
 - tailwindui
 
 - add GA
+
+---
+
+- [hackathon reqs](https://github.com/SxT-Community/chainlink-hackathon)
