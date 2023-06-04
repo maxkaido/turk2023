@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
 
-// import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "./FunctionsConsumer.sol";
@@ -10,7 +9,6 @@ contract WikiWager is FunctionsConsumer, ReentrancyGuard {
     using SafeMath for uint256;
 
     address private oracle;
-    uint256 public fee;
     uint256 public serviceFeePercentage; // Service fee percentage
     address public serviceFeeWallet; // Service fee wallet address
     uint256 public bettingEndTime; // End time for betting and withdrawal
@@ -68,13 +66,13 @@ contract WikiWager is FunctionsConsumer, ReentrancyGuard {
     // Constructor
     constructor(
         address _oracle,
-        uint256 _fee,
+        uint256 _serviceFeePercentage,
         address _serviceFeeWallet,
         uint256 _bettingEndTime,
         string[] memory _candidateNames
     ) FunctionsConsumer(_oracle) {
         oracle = _oracle;
-        fee = _fee;
+        serviceFeePercentage = _serviceFeePercentage;
         serviceFeeWallet = _serviceFeeWallet;
         bettingEndTime = _bettingEndTime;
 
@@ -278,11 +276,6 @@ contract WikiWager is FunctionsConsumer, ReentrancyGuard {
 
         userWinnings[msg.sender] = 0;
         payable(msg.sender).transfer(winnings);
-    }
-
-    // Function to set the fee
-    function setFee(uint256 _fee) public onlyOwner {
-        fee = _fee;
     }
 
     // Function to set the service fee wallet
