@@ -174,26 +174,6 @@ contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
         }
     }
 
-    // Function to get the event result
-    function getEventResult() public onlyOwner returns (bytes32 requestId) {
-        require(
-            block.timestamp > bettingEndTime,
-            "Betting is still in progress"
-        );
-
-        Chainlink.Request memory request = buildChainlinkRequest(
-            jobId,
-            address(this),
-            this.fulfill.selector
-        );
-
-        // Set the request parameters
-        request.add("get", "https://api.thebay.me/event"); // Replace with the actual event API endpoint
-        request.add("path", "result");
-
-        return sendChainlinkRequestTo(oracle, request, fee);
-    }
-
     // Function to handle the event result
     function fulfill(bytes32 _requestId, string memory _winner)
         public
