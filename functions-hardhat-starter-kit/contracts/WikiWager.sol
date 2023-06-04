@@ -8,7 +8,6 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "./FunctionsConsumer.sol";
 
 contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
-    using Chainlink for Chainlink.Request;
     using SafeMath for uint256;
 
     address private oracle;
