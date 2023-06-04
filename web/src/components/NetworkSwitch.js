@@ -3,15 +3,15 @@ import Switch from "react-switch";
 const networks = {
   dev: {
     name: "Dev",
-    contractAddress: "<dev_contract_address>",
+    contractAddress: "n/a",
   },
   sepolia: {
     name: "Sepolia",
-    contractAddress: "<sepolia_contract_address>",
+    contractAddress: "0x07De61A057EcC57B268fADFa361Fa94113BB5146",
   },
   avalanche: {
     name: "Avalanche",
-    contractAddress: "0x179cc4C03f6Bea57c70fAcaEa4EdC4E6DC2B2803",
+    contractAddress: "n/a",
   },
 };
 

@@ -12,13 +12,13 @@
 
 - update dapp UI
 
-- deploy sepolia
-
 - deploy dev
 
 ## changelog
 
 # v0.6
+
+- deploy sepolia
 
 - refactor WikiWager
 
