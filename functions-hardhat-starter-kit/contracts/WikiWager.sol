@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.7;
+pragma solidity ^0.8.9;
 
 import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -70,7 +70,7 @@ contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
     // Constructor
     constructor(
         address _oracle,
-        bytes32 _jobId,
+        string memory _jobId,
         uint256 _fee,
         uint256 _serviceFeePercentage,
         address _serviceFeeWallet,
@@ -79,7 +79,7 @@ contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
     ) {
         setChainlinkToken(0x0b9d5D9136855f6FEc3c0993feE6E9CE8a297846); // LINK token on Avalanche Fuji Testnet
         oracle = _oracle;
-        jobId = _jobId;
+        jobId = stringToBytes32(_jobId);
         fee = _fee;
         serviceFeePercentage = _serviceFeePercentage;
         serviceFeeWallet = _serviceFeeWallet;
@@ -99,10 +99,29 @@ contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
         setChainlinkToken(_tokenAddress); // LINK token on Avalanche Fuji Testnet
     }
 
+    function stringToBytes32(string memory source)
+        public
+        pure
+        returns (bytes32 result)
+    {
+        bytes memory tempEmptyStringTest = bytes(source);
+        if (tempEmptyStringTest.length == 0) {
+            return 0x0;
+        }
+
+        assembly {
+            // solhint-disable-line no-inline-assembly
+            result := mload(add(source, 32))
+        }
+    }
+
     // Function to make a bet
     function makeBet(uint256 candidateIndex) public payable {
         require(candidateIndex < candidates.length, "Invalid candidate index");
-        require(block.timestamp <= bettingEndTime, "Betting has ended");
+        require(
+            block.timestamp <= bettingEndTime,
+            "Betting has ended"
+        );
 
         // Record the bet amount
         uint256 betAmount = msg.value;
@@ -123,13 +142,18 @@ contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
         Bet storage bet = userBet[msg.sender];
         require(bet.amount > 0, "No bet to withdraw");
         require(!bet.withdrawn, "Bet already withdrawn");
-        require(block.timestamp <= bettingEndTime, "Betting has ended");
+        require(
+            block.timestamp <= bettingEndTime,
+            "Betting has ended"
+        );
 
         uint256 withdrawAmount = bet.amount;
         bet.withdrawn = true;
 
         // Update the total amount bet on this candidate
-        totalBets[bet.candidateIndex] = totalBets[bet.candidateIndex].sub(withdrawAmount);
+        totalBets[bet.candidateIndex] = totalBets[bet.candidateIndex].sub(
+            withdrawAmount
+        );
 
         payable(msg.sender).transfer(withdrawAmount);
 
@@ -137,7 +161,11 @@ contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
     }
 
     // Function to calculate the total bet amount of a user on a candidate
-    function calculateUserBet(address user, uint256 candidateIndex) public view returns (uint256) {
+    function calculateUserBet(address user, uint256 candidateIndex)
+        public
+        view
+        returns (uint256)
+    {
         require(candidateIndex < candidates.length, "Invalid candidate index");
 
         Bet memory bet = userBet[user];
@@ -151,9 +179,16 @@ contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
 
     // Function to get the event result
     function getEventResult() public onlyOwner returns (bytes32 requestId) {
-        require(block.timestamp > bettingEndTime, "Betting is still in progress");
+        require(
+            block.timestamp > bettingEndTime,
+            "Betting is still in progress"
+        );
 
-        Chainlink.Request memory request = buildChainlinkRequest(jobId, address(this), this.fulfill.selector);
+        Chainlink.Request memory request = buildChainlinkRequest(
+            jobId,
+            address(this),
+            this.fulfill.selector
+        );
 
         // Set the request parameters
         request.add("get", "https://api.thebay.me/event"); // Replace with the actual event API endpoint
@@ -163,8 +198,14 @@ contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
     }
 
     // Function to handle the event result
-    function fulfill(bytes32 _requestId, string memory _winner) public recordChainlinkFulfillment(_requestId) {
-        require(block.timestamp > bettingEndTime, "Betting is still in progress");
+    function fulfill(bytes32 _requestId, string memory _winner)
+        public
+        recordChainlinkFulfillment(_requestId)
+    {
+        require(
+            block.timestamp > bettingEndTime,
+            "Betting is still in progress"
+        );
 
         uint256 winnerIndex = findCandidateIndex(_winner);
         require(winnerIndex < candidates.length, "Invalid winner");
@@ -179,9 +220,13 @@ contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
             eventConfirmation.lastConfirmationTimestamp = block.timestamp;
         } else {
             // Check if the confirmation interval has passed
-            if (block.timestamp >= eventConfirmation.lastConfirmationTimestamp + 5 minutes) {
+            if (
+                block.timestamp >=
+                eventConfirmation.lastConfirmationTimestamp + 5 minutes
+            ) {
                 eventConfirmation.count++;
-                eventConfirmation.lastConfirmationTimestamp = block.timestamp;
+                eventConfirmation.lastConfirmationTimestamp = block
+                    .timestamp;
 
                 // Check if the confirmation count meets the threshold
                 if (eventConfirmation.count == 3) {
@@ -211,7 +256,12 @@ contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
         distributeWinningsBatch(winnerIndex, 0, batchSize, numBatches);
     }
 
-    function distributeWinningsBatch(uint256 winnerIndex, uint256 batchIndex, uint256 batchSize, uint256 numBatches) internal {
+    function distributeWinningsBatch(
+        uint256 winnerIndex,
+        uint256 batchIndex,
+        uint256 batchSize,
+        uint256 numBatches
+    ) internal {
         uint256 totalWinningAmount = totalBets[winnerIndex];
         uint256 totalBetsPool = getTotalBetsPool();
 
@@ -226,11 +276,17 @@ contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
         uint256 totalBatchPayout = 0;
         for (uint256 i = startIndex; i < endIndex; i++) {
             if (bets[i].candidateIndex == winnerIndex) {
-                uint256 payoutAmount = (bets[i].amount.mul(totalBetsPool)).div(totalWinningAmount);
+                uint256 payoutAmount = (bets[i].amount.mul(totalBetsPool)).div(
+                    totalWinningAmount
+                );
                 // Apply the fee during winning distribution
-                uint256 feeAmount = (payoutAmount.mul(serviceFeePercentage)).div(100);
+                uint256 feeAmount = (payoutAmount.mul(serviceFeePercentage)).div(
+                    100
+                );
                 uint256 netPayoutAmount = payoutAmount.sub(feeAmount);
-                userWinnings[bets[i].bettor] = userWinnings[bets[i].bettor].add(netPayoutAmount);
+                userWinnings[bets[i].bettor] = userWinnings[bets[i].bettor].add(
+                    netPayoutAmount
+                );
 
                 // Update the total batch payout
                 totalBatchPayout = totalBatchPayout.add(netPayoutAmount);
@@ -248,8 +304,15 @@ contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
             // Call the next batch in a new transaction
             uint256 nextBatchIndex = batchIndex + 1;
             uint256 gasLimit = gasleft() - 5000; // Reduce the gas limit to leave room for other operations
-            bytes memory data = abi.encodeWithSignature("distributeWinningsBatch(uint256,uint256,uint256,uint256)", winnerIndex, nextBatchIndex, batchSize, numBatches);
-            (bool success, ) = address(this).call{gas: gasLimit}(data);
+            bytes memory data =
+                abi.encodeWithSignature(
+                    "distributeWinningsBatch(uint256,uint256,uint256,uint256)",
+                    winnerIndex,
+                    nextBatchIndex,
+                    batchSize,
+                    numBatches
+                );
+            (bool success, ) = address(this).call{ gas: gasLimit }(data);
             require(success, "Batch distribution failed");
         }
     }
@@ -279,13 +342,22 @@ contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
     }
 
     // Function to set the service fee percentage
-    function setServiceFeePercentage(uint256 _serviceFeePercentage) public onlyOwner {
-        require(_serviceFeePercentage <= 5, "Service fee percentage should not exceed 5");
+    function setServiceFeePercentage(uint256 _serviceFeePercentage)
+        public
+        onlyOwner
+    {
+        require(
+            _serviceFeePercentage <= 5,
+            "Service fee percentage should not exceed 5"
+        );
         serviceFeePercentage = _serviceFeePercentage;
     }
 
     // Function to set the service fee wallet
-    function setServiceFeeWallet(address _serviceFeeWallet) public onlyOwner {
+    function setServiceFeeWallet(address _serviceFeeWallet)
+        public
+        onlyOwner
+    {
         serviceFeeWallet = _serviceFeeWallet;
     }
 
@@ -299,9 +371,16 @@ contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
     }
 
     // Function to find the index of a candidate by name
-    function findCandidateIndex(string memory candidateName) internal view returns (uint256) {
+    function findCandidateIndex(string memory candidateName)
+        internal
+        view
+        returns (uint256)
+    {
         for (uint256 i = 0; i < candidates.length; i++) {
-            if (keccak256(bytes(candidates[i].name)) == keccak256(bytes(candidateName))) {
+            if (
+                keccak256(bytes(candidates[i].name)) ==
+                keccak256(bytes(candidateName))
+            ) {
                 return i;
             }
         }
