@@ -109,10 +109,7 @@ contract WikiWager is ChainlinkClient, Ownable, ReentrancyGuard {
             return 0x0;
         }
 
-        assembly {
-            // solhint-disable-line no-inline-assembly
-            result := mload(add(source, 32))
-        }
+        result = bytes32(uint256(keccak256(abi.encodePacked(source))));
     }
 
     // Function to make a bet

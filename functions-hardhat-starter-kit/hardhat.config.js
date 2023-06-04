@@ -22,7 +22,7 @@ module.exports = {
     compilers: [
       {
         version: "0.8.19",
-        settings: SOLC_SETTINGS,
+        settings: { ...SOLC_SETTINGS, viaIR: true },
       },
       {
         version: "0.8.7",
