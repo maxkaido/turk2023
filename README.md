@@ -14,17 +14,17 @@
 
 - show full event log instead bets
 
-- show confirmations
-
 - token contract
 
-- add codes to wwb
-
-- update candidate component according to the contract
+- show confirmations
 
 ## changelog
 
 ### v0.8 Ahmet
+
+- add codes to wwb
+
+- update candidate component according to the contract
 
 - use args in CF
 
