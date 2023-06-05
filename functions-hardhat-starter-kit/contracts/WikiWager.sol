@@ -174,7 +174,7 @@ contract WikiWager is FunctionsConsumer, ReentrancyGuard {
             // Check if the confirmation interval has passed
             if (
                 block.timestamp >=
-                eventConfirmation.lastConfirmationTimestamp + 60 minutes
+                eventConfirmation.lastConfirmationTimestamp + 5 minutes
             ) {
                 eventConfirmation.count++;
                 eventConfirmation.lastConfirmationTimestamp = block
