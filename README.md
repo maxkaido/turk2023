@@ -6,8 +6,6 @@
 
 ## todo
 
-- make getter to show latest result as string
-
 - update dapp UI: add fullfill button
 
 - video demo
@@ -19,6 +17,8 @@
 ## changelog
 
 ### v0.7
+
+- add getter to show latest result as string
 
 - make DON request
 
