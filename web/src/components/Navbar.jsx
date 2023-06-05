@@ -13,6 +13,7 @@ const navigation = [
   { name: "Argentina 2023", href: "/argentina-2023" },
   { name: "UK 2024", href: "/uk-2024" },
   { name: "USA 2024", href: "/usa-2024" },
+  { name: "H", href: "/hack" },
 ];
 
 function classNames(...classes) {
