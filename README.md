@@ -20,11 +20,11 @@
 
 - add codes to wwb
 
-- use args in CF
-
 ## changelog
 
-### c0.8 Ahmet
+### v0.8 Ahmet
+
+- use args in CF
 
 - add fullfill button #ui
 
