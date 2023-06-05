@@ -10,14 +10,10 @@ export default function Argentina2023() {
       <main className="py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold leading-tight text-gray-900">
-            Argentina 2023 Election Betting 50/50 outcomes suggestions
-          </h1>
-          <h2 className="text-2xl font-semibold text-gray-900">
             <a href="https://en.wikipedia.org/wiki/2023_Argentine_general_election">
-              https://en.wikipedia.org/wiki/2023_Argentine_general_election
+              Argentina 2023 Election Betting 50/50 outcomes suggestions
             </a>
-          </h2>
-
+          </h1>
           <div className="mt-8">
             <div className="mt-6 grid gap-16 border-t-2 border-gray-100 pt-10 lg:grid-cols-1">
               <div>
