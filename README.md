@@ -18,11 +18,11 @@
 
 - show confirmations
 
-- add fullfill button #ui
-
 ## changelog
 
 ### c0.8 Ahmet
+
+- add fullfill button #ui
 
 - init [wwb](https://t.me/wikiwagerbot) - project telegrm bot
 
