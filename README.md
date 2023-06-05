@@ -24,7 +24,7 @@
 
 ### c0.8 Ahmet
 
-- init wwbQ - tg bot
+- init [wwb](https://t.me/wikiwagerbot) - project telegrm bot
 
 - try 50/50 idea on argentina 2023
 
