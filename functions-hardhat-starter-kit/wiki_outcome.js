@@ -57,11 +57,13 @@ async function fetchWikiAndAskQuestion(url, question) {
   }
 }
 
+const wikiArticleUrl = args[0]
+const question = args[1]
+console.log("Wiki article URL:", wikiArticleUrl)
+console.log("Question:", question)
+
 async function main() {
-  const answer = await fetchWikiAndAskQuestion(
-    "https://en.wikipedia.org/api/rest_v1/page/html/2023_Turkish_presidential_election",
-    "What is the outcome of the 2023 Turkish presidential election? Please respond exactly with 'Erdogan' if Erdogan won, 'Kemal' if Kemal won, or 'n/a' if the result is not known or uncertain. Do not put a dot at the end"
-  )
+  const answer = await fetchWikiAndAskQuestion(wikiArticleUrl, question)
   console.log("Answer:", answer)
   // Remove the dot at the end of the answer
   const answerWithoutDot = answer.replace(/\.$/, "")
