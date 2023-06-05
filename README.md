@@ -6,6 +6,10 @@
 
 ## todo
 
+- remove dot at end of result
+
+- make getter to show latest result as string
+
 - update dapp UI
 
 - video demo
