@@ -12,11 +12,19 @@
 
 - tests
 
+- use args in CF
+
+- show full event log instead bets
+
+- show confirmations
+
+- add fullfill button #ui
+
 ## changelog
 
 ### c0.8 Ahmet
 
-- update dapp UI: add fullfill button
+- init wwbQ - tg bot
 
 - try 50/50 idea on argentina 2023
 
