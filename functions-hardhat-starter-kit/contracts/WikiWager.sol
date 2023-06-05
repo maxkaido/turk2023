@@ -311,5 +311,9 @@ contract WikiWager is FunctionsConsumer, ReentrancyGuard {
         }
         return type(uint256).max;
     }
+
+    function getLatestResponse() public view returns (string memory) {
+        return string(latestResponse);
+    }
 }
 
