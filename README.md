@@ -20,6 +20,8 @@
 
 - add codes to wwb
 
+- update candidate component according to the contract
+
 ## changelog
 
 ### v0.8 Ahmet
