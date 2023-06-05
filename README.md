@@ -8,15 +8,19 @@
 
 - video demo
 
-- submit [(hackathon reqs)](https://github.com/SxT-Community/chainlink-hackathon)
+- submit (hackathon [reqs](https://github.com/SxT-Community/chainlink-hackathon))
 
 - tests
-
-- use args in CF
 
 - show full event log instead bets
 
 - show confirmations
+
+- token contract
+
+- add codes to wwb
+
+- use args in CF
 
 ## changelog
 
