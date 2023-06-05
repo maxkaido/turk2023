@@ -12,6 +12,7 @@ export default function Candidate({
   totalBet,
   possibleWinAmount,
   formatEthValueInUSD,
+  candidateIndex,
 }) {
   return (
     <div className="p-6 rounded border-2 text-center">
@@ -34,7 +35,7 @@ export default function Candidate({
         maxLength={7}
       />
       <button
-        onClick={() => makeBet(name, betAmount)}
+        onClick={() => makeBet(candidateIndex, betAmount)}
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
       >
         Bet ${formatEthValueInUSD(betAmount)}
@@ -42,13 +43,13 @@ export default function Candidate({
       {userTotalBet > 0 ? (
         <>
           <button
-            onClick={withdraw}
+            onClick={() => withdraw(candidateIndex)}
             className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
           >
             Withdraw
           </button>
           <button
-            onClick={claimWinnings}
+            onClick={() => claimWinnings(candidateIndex)}
             className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
           >
             Claim Winnings

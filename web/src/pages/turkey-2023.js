@@ -259,6 +259,7 @@ export default function Home() {
           <Candidate
             imageSrc="/c1.jpg"
             name="Recep Tayyip Erdoğan"
+            candidateIndex={0}
             betAmount={betAmountErdogan}
             setBetAmount={setBetAmountErdogan}
             makeBet={makeBet}
@@ -272,6 +273,7 @@ export default function Home() {
           <Candidate
             imageSrc="/c2.jpg"
             name="Kemal Kılıçdaroğlu"
+            candidateIndex={1}
             betAmount={betAmountKemal}
             setBetAmount={setBetAmountKemal}
             makeBet={makeBet}
