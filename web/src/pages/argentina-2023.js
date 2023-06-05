@@ -10,7 +10,7 @@ export default function Argentina2023() {
       <main className="py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold leading-tight text-gray-900">
-            Argentina 2023 Election Betting Outcomes
+            Argentina 2023 Election Betting 50/50 outcomes suggestions
           </h1>
           <h2 className="text-2xl font-semibold text-gray-900">
             <a href="https://en.wikipedia.org/wiki/2023_Argentine_general_election">
@@ -25,7 +25,7 @@ export default function Argentina2023() {
                   Party to Win the Presidential Election
                 </h2>
                 <p className="mt-2 text-base text-gray-500">
-                  This bet would be on which party's candidate will win the
+                  This bet would be on which party`s candidate will win the
                   presidency. The main contenders seem to be the Frente de Todos
                   (FdT) and Juntos por el Cambio (JxC).
                 </p>
