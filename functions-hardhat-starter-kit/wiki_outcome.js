@@ -60,10 +60,14 @@ async function fetchWikiAndAskQuestion(url, question) {
 async function main() {
   const answer = await fetchWikiAndAskQuestion(
     "https://en.wikipedia.org/api/rest_v1/page/html/2023_Turkish_presidential_election",
-    "What is the outcome of the 2023 Turkish presidential election? Please respond exactly with 'Erdogan' if Erdogan won, 'Kemal' if Kemal won, or 'n/a' if the result is not known or uncertain."
+    "What is the outcome of the 2023 Turkish presidential election? Please respond exactly with 'Erdogan' if Erdogan won, 'Kemal' if Kemal won, or 'n/a' if the result is not known or uncertain. Do not put a dot at the end"
   )
   console.log("Answer:", answer)
-  return Functions.encodeString(answer)
+  // Remove the dot at the end of the answer
+  const answerWithoutDot = answer.replace(/\.$/, "")
+  console.log("Answer without dot:", answerWithoutDot)
+
+  return Functions.encodeString(answerWithoutDot)
 }
 
 return main().catch(console.error)
