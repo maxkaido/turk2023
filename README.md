@@ -6,11 +6,9 @@
 
 ## todo
 
-- remove dot at end of result
-
 - make getter to show latest result as string
 
-- update dapp UI
+- update dapp UI: add fullfill button
 
 - video demo
 
@@ -20,9 +18,17 @@
 
 ## changelog
 
-### v0.6
+### v0.7
+
+- make DON request
+
+- remove dot at end of result
+
+- make DON request
 
 - deploy sepolia
+
+### v0.6
 
 - refactor WikiWager
 
