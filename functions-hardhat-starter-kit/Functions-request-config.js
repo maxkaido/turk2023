@@ -38,7 +38,10 @@ const requestConfig = {
   // ETH wallet key used to sign secrets so they cannot be accessed by a 3rd party
   walletPrivateKey: process.env["PRIVATE_KEY"],
   // Args (string only array) can be accessed within the source code with `args[index]` (ie: args[0]).
-  args: ["1", "bitcoin", "btc-bitcoin", "btc", "1000000", "450"],
+  args: [
+    "https://en.wikipedia.org/api/rest_v1/page/html/2023_Turkish_presidential_election",
+    "What is the outcome of the 2023 Turkish presidential election? Please respond exactly with 'Erdogan' if Erdogan won, 'Kemal' if Kemal won, or 'n/a' if the result is not known or uncertain. Do not put a dot at the end",
+  ],
   // Expected type of the returned value
   expectedReturnType: ReturnType.uint256,
   // Redundant URLs which point to encrypted off-chain secrets
