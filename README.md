@@ -6,8 +6,6 @@
 
 ## todo
 
-- update dapp UI: add fullfill button
-
 - video demo
 
 - submit [(hackathon reqs)](https://github.com/SxT-Community/chainlink-hackathon)
@@ -16,9 +14,19 @@
 
 ## changelog
 
+### c0.8 Ahmet
+
+- update dapp UI: add fullfill button
+
+- try 50/50 idea on argentina 2023
+
 ### v0.7
 
-- add latestResponse
+- show latestResponse #ui
+
+- sepolia DON request
+
+- redeploy sepolia
 
 - add getter to show latest result as string
 
