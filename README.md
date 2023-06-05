@@ -18,6 +18,8 @@
 
 ### v0.7
 
+- add latestResponse
+
 - add getter to show latest result as string
 
 - make DON request

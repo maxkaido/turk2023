@@ -2,7 +2,7 @@
 import { useEffect, useState, useContext } from "react";
 import { ethers } from "ethers";
 import CountdownTimer from "../components/CountdownTimer";
-import ElectionBettingArtifact from "../../artifacts/ElectionBetting.json";
+import WikiWager from "../../artifacts/WikiWager.json";
 import EthereumContext from "../context/EthereumContext";
 import Candidate from "@/components/Candidate";
 import Bets from "@/components/Bets";
@@ -10,10 +10,9 @@ import ServiceFee from "@/components/ServiceFee";
 import BettingEndTime from "@/components/BettingEndTime";
 import OwnerActions from "@/components/OwnerActions";
 
-// const sepoliaContractAddress = "0x460DeFA3ed9986f21C588ab611cE78d0496EadFA";
-const avalancheContractAddress = "0x179cc4C03f6Bea57c70fAcaEa4EdC4E6DC2B2803";
+const sepoliaContractAddress = "0x47684c906A51c69E170179cb112327fFCA7b8530";
 
-const contractAddress = avalancheContractAddress;
+const contractAddress = sepoliaContractAddress;
 
 const ETHEREUM_API_URL =
   "https://api.coingecko.com/api/v3/simple/price?ids=avalanche-2&vs_currencies=usd";
@@ -31,6 +30,7 @@ export default function Home() {
   const [bettingEndTime, setBettingEndTime] = useState(null);
   const [ethPriceUSD, setEthPriceUSD] = useState(0);
   const [isOwner, setIsOwner] = useState(false);
+  const [latestResult, setLatestResult] = useState("");
 
   useEffect(() => {
     if (typeof window.ethereum !== "undefined") {
@@ -75,7 +75,7 @@ export default function Home() {
 
     const contract = new ethers.Contract(
       contractAddress,
-      ElectionBettingArtifact.abi,
+      WikiWager.abi,
       signer
     );
     console.log("Contract object", contract);
@@ -103,6 +103,8 @@ export default function Home() {
         getServiceFeePercentage(),
         getBettingEndTime(),
       ]);
+
+      setLatestResult(await state.contract.getLatestResponse());
     } catch (error) {
       console.error(error);
     }
@@ -270,11 +272,16 @@ export default function Home() {
             formatEthValueInUSD={formatEthValueInUSD}
           />
         </div>
+
+        <h3 className="text-xl text-center mt-10">
+          Latest Result: {latestResult}
+        </h3>
+
+        <Bets bets={bets} formatEthValueInUSD={formatEthValueInUSD} />
+        <ServiceFee serviceFeePercentage={serviceFeePercentage} />
+        <BettingEndTime bettingEndTime={bettingEndTime} />
+        {isOwner && <OwnerActions declareWinner={declareWinner} />}
       </div>
-      <Bets bets={bets} formatEthValueInUSD={formatEthValueInUSD} />
-      <ServiceFee serviceFeePercentage={serviceFeePercentage} />
-      <BettingEndTime bettingEndTime={bettingEndTime} />
-      {isOwner && <OwnerActions declareWinner={declareWinner} />}
     </main>
   );
 }
