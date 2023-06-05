@@ -202,6 +202,17 @@ export default function Home() {
     }
   }
 
+  async function fulfill() {
+    try {
+      if (!state.contract) return;
+      const tx = await state.contract.fulfillRequest();
+      await tx.wait();
+      fetchData();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   const targetDate = new Date("2023-05-28T00:00:00");
 
   const userBetPercentageErdogan = userTotalBetErdogan / totalBetErdogan;
@@ -276,6 +287,13 @@ export default function Home() {
         <h3 className="text-xl text-center mt-10">
           Latest Result: {latestResult}
         </h3>
+
+        <button
+          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4"
+          onClick={fulfill}
+        >
+          Fulfill
+        </button>
 
         <Bets bets={bets} formatEthValueInUSD={formatEthValueInUSD} />
         <ServiceFee serviceFeePercentage={serviceFeePercentage} />
