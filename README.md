@@ -1,22 +1,22 @@
-# turk2023
+# Wiki Wager
 
-## [oracle.thebay.me](https://oracle.thebay.me)
+## aka Wiki Crypto Bet
+
+### [oracle.thebay.me](https://oracle.thebay.me)
 
 ## todo
 
-- submit
-
-- tests
+- update dapp UI
 
 - video demo
 
-- update dapp UI
+- submit [(hackathon reqs)](https://github.com/SxT-Community/chainlink-hackathon)
 
-- deploy dev
+- tests
 
 ## changelog
 
-# v0.6
+### v0.6
 
 - deploy sepolia
 
@@ -24,13 +24,13 @@
 
 - init chainlink functions
 
-# v0.5 Wiki Wager
+### v0.5 Wiki Wager
 
 - better api
 
 - make contract universal
 
-# v0.4 Wiki Crypto Bet
+### v0.4 Wiki Crypto Bet
 
 - bug fixes
 
@@ -43,7 +43,3 @@
 - tailwindui
 
 - add GA
-
----
-
-- [hackathon reqs](https://github.com/SxT-Community/chainlink-hackathon)
