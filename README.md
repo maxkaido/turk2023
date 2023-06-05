@@ -8,7 +8,7 @@
 
 - video demo
 
-- submit (hackathon [reqs](https://github.com/SxT-Community/chainlink-hackathon))
+- submit (check hackathon [reqs](https://github.com/SxT-Community/chainlink-hackathon))
 
 - tests
 
