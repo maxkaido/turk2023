@@ -9,7 +9,8 @@ import NetworkSwitch from "@/components/NetworkSwitch";
 const navigation = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
-  { name: "Turkey 2023", href: "/turkey-2023" },
+  { name: "Turkey 2023 (CF)", href: "/turkey-2023" },
+  { name: "Turkey 2023 (legacy)", href: "/turkey-2023-avalanche" },
   { name: "Argentina 2023", href: "/argentina-2023" },
   { name: "UK 2024", href: "/uk-2024" },
   { name: "USA 2024", href: "/usa-2024" },
