@@ -36,7 +36,7 @@ export default function Candidate({
       />
       <button
         onClick={() => makeBet(candidateIndex, betAmount)}
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
+        className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 my-2 mx-2"
       >
         Bet ${formatEthValueInUSD(betAmount)}
       </button>
@@ -44,13 +44,13 @@ export default function Candidate({
         <>
           <button
             onClick={() => withdraw(candidateIndex)}
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
+            className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-700 hover:to-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 my-2 mx-2"
           >
             Withdraw
           </button>
           <button
             onClick={() => claimWinnings(candidateIndex)}
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
+            className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-700 hover:to-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 my-2 mx-2"
           >
             Claim Winnings
           </button>
@@ -58,13 +58,13 @@ export default function Candidate({
       ) : (
         <>
           <button
-            className="bg-red-500 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
+            className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-red-500 to-pink-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 my-2 mx-2"
             disabled
           >
             Withdraw
           </button>
           <button
-            className="bg-green-500 text-white font-bold py-2 px-4 rounded-md my-2 mx-2"
+            className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-green-500 to-teal-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 my-2 mx-2"
             disabled
           >
             Claim Winnings

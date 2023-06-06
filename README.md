@@ -20,9 +20,15 @@
 
 - show confirmations
 
+- redeploy sepolia
+
+- update contract for demo
+
 ## changelog
 
 ### v0.8 Ahmet
+
+- update UI
 
 - wikiwager.xyz
 
