@@ -20,13 +20,19 @@
 
 - show confirmations
 
+- update FAQ
+
+- fix candidate bets ui
+
+## changelog
+
+### v0.9
+
+- fix fullfil bug
+
 - redeploy sepolia
 
 - update contract for demo
-
-- update FAQ
-
-## changelog
 
 ### v0.8 Ahmet
 
