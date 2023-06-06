@@ -1,4 +1,3 @@
-import FAQ from "../components/FAQ";
 import { Fragment } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import {
@@ -238,7 +237,6 @@ export default function Example() {
               </div>
             </div>
           </div>
-          <FAQ />
         </main>
       </div>
     </div>

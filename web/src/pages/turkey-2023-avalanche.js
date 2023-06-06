@@ -4,8 +4,8 @@ import { ethers } from "ethers";
 import Image from "next/image";
 import CountdownTimer from "../components/CountdownTimer";
 import ElectionBettingArtifact from "../../artifacts/ElectionBetting.json";
-import About from "../components/About";
 import EthereumContext from "../context/EthereumContext";
+import FAQeb from "../components/FAQeb";
 
 // const sepoliaContractAddress = "0x460DeFA3ed9986f21C588ab611cE78d0496EadFA";
 const avalancheContractAddress = "0x179cc4C03f6Bea57c70fAcaEa4EdC4E6DC2B2803";
@@ -454,7 +454,7 @@ export default function Home() {
           </div>
         ))}
       </div>
-      <About />
+      <FAQeb />
       <div className="p-4">
         <h1 className="text-2xl font-bold mb-4">Service Fee Percentage</h1>
         <p>Current service fee percentage: {serviceFeePercentage}%</p>
