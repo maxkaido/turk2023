@@ -24,6 +24,8 @@
 
 - update contract for demo
 
+- update FAQ
+
 ## changelog
 
 ### v0.8 Ahmet

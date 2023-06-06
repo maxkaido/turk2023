@@ -10,7 +10,7 @@ import ServiceFee from "@/components/ServiceFee";
 import BettingEndTime from "@/components/BettingEndTime";
 import OwnerActions from "@/components/OwnerActions";
 
-const sepoliaContractAddress = "0x47684c906A51c69E170179cb112327fFCA7b8530";
+const sepoliaContractAddress = "0x9762a12624e54D53FA428ee52588061a34d6D2Ef";
 
 const contractAddress = sepoliaContractAddress;
 
@@ -205,7 +205,7 @@ export default function Home() {
   async function fulfill() {
     try {
       if (!state.contract) return;
-      const tx = await state.contract.fulfillRequest();
+      const tx = await state.contract.fulfill();
       await tx.wait();
       fetchData();
     } catch (error) {
