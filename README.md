@@ -2,13 +2,15 @@
 
 ## aka Wiki Crypto Bet
 
-### [oracle.thebay.me](https://oracle.thebay.me)
+### [wikiwager.xyz](https://wikiwager.xyz)
+
+## mirror [oracle.thebay.me](https://oracle.thebay.me)
 
 ## todo
 
 - video demo
 
-- submit (check hackathon [reqs](https://github.com/SxT-Community/chainlink-hackathon))
+- submit (check hackathon [reqirements](https://github.com/SxT-Community/chainlink-hackathon))
 
 - tests
 
@@ -21,6 +23,8 @@
 ## changelog
 
 ### v0.8 Ahmet
+
+- wikiwager.xyz
 
 - add codes to wwb
 
