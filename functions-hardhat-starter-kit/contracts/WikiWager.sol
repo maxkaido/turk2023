@@ -149,15 +149,14 @@ contract WikiWager is FunctionsConsumer, ReentrancyGuard {
         }
     }
 
-
     // Function to handle the event result
-    function fulfill()
-        public
-    {
+    function fulfill() public onlyOwner {
         require(
-            block.timestamp > bettingEndTime,
-            "Betting is still in progress"
+            block.timestamp <= bettingEndTime,
+            "Betting has already ended"
         );
+
+        bettingEndTime = block.timestamp; // Set betting end time as current timestamp
 
         uint256 winnerIndex = findCandidateIndex(string(latestResponse));
         require(winnerIndex < candidates.length, "Invalid winner");
@@ -177,8 +176,7 @@ contract WikiWager is FunctionsConsumer, ReentrancyGuard {
                 eventConfirmation.lastConfirmationTimestamp + 5 minutes
             ) {
                 eventConfirmation.count++;
-                eventConfirmation.lastConfirmationTimestamp = block
-                    .timestamp;
+                eventConfirmation.lastConfirmationTimestamp = block.timestamp;
 
                 // Check if the confirmation count meets the threshold
                 if (eventConfirmation.count == 2) {
