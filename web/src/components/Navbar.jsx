@@ -62,7 +62,7 @@ export default function Navbar() {
                 </div>
                 <div className="flex-shrink-0 flex items-center text-gray-200">
                   <span className=" font-semibold hidden lg:block mr-2">
-                    Wiki Crypto Bet |
+                    Wiki Wager |
                   </span>
                   <span className=" font-light text-xs mr-2">v{p.version}</span>
                 </div>
