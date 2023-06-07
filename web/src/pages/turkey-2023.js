@@ -31,6 +31,7 @@ export default function Home() {
   const [isOwner, setIsOwner] = useState(false);
   const [latestResult, setLatestResult] = useState("");
   const [confirmations, setConfirmations] = useState(0);
+  const requiredConfirmations = 2;
 
   useEffect(() => {
     if (typeof window.ethereum !== "undefined") {
@@ -297,7 +298,7 @@ export default function Home() {
           Latest Result: {latestResult}
         </h3>
         <p className="text-center">
-          Confirmations: {confirmations} (2 required to declare a winner)
+          Result Confirmations: {confirmations} / {requiredConfirmations}
         </p>
 
         <button
