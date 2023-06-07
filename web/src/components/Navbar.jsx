@@ -4,7 +4,6 @@ import { useState, useContext } from "react";
 import { useRouter } from "next/router";
 import EthereumContext from "../context/EthereumContext";
 import p from "../../package.json";
-import NetworkSwitch from "@/components/NetworkSwitch";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -84,12 +83,6 @@ export default function Navbar() {
                 </div>
               </div>
               <div className="flex items-center">
-                <div className="flex items-center">
-                  <NetworkSwitch
-                    selectedNetwork={selectedNetwork}
-                    onNetworkChange={setSelectedNetwork}
-                  />
-                </div>
                 <div className="flex items-center ml-4">
                   {state.account ? (
                     <p className="text-white text-sm mr-4">{trimmedAddress}</p>
