@@ -24,6 +24,8 @@
 
 - fix candidate bets ui
 
+- test full flow and fix bugs
+
 ## changelog
 
 ### v0.9
