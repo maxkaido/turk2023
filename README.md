@@ -32,17 +32,19 @@
 
 ### v0.9
 
+- fix bets #ui
+
 - sepolia.wikiwager.xyz
 
-- remove network switch
+- remove network switch #ui
 
-- show confirmations count
+- show confirmations count #ui
 
-- test full flow and fix bugs
+- test full flow and fix bugs #ui
 
-- redeploy sepolia
+- redeploy sepolia #contract #ui
 
-- fix fulfil
+- fix fulfil #contract
 
 - can gpt4 figure out that problem? yes with clue
 
