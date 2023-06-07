@@ -26,7 +26,7 @@ export default function Home() {
   const [userTotalBetKemal, setUserTotalBetKemal] = useState(0);
   const [totalBetKemal, setTotalBetKemal] = useState(0);
   const [serviceFeePercentage, setServiceFeePercentage] = useState(0);
-  const [bettingEndTime, setBettingEndTime] = useState(null);
+  const [bettingEndTime, setBettingEndTime] = useState(1686226330);
   const [ethPriceUSD, setEthPriceUSD] = useState(0);
   const [isOwner, setIsOwner] = useState(false);
   const [latestResult, setLatestResult] = useState("");
