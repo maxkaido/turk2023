@@ -20,7 +20,6 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
-  const [selectedNetwork, setSelectedNetwork] = useState("avalanche"); // Default selected network is "avalanche"
   const { state, setState } = useContext(EthereumContext);
   const router = useRouter();
 
