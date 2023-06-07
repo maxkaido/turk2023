@@ -14,7 +14,7 @@ const sepoliaContractAddress = "0xd00877f1b2c5e38908e4AD6692A01B1E917C9CCc";
 const contractAddress = sepoliaContractAddress;
 
 const ETHEREUM_API_URL =
-  "https://api.coingecko.com/api/v3/simple/price?ids=avalanche-2&vs_currencies=usd";
+  "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd";
 
 export default function Home() {
   const { state, setState } = useContext(EthereumContext);
@@ -59,7 +59,7 @@ export default function Home() {
     try {
       const response = await fetch(ETHEREUM_API_URL);
       const data = await response.json();
-      const ethPrice = data["avalanche-2"].usd;
+      const ethPrice = data["ethereum"].usd;
       setEthPriceUSD(ethPrice);
     } catch (error) {
       console.error(error);
