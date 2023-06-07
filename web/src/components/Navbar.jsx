@@ -59,9 +59,7 @@ export default function Navbar() {
                   </Disclosure.Button>
                 </div>
                 <div className="flex-shrink-0 flex items-center text-gray-200">
-                  <span className=" font-semibold hidden lg:block mr-2">
-                    Wiki Wager |
-                  </span>
+                  <span className=" font-semibold mr-2">Wiki Wager |</span>
                   <span className=" font-light text-xs mr-2">v{p.version}</span>
                 </div>
                 <div className="hidden md:ml-6 md:flex md:items-center md:space-x-4">
