@@ -1,4 +1,3 @@
-"use client";
 import { useEffect, useState, useContext } from "react";
 import { ethers } from "ethers";
 import CountdownTimer from "../components/CountdownTimer";
@@ -31,6 +30,7 @@ export default function Home() {
   const [ethPriceUSD, setEthPriceUSD] = useState(0);
   const [isOwner, setIsOwner] = useState(false);
   const [latestResult, setLatestResult] = useState("");
+  const [confirmations, setConfirmations] = useState(0);
 
   useEffect(() => {
     if (typeof window.ethereum !== "undefined") {
@@ -105,6 +105,11 @@ export default function Home() {
       ]);
 
       setLatestResult(await state.contract.getLatestResponse());
+
+      const eventConfirmationFilter =
+        state.contract.filters.EventResultReceived();
+      const events = await state.contract.queryFilter(eventConfirmationFilter);
+      setConfirmations(events.length);
     } catch (error) {
       console.error(error);
     }
@@ -291,6 +296,7 @@ export default function Home() {
         <h3 className="text-xl text-center mt-10">
           Latest Result: {latestResult}
         </h3>
+        <p className="text-center">Confirmations: {confirmations}</p>
 
         <button
           className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4"
