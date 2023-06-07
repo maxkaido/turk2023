@@ -92,7 +92,8 @@ export default function Home() {
       const pastBets = pastEvents.map((event) => ({
         bettor: event.args.bettor,
         amount: ethers.utils.formatEther(event.args.amount),
-        candidate: event.args.candidate,
+        candidate:
+          event.args.candidateIndex.toNumber() === 0 ? "Erdogan" : "Kemal",
       }));
       setBets(pastBets);
 
