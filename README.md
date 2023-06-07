@@ -30,11 +30,17 @@
 
 - test full flow and fix bugs
 
-- show confirmations count for candidate
+- redeploy sepolia
 
-- request DON
+- fix fulfil
+
+- can gpt4 figure out that problem?
 
 ## changelog
+
+- show confirmations count
+
+- request DON
 
 - fix candidate bets ui
 
