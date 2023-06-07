@@ -28,7 +28,9 @@
 
 - redeploy sepolia
 
-- show full event log instead bets
+## changelog
+
+- show confirmations count
 
 - test full flow and fix bugs
 
@@ -36,11 +38,7 @@
 
 - fix fulfil
 
-- can gpt4 figure out that problem?
-
-## changelog
-
-- show confirmations count
+- can gpt4 figure out that problem? yes with clue
 
 - request DON
 

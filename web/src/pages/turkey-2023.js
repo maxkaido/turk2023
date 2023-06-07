@@ -106,10 +106,10 @@ export default function Home() {
 
       setLatestResult(await state.contract.getLatestResponse());
 
-      const eventConfirmationFilter =
-        state.contract.filters.EventResultReceived();
-      const events = await state.contract.queryFilter(eventConfirmationFilter);
-      setConfirmations(events.length);
+      // Get the confirmations count from the contract variable
+      const contractConfirmations = await state.contract.eventConfirmation();
+      const confirmations = contractConfirmations.count.toNumber();
+      setConfirmations(confirmations);
     } catch (error) {
       console.error(error);
     }
@@ -296,7 +296,9 @@ export default function Home() {
         <h3 className="text-xl text-center mt-10">
           Latest Result: {latestResult}
         </h3>
-        <p className="text-center">Confirmations: {confirmations}</p>
+        <p className="text-center">
+          Confirmations: {confirmations} (2 required to declare a winner)
+        </p>
 
         <button
           className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4"
