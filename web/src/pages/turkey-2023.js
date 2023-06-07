@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { ethers } from "ethers";
-import CountdownTimer from "../components/CountdownTimer";
+import CountdownTimerV2 from "../components/CountdownTimerV2";
 import WikiWager from "../../artifacts/WikiWager.json";
 import EthereumContext from "../context/EthereumContext";
 import Candidate from "@/components/Candidate";
@@ -163,6 +163,7 @@ export default function Home() {
   async function getBettingEndTime() {
     try {
       const endTime = await state.contract.bettingEndTime();
+      console.log(endTime.toNumber());
       setBettingEndTime(endTime.toNumber());
     } catch (error) {
       console.error(error);
@@ -222,8 +223,6 @@ export default function Home() {
     }
   }
 
-  const targetDate = new Date("2023-05-28T00:00:00");
-
   const userBetPercentageErdogan = userTotalBetErdogan / totalBetErdogan;
   const serviceFeeAmountErdogan =
     (userTotalBetKemal * serviceFeePercentage) / 100;
@@ -257,8 +256,8 @@ export default function Home() {
     <main className="bg-gray-800 text-white min-h-screen">
       <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8">
         <h1 className="text-4xl text-center mb-10">Turk Election Bet</h1>
-        <CountdownTimer
-          targetDate={targetDate}
+        <CountdownTimerV2
+          timestamp={bettingEndTime * 1000}
           suppressHydrationWarning={true}
         />
         <h2 className="text-3xl text-center my-10">
