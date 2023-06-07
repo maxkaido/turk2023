@@ -8,25 +8,35 @@
 
 ## todo
 
-- video demo
-
-- submit (check hackathon [reqirements](https://github.com/SxT-Community/chainlink-hackathon))
+- daico
 
 - tests
 
-- show full event log instead bets
+- roadmap
 
 - token contract
 
-- show confirmations
+- submit (check hackathon [reqirements](https://github.com/SxT-Community/chainlink-hackathon))
+
+- update about
 
 - update FAQ
 
-- fix candidate bets ui
+- video demo
+
+- redeploy sepolia
+
+- show full event log instead bets
 
 - test full flow and fix bugs
 
+- show confirmations count for candidate
+
+- request DON
+
 ## changelog
+
+- fix candidate bets ui
 
 ### v0.9
 
