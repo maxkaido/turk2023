@@ -8,7 +8,9 @@
 
 ## todo
 
-- daico
+- better network switch #ui
+
+- daico #project
 
 - tests
 

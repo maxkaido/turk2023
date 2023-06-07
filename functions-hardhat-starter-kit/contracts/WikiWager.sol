@@ -151,54 +151,52 @@ contract WikiWager is FunctionsConsumer, ReentrancyGuard {
 
     // Function to handle the event result
     function fulfill() public onlyOwner {
-        require(
-            block.timestamp <= bettingEndTime,
-            "Betting has already ended"
-        );
+      require(
+        eventConfirmation.count < 2,
+        "Event result has already been confirmed"
+      );
 
-        bettingEndTime = block.timestamp; // Set betting end time as current timestamp
+      uint256 winnerIndex = findCandidateIndex(string(latestResponse));
+      require(winnerIndex < candidates.length, "Invalid winner");
 
-        uint256 winnerIndex = findCandidateIndex(string(latestResponse));
-        require(winnerIndex < candidates.length, "Invalid winner");
+      emit EventResultReceived(winnerIndex);
 
-        emit EventResultReceived(winnerIndex);
+      // Check if it's a new confirmation result
+      if (winnerIndex != eventConfirmation.resultIndex) {
+        // Drop the counter to the previous confirmation result
+        eventConfirmation.count = 1;
+        eventConfirmation.resultIndex = winnerIndex;
+        eventConfirmation.lastConfirmationTimestamp = block.timestamp;
+      } else {
+        // Check if the confirmation interval has passed
+        if (
+          block.timestamp >=
+            eventConfirmation.lastConfirmationTimestamp + 5 minutes
+        ) {
+          eventConfirmation.count++;
+          eventConfirmation.lastConfirmationTimestamp = block.timestamp;
 
-        // Check if it's a new confirmation result
-        if (winnerIndex != eventConfirmation.resultIndex) {
-            // Drop the counter to the previous confirmation result
-            eventConfirmation.count = 1;
-            eventConfirmation.resultIndex = winnerIndex;
-            eventConfirmation.lastConfirmationTimestamp = block.timestamp;
-        } else {
-            // Check if the confirmation interval has passed
-            if (
-                block.timestamp >=
-                eventConfirmation.lastConfirmationTimestamp + 5 minutes
-            ) {
-                eventConfirmation.count++;
-                eventConfirmation.lastConfirmationTimestamp = block.timestamp;
-
-                // Check if the confirmation count meets the threshold
-                if (eventConfirmation.count == 2) {
-                    // Declare the winner
-                    emit EventResultReceived(eventConfirmation.resultIndex);
-                    distributeWinnings(eventConfirmation.resultIndex);
-                }
-            }
+          // Check if the confirmation count meets the threshold
+          if (eventConfirmation.count == 2) {
+            // Declare the winner
+            emit EventResultReceived(eventConfirmation.resultIndex);
+            distributeWinnings(eventConfirmation.resultIndex);
+          }
         }
+      }
     }
 
     // Function to distribute winnings in batches
     function distributeWinnings(uint256 winnerIndex) internal {
-        uint256 totalWinningAmount = totalBets[winnerIndex];
-        if (totalWinningAmount == 0) {
-            return;
-        }
+      uint256 totalWinningAmount = totalBets[winnerIndex];
+      if (totalWinningAmount == 0) {
+        return;
+      }
 
-        uint256 totalNetWinningAmount = totalWinningAmount;
-        candidateWinnings[winnerIndex] = totalNetWinningAmount;
+      uint256 totalNetWinningAmount = totalWinningAmount;
+      candidateWinnings[winnerIndex] = totalNetWinningAmount;
 
-        // Set the batch size
+      // Set the batch size
         uint256 batchSize = 100;
         uint256 numBatches = (bets.length + batchSize - 1) / batchSize;
 
