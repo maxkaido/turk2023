@@ -27,7 +27,7 @@ export default function Candidate({
       <h1 className="text-2xl mb-2">{name}</h1>
       <input
         type="number"
-        placeholder="Enter Bet Amount (AVA)"
+        placeholder="Enter Bet Amount (AVAX)"
         className="bg-gray-100 text-black rounded py-2 px-4 mb-4 w-28"
         value={betAmount}
         onChange={(e) => setBetAmount(e.target.value)}
@@ -73,17 +73,17 @@ export default function Candidate({
       )}
       <div className="mt-6">
         <p>
-          Current Bet: <span>{userTotalBet}</span> AVA ≈ $
+          Current Bet: <span>{userTotalBet}</span> AVAX ≈ $
           {formatEthValueInUSD(userTotalBet)}
         </p>
         {possibleWinAmount > 0 && (
           <p>
-            Possible Win: <span>+{possibleWinAmount.toFixed(2)}</span> AVA ≈ $
+            Possible Win: <span>+{possibleWinAmount.toFixed(2)}</span> AVAX ≈ $
             {formatEthValueInUSD(possibleWinAmount)}
           </p>
         )}
         <p>
-          Total Bet: <span>{totalBet}</span> AVA ≈ $
+          Total Bet: <span>{totalBet}</span> AVAX ≈ $
           {formatEthValueInUSD(totalBet)}
         </p>
       </div>

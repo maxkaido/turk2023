@@ -163,19 +163,20 @@ export default function Home() {
   }
 
   async function getUserBet(candidate) {
+    const candidateIndex = candidate === "Erdogan" ? 0 : 1;
     try {
       const userBet = await state.contract.calculateUserBet(
         state.account,
-        candidate,
+        candidateIndex,
         {
           from: state.account,
         }
       );
       const formattedUserBet = Number(ethers.utils.formatEther(userBet));
 
-      if (candidate === "Erdogan") {
+      if (candidateIndex === 0) {
         setUserTotalBetErdogan(formattedUserBet);
-      } else if (candidate === "Kemal") {
+      } else if (candidateIndex === 1) {
         setUserTotalBetKemal(formattedUserBet);
       }
     } catch (error) {
