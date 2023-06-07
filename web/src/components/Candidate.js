@@ -73,17 +73,17 @@ export default function Candidate({
       )}
       <div className="mt-6">
         <p>
-          Current Bet: <span>{userTotalBet}</span> AVAX ≈ $
+          Current Bet: <span>{userTotalBet}</span> ETH ≈ $
           {formatEthValueInUSD(userTotalBet)}
         </p>
         {possibleWinAmount > 0 && (
           <p>
-            Possible Win: <span>+{possibleWinAmount.toFixed(2)}</span> AVAX ≈ $
+            Possible Win: <span>+{possibleWinAmount.toFixed(2)}</span> ETH ≈ $
             {formatEthValueInUSD(possibleWinAmount)}
           </p>
         )}
         <p>
-          Total Bet: <span>{totalBet}</span> AVAX ≈ $
+          Total Bet: <span>{totalBet}</span> ETH ≈ $
           {formatEthValueInUSD(totalBet)}
         </p>
       </div>
