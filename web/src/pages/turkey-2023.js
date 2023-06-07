@@ -184,8 +184,9 @@ export default function Home() {
   }
 
   async function getTotalBet(candidate) {
+    const candidateIndex = candidate === "Erdogan" ? 0 : 1;
     try {
-      const totalBetAmount = await state.contract.totalBets(candidate, {
+      const totalBetAmount = await state.contract.totalBets(candidateIndex, {
         from: state.account,
       });
       const formattedTotalBet = Number(
