@@ -30,6 +30,12 @@
 
 ## changelog
 
+### v0.9
+
+- sepolia.wikiwager.xyz
+
+- remove network switch
+
 - show confirmations count
 
 - test full flow and fix bugs
@@ -43,8 +49,6 @@
 - request DON
 
 - fix candidate bets ui
-
-### v0.9
 
 - fix fullfil bug
 
