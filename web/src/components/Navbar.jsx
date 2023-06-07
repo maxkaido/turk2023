@@ -1,6 +1,6 @@
 import { Disclosure } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { useRouter } from "next/router";
 import EthereumContext from "../context/EthereumContext";
 import p from "../../package.json";
