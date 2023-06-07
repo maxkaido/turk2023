@@ -32,6 +32,8 @@
 
 ### v0.9
 
+- improved countdown timer
+
 - fix bets #ui
 
 - sepolia.wikiwager.xyz
