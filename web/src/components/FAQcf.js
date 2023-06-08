@@ -43,11 +43,6 @@ const faqs = [
       "Yes, Wiki Wager charges a service fee percentage on the winnings. The exact fee percentage and details can be found in the platform's terms and conditions. The service fee is used to cover operational costs, ensure platform sustainability, and further develop the betting ecosystem.",
   },
   {
-    question: "How can I deposit funds into my Wiki Wager account?",
-    answer:
-      "To deposit funds into your Wiki Wager account, you can use the supported cryptocurrencies and transfer them to your designated wallet address provided by the platform. The deposits are processed securely on the blockchain, ensuring the integrity and traceability of the transactions.",
-  },
-  {
     question: "Can I withdraw my funds from Wiki Wager?",
     answer:
       "Yes, you can withdraw your funds from Wiki Wager. The platform allows users to withdraw their winnings and available balances. Withdrawals are processed securely and promptly, ensuring that you have full control over your funds.",

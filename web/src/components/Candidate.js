@@ -27,7 +27,7 @@ export default function Candidate({
       <h1 className="text-2xl mb-2">{name}</h1>
       <input
         type="number"
-        placeholder="Enter Bet Amount (ETH)"
+        placeholder="0.0 ETH"
         className="bg-gray-100 text-black rounded py-2 px-4 mb-4 w-28"
         value={betAmount}
         onChange={(e) => setBetAmount(e.target.value)}
