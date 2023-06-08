@@ -25,7 +25,7 @@ const faqs = [
   {
     question: "How can I participate in Wiki Wager?",
     answer:
-      "To participate in Wiki Wager, you can visit the Wiki Wager website and create an account. Once registered, you can explore the available betting events, select your preferred candidates or outcomes, and place your bets using the supported cryptocurrencies. Stay updated with real-time results and track your betting performance on the platform.",
+      "To participate in Wiki Wager, you can visit the Wiki Wager website. You can explore the available betting events, select your preferred candidates or outcomes, and place your bets using the supported cryptocurrencies. Stay updated with real-time results and track your betting performance on the platform.",
   },
   {
     question: "What events can I bet on?",
