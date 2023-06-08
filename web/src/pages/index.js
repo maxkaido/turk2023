@@ -9,7 +9,7 @@ import {
   ShieldCheckIcon,
   XIcon,
 } from "@heroicons/react/outline";
-import FAQeb from "@/components/FAQeb";
+import FAQcf from "@/components/FAQcf";
 
 const features = [
   {
@@ -238,7 +238,7 @@ export default function Example() {
               </div>
             </div>
           </div>
-          <FAQeb />
+          <FAQcf />
         </main>
       </div>
     </div>

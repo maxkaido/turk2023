@@ -32,6 +32,10 @@
 
 ### v0.9
 
+- update FAQ
+
+- update about
+
 - improved countdown timer
 
 - fix bets #ui
