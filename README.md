@@ -36,6 +36,11 @@ Follow these steps to set up and run the project:
    ```
 
 4. **Deploy on Sepolia and Get Contract Address**
+
+   ```
+   yarn hardhat run --network ethereumSepolia scripts/deployWikiWagerSepolia.js
+   ```
+
    After deploying, make sure to get the contract address.
 
 5. **Add Contract Address to Subscription**
