@@ -5,7 +5,6 @@ import {
   CogIcon,
   LockClosedIcon,
   RefreshIcon,
-  ServerIcon,
   ShieldCheckIcon,
   XIcon,
 } from "@heroicons/react/outline";
