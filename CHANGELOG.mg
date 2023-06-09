@@ -1,6 +1,6 @@
 ## todo
 
-- better network switch #ui
+# changelog
 
 - daico #project
 
@@ -9,6 +9,17 @@
 - roadmap
 
 - token contract
+
+- redeploy for demo with 3 days battings
+
+- replace screenshot with youtube video
+
+- add email to contact
+
+### v0.9
+
+
+- rm network switch #ui
 
 - submit (check hackathon [reqirements](https://github.com/SxT-Community/chainlink-hackathon))
 
@@ -20,9 +31,6 @@
 
 - redeploy sepolia
 
-## changelog
-
-### v0.9
 
 - update FAQ
 
