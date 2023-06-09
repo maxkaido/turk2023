@@ -2,7 +2,7 @@
 
 This project is also known as Wiki Crypto Bet. You can find more information at [wikiwager.xyz](http://wikiwager.xyz).
 
-https://sepolia.etherscan.io/address/0x79cED8626661c53B0D3D9004888A98f63ed93c82#code
+https://sepolia.etherscan.io/address/0xf0F6ebb74183e9A7e056DaBec51E2bBff4e9c67A#code
 
 [hackathon story](/HACKATHON.md)
 [changelog](/CHANGELOG.md)
