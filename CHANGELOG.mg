@@ -12,14 +12,13 @@
 
 - redeploy for demo with 3 days battings
 
-- replace screenshot with youtube video
-
-- add email to contact
-
 - add UK and US elections
 
 ### v0.9
 
+- replace screenshot with youtube video
+
+- add email to contact
 
 - rm network switch #ui
 
