@@ -10,11 +10,13 @@
 
 - token contract
 
-- redeploy for demo with 3 days battings
-
-- add UK and US elections
 
 ### v0.9
+
+- redeploy for demo with 3 days battings
+
+
+- add UK and US elections
 
 - replace screenshot with youtube video
 
