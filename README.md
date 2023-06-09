@@ -1,53 +1,91 @@
-# Wiki Wager
+# Wiki Wager (turk2023)
 
-## aka Wiki Crypto Bet
+This project is also known as Wiki Crypto Bet. You can find more information at [wikiwager.xyz](http://wikiwager.xyz).
 
-## aka turk2023
+## Setup Instructions
 
-### [wikiwager.xyz](https://wikiwager.xyz)
+Follow these steps to set up and run the project:
 
-# how tu run
+1. **Install Dependencies**
+   Navigate to the `functions` directory and install the necessary dependencies:
 
-- cd functions-...
+   ```
+   cd functions
+   yarn install
+   ```
 
-- yarn install
+2. **Set Environment Variables**
+   Use `npx env-enc set` to set the following environment variables:
 
-- npx env-enc set
+   ```
+   PRIVATE_KEY
+   SEPOLIA_RPC_URL
+   OPEN_AI_API_KEY
+   ETHEREUM_SEPOLIA_RPC_URL
+   GITHUB_API_TOKEN
+   ETHERSCAN_API_KEY
+   ```
 
-PRIVATE_KEY
-SEPOLIA_RPC_URL
-OPEN_AI_API_KEY
-ETHEREUM_SEPOLIA_RPC_URL
-GITHUB_API_TOKEN
-ETHERSCAN_API_KEY
+3. **Compile the Project**
+   Use the following command to compile the project:
 
-- yarn compile
+   ```
+   yarn compile
+   ```
 
-- deploy on sepolia and get contract address
+4. **Deploy on Sepolia and Get Contract Address**
+   After deploying, make sure to get the contract address.
 
-- add contract address to subscription
+5. **Add Contract Address to Subscription**
+   Add the contract address to your subscription.
 
-- cp build/artifacts/contracts/WikiWager.sol/WikiWager.json ../web/artifacts/
+6. **Copy Artifacts**
+   Copy the build artifacts to the `web` directory:
 
-- cd ../web
+   ```
+   cp build/artifacts/contracts/WikiWager.sol/WikiWager.json ../web/artifacts/
+   ```
 
-- yarn install
+7. **Install Web Dependencies**
+   Navigate to the `web` directory and install the necessary dependencies:
 
-- update src/pages/turkey-2023.js with contract address
+   ```
+   cd ../web
+   yarn install
+   ```
 
-- yarn dev
+8. **Update Contract Address**
+   Update `src/pages/turkey-2023.js` with the contract address.
 
-- visit http://localhost:3000 to make a bet
+9. **Run the Development Server**
+   Use the following command to run the development server:
 
-- cd ../functions-hardhat-starter-kit/
+   ```
+   yarn dev
+   ```
 
-- npx hardhat functions-request --subid SUB_ID --contract CONTRACT_ADDRESS --network ethereumSepolia
+10. **Visit Localhost**
+    Open your web browser and visit [http://localhost:3000](http://localhost:3000) to make a bet.
 
-- fullfill (owner press button Declare via DON)
+11. **Fulfill the Request**
+    Navigate back to the `functions-hardhat-starter-kit` directory:
 
-- make another request in 5 mitnutes
-  npx hardhat functions-request --subid SUB_ID --contract CONTRACT_ADDRESS --network ethereumSepolia
+    ```
+    cd ../functions-hardhat-starter-kit/
+    ```
 
-- fullfill (owner press button Declare via DON)
+    Use the following command to fulfill the request:
 
-- user can clain winnings by prossing 'Clain winnings button'
+    ```
+    npx hardhat functions-request --subid SUB_ID --contract CONTRACT_ADDRESS --network ethereumSepolia
+    ```
+
+    Press the "Declare via DON" button to fulfill the request.
+
+12. **Repeat Request and Fulfillment**
+    After 5 minutes, repeat the request and fulfillment process.
+
+13. **Claim Winnings**
+    Users can claim their winnings by pressing the "Claim winnings" button.
+
+Please note that you'll need to replace `SUB_ID` and `CONTRACT_ADDRESS` with your actual subscription ID and contract address, respectively.
