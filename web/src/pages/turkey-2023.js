@@ -255,7 +255,11 @@ export default function Home() {
   return (
     <main className="bg-gray-800 text-white min-h-screen">
       <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8">
-        <h1 className="text-4xl text-center mb-10">Turk Election Bet</h1>
+        <h1 className="text-4xl text-center mb-10">
+          <a href="https://en.wikipedia.org/wiki/2023_Turkish_general_election">
+            Turk Election Bet
+          </a>
+        </h1>
         <CountdownTimerV2
           timestamp={bettingEndTime * 1000}
           suppressHydrationWarning={true}
