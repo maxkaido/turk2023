@@ -2,6 +2,6 @@
 
 ## aka Wiki Crypto Bet
 
-### [wikiwager.xyz](https://wikiwager.xyz)
+## aka turk2023
 
-## mirror [oracle.thebay.me](https://oracle.thebay.me)
+### [wikiwager.xyz](https://wikiwager.xyz)
