@@ -1,7 +1,7 @@
 {
   "name": "functions-hardhat-starter-kit",
   "license": "MIT",
-  "version": "0.9.9",
+  "version": "0.9.16",
   "description": "Tooling for interacting with Chainlink Functions",
   "scripts": {
     "compile": "hardhat compile",
