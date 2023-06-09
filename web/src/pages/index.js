@@ -157,11 +157,18 @@ export default function Example() {
                 </p>
               </div>
               <div className="mt-12 ">
-                <img
-                  className="rounded-lg shadow-xl ring-1 ring-black ring-opacity-5"
-                  src="/sc1.png"
-                  alt=""
-                />
+                <div className="rounded-lg shadow-xl ring-1 ring-black ring-opacity-5">
+                  <iframe
+                    width="560"
+                    height="315"
+                    className="w-full h-96"
+                    src="https://www.youtube.com/embed/BhZzPDbuex0"
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                  ></iframe>
+                </div>
               </div>
             </div>
           </div>
