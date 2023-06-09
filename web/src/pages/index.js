@@ -42,12 +42,6 @@ const features = [
       "Integrate our powerful API to access betting data and create custom applications. Build your own betting solutions.",
     icon: CogIcon,
   },
-  {
-    name: "Secure Wallet",
-    description:
-      "Manage your funds with a secure wallet. Your crypto assets are protected with advanced encryption techniques.",
-    icon: ServerIcon,
-  },
 ];
 
 export default function Example() {
