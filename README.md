@@ -12,7 +12,7 @@ Follow these steps to set up and run the project:
    Navigate to the `functions` directory and install the necessary dependencies:
 
    ```
-   cd functions
+   cd functions-hardhat-startet-kit
    yarn install
    ```
 
