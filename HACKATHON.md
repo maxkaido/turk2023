@@ -62,4 +62,8 @@ The journey of Wiki Wager does not end here. We have a roadmap of exciting devel
 
 5. Continuous platform optimization: We are committed to refining and optimizing the Wiki Wager platform based on user feedback and emerging technologies. Our focus will be on improving user interface responsiveness, enhancing security measures, and exploring new blockchain integrations to ensure a seamless and secure betting experience for our users.
 
+## Politics around the world 🌎
+
+While Wiki Wager extends beyond politics to cover a wide range of wiki-based events, we recognize the significance of politics on a global scale. Politics shapes economies, influences policies, and impacts the lives of people worldwide. By incorporating political events from different countries, we aim to foster a deeper understanding of political dynamics, encourage cross-cultural dialogue, and promote global awareness among our users. Together, let's explore politics around the world and embrace the diversity of political landscapes across different nations and regions.
+
 Wiki Wager is not just about betting on wiki-based events; it is about embracing the diversity of political landscapes around the world and providing a platform for users to engage, predict, and celebrate the outcomes of these events. With our innovative technology, reliable data analysis, and user-centric approach, we invite you to join us in the exciting world of Wiki Wager and experience the thrill of betting on politics across the globe. Let's embark on this journey together and redefine the way we interact with political events!

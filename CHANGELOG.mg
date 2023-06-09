@@ -16,6 +16,8 @@
 
 - add email to contact
 
+- add UK and US elections
+
 ### v0.9
 
 
