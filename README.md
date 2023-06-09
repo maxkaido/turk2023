@@ -30,7 +30,7 @@
 
 - yarn dev
 
-- bet
+- visit http://localhost:3000 to make a bet
 
 - cd functions..
 
