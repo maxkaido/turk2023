@@ -15,7 +15,7 @@ Follow these steps to set up and run the project:
    Navigate to the `functions` directory and install the necessary dependencies:
 
    ```
-   cd functions-hardhat-startet-kit
+   cd functions-hardhat-starter-kit
    yarn install
    ```
 
@@ -48,6 +48,10 @@ Follow these steps to set up and run the project:
 
 5. **Add Contract Address to Subscription**
    Add the contract address to your subscription.
+
+   ```
+   npx hardhat functions-sub-add --subid SUB_ID --contract CONTRACT_ADDRESS --network ethereumSepolia
+   ```
 
 6. **Copy Artifacts**
    Copy the build artifacts to the `web` directory:
