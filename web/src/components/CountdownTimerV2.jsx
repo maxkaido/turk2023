@@ -1,4 +1,5 @@
 "use client";
+"use client";
 import React, { useState, useEffect } from "react";
 
 const CountdownTimerV2 = ({ timestamp }) => {
@@ -28,8 +29,9 @@ const CountdownTimerV2 = ({ timestamp }) => {
 
     return timeLeft;
   }
+
   return (
-    <div className="flex justify-center bg-gray-900 text-white py-10 my-10">
+    <div className="flex justify-center bg-gradient-to-r from-indigo-500 to-cyan-500 text-white py-10 my-10">
       <div className="text-center">
         <div className="flex items-center justify-center">
           <div className="gradient-bg-gray-600 text-gray-200 p-4 rounded-lg mr-4">
