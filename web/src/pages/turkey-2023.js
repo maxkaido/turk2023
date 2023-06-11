@@ -309,7 +309,10 @@ export default function Home() {
         <ServiceFee serviceFeePercentage={serviceFeePercentage} />
         <BettingEndTime bettingEndTime={bettingEndTime} />
         {isOwner && (
-          <OwnerActions declareWinner={declareWinner} fulfill={fulfill} />
+          <OwnerActions
+            setLatestResponse={setLatestResponse}
+            fulfill={fulfill}
+          />
         )}
       </div>
     </main>

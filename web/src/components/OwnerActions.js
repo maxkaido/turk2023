@@ -1,4 +1,4 @@
-export default function OwnerActions({ declareWinner, fulfill }) {
+export default function OwnerActions({ setLatestResponse, fulfill }) {
   return (
     <div className="p-4">
       <button
