@@ -169,19 +169,21 @@ contract WikiWager is FunctionsConsumer, ReentrancyGuard {
         eventConfirmation.lastConfirmationTimestamp = block.timestamp;
       } else {
         // Check if the confirmation interval has passed
-        if (
-          block.timestamp >=
-            eventConfirmation.lastConfirmationTimestamp + 5 minutes
-        ) {
-          eventConfirmation.count++;
-          eventConfirmation.lastConfirmationTimestamp = block.timestamp;
+                // Check if the confirmation interval has passed
+        require(
+            block.timestamp >=
+            eventConfirmation.lastConfirmationTimestamp + 5 minutes,
+            "Confirmation interval not met"
+        );
 
-          // Check if the confirmation count meets the threshold
-          if (eventConfirmation.count == 2) {
+        eventConfirmation.count++;
+        eventConfirmation.lastConfirmationTimestamp = block.timestamp;
+
+        // Check if the confirmation count meets the threshold
+        if (eventConfirmation.count == 2) {
             // Declare the winner
             emit EventResultReceived(eventConfirmation.resultIndex);
             distributeWinnings(eventConfirmation.resultIndex);
-          }
         }
       }
     }
