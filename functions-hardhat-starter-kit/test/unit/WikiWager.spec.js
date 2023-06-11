@@ -44,11 +44,21 @@ describe("WikiWager", function () {
 
   describe("fulfill", function () {
     it("Should handle the event result", async function () {
-      // You need to add the logic to simulate the event result
       await wikiWager.connect(owner).setLatestResponse("Candidate1")
       await wikiWager.connect(owner).fulfill()
       let confirmation = await wikiWager.eventConfirmation()
       expect(confirmation.count).to.equal(1)
+      await wikiWager.connect(owner).setLatestResponse("Candidate2")
+      await wikiWager.connect(owner).fulfill()
+      confirmation = await wikiWager.eventConfirmation()
+      expect(confirmation.count).to.equal(1)
+      // Wait for the confirmation interval (5 minutes)
+      await ethers.provider.send("evm_increaseTime", [5 * 60])
+      await ethers.provider.send("evm_mine")
+      await wikiWager.connect(owner).setLatestResponse("Candidate2")
+      await wikiWager.connect(owner).fulfill()
+      confirmation = await wikiWager.eventConfirmation()
+      expect(confirmation.count).to.equal(2)
     })
   })
 
