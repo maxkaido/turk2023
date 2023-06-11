@@ -77,13 +77,7 @@ describe("WikiWager", function () {
       const userWinningsBefore = await wikiWager.userWinnings(addr1.address)
       console.log("User winnings before claiming:", userWinningsBefore.toString())
 
-      try {
-        await wikiWager.connect(addr1).claimWinnings()
-        const userWinningsAfter = await wikiWager.userWinnings(addr1.address)
-        console.log("User winnings after claiming:", userWinningsAfter.toString())
-      } catch (error) {
-        console.log("Claim winnings error:", error.message)
-      }
+      await wikiWager.connect(addr1).claimWinnings()
 
       const userWinningsAfter = await wikiWager.userWinnings(addr1.address)
       console.log("User winnings after claiming:", userWinningsAfter.toString())

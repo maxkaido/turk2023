@@ -9,7 +9,7 @@ import ServiceFee from "@/components/ServiceFee";
 import BettingEndTime from "@/components/BettingEndTime";
 import OwnerActions from "@/components/OwnerActions";
 
-const sepoliaContractAddress = "0xf0F6ebb74183e9A7e056DaBec51E2bBff4e9c67A";
+const sepoliaContractAddress = "0xdbF8B9ea3458FbBeD982EDE60Dc5685A3Ea90343";
 
 const contractAddress = sepoliaContractAddress;
 
