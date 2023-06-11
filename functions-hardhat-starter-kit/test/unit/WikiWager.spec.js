@@ -47,7 +47,7 @@ describe("WikiWager", function () {
       // You need to add the logic to simulate the event result
       await wikiWager.connect(owner).setLatestResponse("Candidate1")
       await wikiWager.connect(owner).fulfill()
-      const confirmation = await wikiWager.eventConfirmation()
+      let confirmation = await wikiWager.eventConfirmation()
       expect(confirmation.count).to.equal(1)
     })
   })
@@ -61,9 +61,13 @@ describe("WikiWager", function () {
   })
 
   describe("claimWinnings", function () {
-    it.skip("Should claim winnings", async function () {
-      // This test assumes that addr1 has won the bet
-      // You need to add the logic to simulate the winning condition
+    it("Should claim winnings", async function () {
+      await wikiWager.connect(addr1).makeBet(0, { value: ethers.utils.parseEther("1") })
+      await wikiWager.connect(addr2).makeBet(1, { value: ethers.utils.parseEther("1") })
+      await wikiWager.connect(owner).setLatestResponse("Candidate1")
+      await wikiWager.connect(owner).fulfill()
+      await wikiWager.connect(owner).setLatestResponse("Candidate1")
+      await wikiWager.connect(owner).fulfill()
       await wikiWager.connect(addr1).claimWinnings()
       const winnings = await wikiWager.userWinnings(addr1.address)
       expect(winnings).to.be.above(0)
