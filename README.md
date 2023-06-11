@@ -1,6 +1,6 @@
 # Wiki Wager (turk2023)
 
-This project is also known as Wiki Crypto Bet. You can find more information at [wikiwager.xyz](http://wikiwager.xyz).
+This project is also known as Wiki Crypto Bet. You can find more information at [sepolia.wikiwager.xyz](http://sepolia.wikiwager.xyz).
 
 https://sepolia.etherscan.io/address/0xdbF8B9ea3458FbBeD982EDE60Dc5685A3Ea90343#code
 
