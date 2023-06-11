@@ -66,6 +66,11 @@ describe("WikiWager", function () {
       await wikiWager.connect(addr2).makeBet(1, { value: ethers.utils.parseEther("1") })
       await wikiWager.connect(owner).setLatestResponse("Candidate1")
       await wikiWager.connect(owner).fulfill()
+
+      // Wait for the confirmation interval (5 minutes)
+      await ethers.provider.send("evm_increaseTime", [5 * 60])
+      await ethers.provider.send("evm_mine")
+
       await wikiWager.connect(owner).setLatestResponse("Candidate1")
       await wikiWager.connect(owner).fulfill()
 
@@ -79,6 +84,11 @@ describe("WikiWager", function () {
       } catch (error) {
         console.log("Claim winnings error:", error.message)
       }
+
+      const userWinningsAfter = await wikiWager.userWinnings(addr1.address)
+      console.log("User winnings after claiming:", userWinningsAfter.toString())
+      const contractBalance = await ethers.provider.getBalance(wikiWager.address)
+      console.log("Contract balance:", contractBalance.toString())
     })
   })
 })
