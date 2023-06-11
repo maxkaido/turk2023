@@ -42,6 +42,24 @@ describe("WikiWager", function () {
     })
   })
 
+  describe("fulfill", function () {
+    it("Should handle the event result", async function () {
+      // You need to add the logic to simulate the event result
+      await wikiWager.connect(owner).setLatestResponse("Candidate1")
+      await wikiWager.connect(owner).fulfill()
+      const confirmation = await wikiWager.eventConfirmation()
+      expect(confirmation.count).to.equal(1)
+    })
+  })
+
+  describe("setServiceFeeWallet", function () {
+    it("Should set the service fee wallet", async function () {
+      await wikiWager.connect(owner).setServiceFeeWallet(addr2.address)
+      const serviceFeeWallet = await wikiWager.serviceFeeWallet()
+      expect(serviceFeeWallet).to.equal(addr2.address)
+    })
+  })
+
   describe("claimWinnings", function () {
     it.skip("Should claim winnings", async function () {
       // This test assumes that addr1 has won the bet
