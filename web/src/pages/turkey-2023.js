@@ -253,7 +253,7 @@ export default function Home() {
   };
 
   return (
-    <main className="bg-gray-800 text-white min-h-screen">
+    <main className="bg-gradient-to-r from-blue-500 to-purple-500 text-white min-h-screen">
       <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8">
         <h1 className="text-4xl text-center mb-10">
           <a href="https://en.wikipedia.org/wiki/2023_Turkish_general_election">
