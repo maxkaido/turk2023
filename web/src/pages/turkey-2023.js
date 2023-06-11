@@ -241,10 +241,10 @@ export default function Home() {
     return (ethValue * ethPriceUSD).toFixed(2);
   };
 
-  const declareWinner = async (candidate) => {
+  const setLatestResponse = async (candidate) => {
     try {
       if (!state.contract) return;
-      const tx = await state.contract.declareWinner(candidate);
+      const tx = await state.contract.setLatestResponse(candidate);
       await tx.wait();
       fetchData();
     } catch (error) {
