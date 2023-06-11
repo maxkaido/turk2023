@@ -4,17 +4,19 @@
 
 - daico #project
 
-- tests
-
 - roadmap
 
 - token contract
 
-
 ### v0.9
 
-- redeploy for demo with 3 days battings
+- redeploy sepolia
 
+- tests
+
+- setLatestResult() by owner
+
+- redeploy for demo with 3 days battings
 
 - add UK and US elections
 
@@ -33,7 +35,6 @@
 - video demo
 
 - redeploy sepolia
-
 
 - update FAQ
 
