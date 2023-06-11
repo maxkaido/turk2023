@@ -14,7 +14,7 @@ export default function Footer() {
           rel="noopener noreferrer"
           className="text-white hover:text-gray-300"
         >
-          <FontAwesomeIcon icon={faTelegram} className="h-10 w-10 mr-4" />
+          <FontAwesomeIcon icon={faTelegram} className="h-7 w-7 mr-4" />
         </a>
         <a
           href="https://github.com/maxkaido/turk2023"
@@ -22,13 +22,13 @@ export default function Footer() {
           rel="noopener noreferrer"
           className="text-white hover:text-gray-300"
         >
-          <FontAwesomeIcon icon={faGithub} className="h-10 w-10 mr-4" />
+          <FontAwesomeIcon icon={faGithub} className="h-7 w-7 mr-4" />
         </a>
         <a
           href="mailto:a@wikiwager.xyz"
           className="text-white hover:text-gray-300"
         >
-          <FontAwesomeIcon icon={faEnvelope} className="h-10 w-10 mr-4" />
+          <FontAwesomeIcon icon={faEnvelope} className="h-7 w-7 mr-4" />
         </a>
       </div>
     </footer>
