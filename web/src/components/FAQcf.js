@@ -60,7 +60,7 @@ const faqs = [
   {
     question: "How can I contact Wiki Wager for support?",
     answer:
-      "For support, you can check the Telegram channel at t.me/wikiwager or contact the Telegram bot @wikiwagerbot. Alternatively, you can also reach out to the team via email at a@wikiwager.xyz. The Wiki Wager team will be happy to assist you with any inquiries or issues you may have.",
+      "For support, you can check the Telegram channel at t.me/wikiwager or contact the Telegram bot t.me/wikiwagerbot. Alternatively, you can also reach out to the team via email at a@wikiwager.xyz. The Wiki Wager team will be happy to assist you with any inquiries or issues you may have.",
   },
 ];
 
