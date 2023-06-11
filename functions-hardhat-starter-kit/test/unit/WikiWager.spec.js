@@ -34,6 +34,14 @@ describe("WikiWager", function () {
     })
   })
 
+  describe("calculateUserBet", function () {
+    it("Should calculate the correct bet amount", async function () {
+      await wikiWager.connect(addr1).makeBet(0, { value: ethers.utils.parseEther("1") })
+      const userBetAmount = await wikiWager.calculateUserBet(addr1.address, 0)
+      expect(userBetAmount).to.equal(ethers.utils.parseEther("1"))
+    })
+  })
+
   describe("claimWinnings", function () {
     it.skip("Should claim winnings", async function () {
       // This test assumes that addr1 has won the bet
