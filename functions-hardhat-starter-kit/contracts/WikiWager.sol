@@ -311,5 +311,10 @@ contract WikiWager is FunctionsConsumer, ReentrancyGuard {
     function getLatestResponse() public view returns (string memory) {
         return string(latestResponse);
     }
+
+        // Function to manually set the latest response by the owner
+    function setLatestResponse(string memory _latestResponse) public onlyOwner {
+        latestResponse = bytes(_latestResponse);
+    }
 }
 
