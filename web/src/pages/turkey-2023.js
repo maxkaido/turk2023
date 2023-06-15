@@ -9,7 +9,7 @@ import ServiceFee from "@/components/ServiceFee";
 import BettingEndTime from "@/components/BettingEndTime";
 import OwnerActions from "@/components/OwnerActions";
 
-const sepoliaContractAddress = "0xdbF8B9ea3458FbBeD982EDE60Dc5685A3Ea90343";
+const sepoliaContractAddress = "0x9106460458d0525fb5812607329d7294C107C479";
 
 const contractAddress = sepoliaContractAddress;
 
@@ -26,7 +26,7 @@ export default function Home() {
   const [userTotalBetKemal, setUserTotalBetKemal] = useState(0);
   const [totalBetKemal, setTotalBetKemal] = useState(0);
   const [serviceFeePercentage, setServiceFeePercentage] = useState(2);
-  const [bettingEndTime, setBettingEndTime] = useState(1686739545);
+  const [bettingEndTime, setBettingEndTime] = useState(1687616153);
   const [ethPriceUSD, setEthPriceUSD] = useState(1850);
   const [isOwner, setIsOwner] = useState(false);
   const [latestResult, setLatestResult] = useState("");
