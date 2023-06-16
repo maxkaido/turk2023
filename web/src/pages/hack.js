@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import CountdownTimer from "../components/CountdownTimer";
+import CountdownTimerV2 from "../components/CountdownTimerV2";
+
+const hackathonEnd = new Date("2023-06-24T11:00:00-04:00");
 
 export default function Home() {
-  const targetDate = new Date("2023-06-10T00:00:00");
-
   useEffect(() => {
     // Add any necessary logic or side effects here
   }, []);
@@ -12,10 +12,12 @@ export default function Home() {
     <main className="bg-gray-800 text-white min-h-screen">
       <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8">
         <h1 className="text-4xl text-center mb-10">
-          Chainlink Spring 2023 Hackathon
+          <a href="https://www.youtube.com/watch?v=IBMzkKl-7EI">
+            Chainlink Spring 2023 Hackathon
+          </a>
         </h1>
-        <CountdownTimer
-          targetDate={targetDate}
+        <CountdownTimerV2
+          timestamp={hackathonEnd.getTime()}
           suppressHydrationWarning={true}
         />
       </div>
