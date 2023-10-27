@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "deploy": "rm -rf .git && git init && git add . && git commit -m 'deploy' && git push dokku@prod10:turk2023-front master:master --force && rm -rf .git",
+    "deploy": "rm -rf .git && git init && git add . && git commit -m 'deploy' && git push dokku@prod12:wikiwager-web master:master --force && rm -rf .git",
     "lint": "next lint"
   },
   "dependencies": {
