@@ -10,7 +10,7 @@
     "deploy": "rm -rf .git && git init && git add . && git commit -m 'deploy' && git push dokku@prod10:turk2023-api master:master --force && rm -rf .git"
   },
   "dependencies": {
-    "axios": "^1.4.0",
+    "axios": "^1.6.0",
     "express": "^4.18.2",
     "express-redis-cache": "^1.1.3",
     "node-fetch": "^3.3.1"
